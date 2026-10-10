@@ -8,7 +8,7 @@ Story: "You buy it. They live with it." A daughter considers a care device; the 
 |---|---|
 | Access audit | Done — see `docs/01_access_audit.md`. Stock libraries blocked by network policy; no credentials; earlier rendering project not found. |
 | Input / conflict audit | Done — see `docs/02_input_audit.md`. 11 decisions flagged. |
-| Stock shortlist | In progress — **unverified leads only** (`sourcing/`). Nothing opened, previewed or downloaded. |
+| Stock shortlist | Round 1 done — **30 unverified leads, no anchor clip found** (`sourcing/03_stock_shortlist.md`, `sourcing/stock_leads_register.csv`). Nothing opened, previewed or downloaded. |
 | Stock approval | Waiting on owner. |
 | Rough cut / graphics / sound / final render | Not started. Blocked on stock approval, library access and brand source files. |
 

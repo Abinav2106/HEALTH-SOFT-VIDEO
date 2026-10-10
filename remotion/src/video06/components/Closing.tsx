@@ -1,22 +1,28 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
-import {COLORS, FONT_SANS, FONT_SERIF, SHOTS, WIDTH} from '../constants';
-import {EASE_OUT, progress} from '../lib/motion';
+import {COLORS, FONT_SANS, FONT_SERIF, HEIGHT, SHOTS, WIDTH} from '../constants';
+import {EASE_IN_OUT, EASE_OUT, progress} from '../lib/motion';
 import {MaskedLines} from './MaskedLines';
-import {PendingPlate} from './PendingPlate';
+import {StockShot} from './StockShot';
 
 const LOGO = {src: 'brand/healthsoft_logo_original.png', size: 447};
+// The closing shot hands over to the end card through a white foreground that rises from the bottom,
+// the same gesture as the guidance foreground, landing on the logo's own white.
+const WHITE_RISE = {from: 704, to: SHOTS.s12.from};
 
-// Panel 11 (stock placeholder + line) and panel 12 (official logo, line, CTA, clean hold).
 export const Closing: React.FC = () => {
   const frame = useCurrentFrame();
+  if (frame < SHOTS.s11.from) return null;
 
-  if (frame >= SHOTS.s11.from && frame < SHOTS.s11.to) {
+  if (frame < SHOTS.s12.from) {
+    const rise = progress(frame, WHITE_RISE.from, WHITE_RISE.to - WHITE_RISE.from, EASE_IN_OUT);
+    const top = (1 - rise) * (HEIGHT + 160);
     return (
       <AbsoluteFill>
-        <PendingPlate role="R6" description="Closing moment — natural light, genuine smile" />
+        <StockShot id="s11" from={SHOTS.s11.from} to={SHOTS.s11.to} />
         <MaskedLines
           inAt={668}
+          outAt={700}
           stagger={5}
           style={{left: 84, top: 1218}}
           lines={['More', 'good days', 'ahead.'].map((t) => ({
@@ -24,13 +30,24 @@ export const Closing: React.FC = () => {
             style: {fontFamily: FONT_SERIF, fontStyle: 'italic', fontSize: 112, fontWeight: 500, color: COLORS.white, lineHeight: 1.02, textShadow: '0 2px 28px rgba(0,0,0,0.38)'},
           }))}
         />
+        {rise > 0 ? (
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: top - 160,
+              height: HEIGHT + 160,
+              background: `linear-gradient(to bottom, rgba(255,255,255,0) 0px, ${COLORS.white} 160px)`,
+            }}
+          />
+        ) : null}
       </AbsoluteFill>
     );
   }
 
-  if (frame < SHOTS.s12.from) return null;
-  const logo = progress(frame, SHOTS.s12.from, 18, EASE_OUT);
-  const underline = progress(frame, 726, 16, EASE_OUT);
+  const logo = progress(frame, SHOTS.s12.from, 14, EASE_OUT);
+  const underline = progress(frame, 724, 12, EASE_OUT);
 
   return (
     <AbsoluteFill style={{background: COLORS.white}}>
@@ -50,8 +67,9 @@ export const Closing: React.FC = () => {
         <Img src={staticFile(LOGO.src)} style={{width: LOGO.size, height: LOGO.size, display: 'block'}} />
       </div>
       <MaskedLines
-        inAt={714}
-        stagger={5}
+        inAt={718}
+        stagger={4}
+        dur={12}
         align="center"
         style={{left: 0, width: WIDTH, top: 1010, fontFamily: FONT_SANS}}
         lines={[
@@ -61,6 +79,7 @@ export const Closing: React.FC = () => {
       />
       <MaskedLines
         inAt={722}
+        dur={12}
         align="center"
         style={{left: 0, width: WIDTH, top: 1252, fontFamily: FONT_SANS}}
         lines={[

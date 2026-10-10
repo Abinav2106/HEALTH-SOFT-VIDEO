@@ -21,20 +21,21 @@ export const COLORS = {
 export const FONT_SANS = 'HS Inter';
 export const FONT_SERIF = 'HS Newsreader';
 
-// Storyboard panels → frame ranges [from, to). Stock panels are placeholders until footage is approved.
+// Storyboard panels → frame ranges [from, to), retimed to the 0–3 / 3–6 / … / 27–30 / 30–32 s segment plan.
+// Live-action panels take their clip from stock/manifest.json.
 export const SHOTS = {
-  s01: {from: 0, to: 48}, // You buy it.            — R1 daughter browsing on laptop
-  s02: {from: 48, to: 96}, // But…                  — R2 pause close-up
-  s03: {from: 96, to: 144}, // They live with it.   — R3 mother's everyday activity
-  s04: {from: 144, to: 216}, // Their day. montage  — R3/R4 (3 × 1 s)
+  s01: {from: 0, to: 72}, // You buy it. · But…     — R1 daughter browsing on laptop (0–3 s)
+  s02: {from: 72, to: 92}, //                       — R2 daughter close-up, match cut out (3.0–3.8 s)
+  s03: {from: 92, to: 144}, // They live with it.   — mother close-up, matched eyeline (3.8–6 s)
+  s04: {from: 144, to: 216}, // Their day.          — R3 mother's routine, one continuous shot
   s05: {from: 216, to: 288}, // Their comfort.      — R4 tea / reading
   s06: {from: 288, to: 384}, // Their choice.       — R5 mother + daughter at laptop
   s07: {from: 384, to: 456}, // Safety — Guard Rail
   s08: {from: 456, to: 528}, // Health — Health Guard
   s09: {from: 528, to: 600}, // Medication — The Keeper
   s10: {from: 600, to: 664}, // Understand → Choose → Get started
-  s11: {from: 664, to: 708}, // More good days ahead. — R6 closing moment
-  s12: {from: 708, to: 768}, // End card: logo, line, CTA
+  s11: {from: 664, to: 716}, // More good days ahead. — R6 same mother, confident moment
+  s12: {from: 716, to: 768}, // End card: logo, line, CTA
 } as const;
 
 // Push-in through the shared laptop screen into the product stage.

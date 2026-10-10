@@ -14,11 +14,11 @@ export const NODE_Y = [744, 984, 1224];
 
 type Underline = {x: number; y: number; drawAt: number; retractAt?: number};
 const UNDERLINES: Underline[] = [
-  {x: 84, y: 1600, drawAt: 20, retractAt: 40}, // You buy it.
-  {x: 84, y: 1600, drawAt: 116, retractAt: 136}, // They live with it.
+  {x: 84, y: 1600, drawAt: 22, retractAt: 45}, // You buy it.
+  {x: 84, y: 1600, drawAt: 112, retractAt: 136}, // They live with it.
   {x: 84, y: 1600, drawAt: 236, retractAt: 278}, // Their comfort.
   {x: 84, y: 1466, drawAt: 310, retractAt: 340}, // Their choice.
-  {x: 84, y: 1600, drawAt: 686}, // More good days ahead.
+  {x: 84, y: 1600, drawAt: 686, retractAt: 699}, // More good days ahead.
 ];
 
 const UnderlineAt: React.FC<{u: Underline; frame: number}> = ({u, frame}) => {

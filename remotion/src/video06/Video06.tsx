@@ -3,6 +3,7 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS, SCREEN_PUSH, SCREEN_SETTLE, STAGE} from './constants';
 import {progress} from './lib/motion';
 import {loadFonts} from './lib/fonts';
+import {RenderModeProvider} from './lib/renderMode';
 import {Closing} from './components/Closing';
 import {Guidance} from './components/Guidance';
 import {Opening} from './components/Opening';
@@ -13,23 +14,27 @@ import {Thread} from './components/Thread';
 
 loadFonts();
 
-export type Video06Props = {burnIn: boolean};
+// review: burn-in and stand-in plates allowed. master: no overlays; any missing clip or track fails the render.
+export type Video06Props = {mode: 'review' | 'master'};
 
 // Healthsoft Video 06 — "You buy it. They live with it." (1080×1920, 24 fps, 32 s).
-// Layer order, bottom to top: picture → product stage → guidance foreground → thread → closing → review overlay.
-export const Video06: React.FC<Video06Props> = ({burnIn}) => {
+// Layer order, bottom to top: live action → product stage → guidance foreground → closing → thread → review overlay.
+export const Video06: React.FC<Video06Props> = ({mode}) => {
   const frame = useCurrentFrame();
+  const strict = mode === 'master';
   return (
-    <AbsoluteFill style={{background: COLORS.plateB}}>
-      <Opening />
-      <SharedChoice />
-      {frame >= SCREEN_PUSH.to - SCREEN_SETTLE && frame < STAGE.to ? (
-        <ProductStage opacity={progress(frame, SCREEN_PUSH.to - SCREEN_SETTLE, SCREEN_SETTLE, (t) => t)} />
-      ) : null}
-      <Guidance />
-      <Thread />
-      <Closing />
-      {burnIn ? <ReviewBurnIn /> : null}
-    </AbsoluteFill>
+    <RenderModeProvider value={{strict, burnIn: !strict}}>
+      <AbsoluteFill style={{background: COLORS.plateB}}>
+        <Opening />
+        <SharedChoice />
+        {frame >= SCREEN_PUSH.to - SCREEN_SETTLE && frame < STAGE.to ? (
+          <ProductStage opacity={progress(frame, SCREEN_PUSH.to - SCREEN_SETTLE, SCREEN_SETTLE, (t) => t)} />
+        ) : null}
+        <Guidance />
+        <Closing />
+        <Thread />
+        {strict ? null : <ReviewBurnIn />}
+      </AbsoluteFill>
+    </RenderModeProvider>
   );
 };

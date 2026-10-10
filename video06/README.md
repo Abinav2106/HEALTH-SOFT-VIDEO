@@ -12,7 +12,8 @@ Story: "You buy it. They live with it." A daughter considers a care device; the 
 | Stock approval | Waiting on owner. |
 | Stock shortlist round 2 | Done — 45 unverified leads; **no anchor clip**; proposed scene timings in `sourcing/04_stock_shortlist_round2.md`. |
 | Motion graphics | **Preview built and rendered** (Remotion project in `../remotion/`). Full 32 s timeline with labelled stock placeholders. QC in `docs/03_motion_preview_qc.md`. |
-| Rough cut / sound / final render | Not started. Blocked on stock approval, library access, audio and brand source files. |
+| Real-stock insertion | **Blocked — no footage obtainable in this session** (egress policy 403 on every stock host; no API key; nothing uploaded). Pipeline built and verified: stock manifest, `StockShot` layers, screen tracker, crop/QC tools, strict master render. See `docs/04_stock_insertion.md`. |
+| Sound / final master | Not started. Needs licensed clips, VO, music, SFX. `V06-Master` refuses to render until every shot is licensed and tracked. |
 
 ## Rules carried from the brief
 

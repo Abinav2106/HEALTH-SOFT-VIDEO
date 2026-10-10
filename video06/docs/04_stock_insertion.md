@@ -11,6 +11,19 @@ No stock clip can be downloaded into this session:
 
 The film therefore still has no live action, and **no master MP4 exists**. The master composition refuses to render until every shot has a licensed clip (proof below).
 
+## Casting search this round
+
+I made one more search for a **single production** covering every shot with the same older mother and adult daughter, on Pexels (free licence, so no purchase approval needed). Any ethnicity was accepted. It found none: no indexed Pexels video confirms an older mother and an adult daughter together.
+
+| Lead | Status |
+|---|---|
+| Kindel Media 6994972 | Vertical 4K family at a laptop; ages unconfirmed |
+| Kampus Production Portugal shoot | Right casting, but surfaced only as beach **photos** |
+
+Both are now in the register (L46–L50; 50 leads, all unverified). The index is shallow, so the shoot may exist without being indexed. Settling it needs direct access to the library.
+
+**Gap, per the brief:** no shot has been filled with unrelated actors.
+
 ## What changed this round
 
 | Area | Change |

@@ -10,7 +10,9 @@ Story: "You buy it. They live with it." A daughter considers a care device; the 
 | Input / conflict audit | Done — see `docs/02_input_audit.md`. 11 decisions flagged. |
 | Stock shortlist | Round 1 done — **30 unverified leads, no anchor clip found** (`sourcing/03_stock_shortlist.md`, `sourcing/stock_leads_register.csv`). Nothing opened, previewed or downloaded. |
 | Stock approval | Waiting on owner. |
-| Rough cut / graphics / sound / final render | Not started. Blocked on stock approval, library access and brand source files. |
+| Stock shortlist round 2 | Done — 45 unverified leads; **no anchor clip**; proposed scene timings in `sourcing/04_stock_shortlist_round2.md`. |
+| Motion graphics | **Preview built and rendered** (Remotion project in `../remotion/`). Full 32 s timeline with labelled stock placeholders. QC in `docs/03_motion_preview_qc.md`. |
+| Rough cut / sound / final render | Not started. Blocked on stock approval, library access, audio and brand source files. |
 
 ## Rules carried from the brief
 

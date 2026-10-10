@@ -1,0 +1,7 @@
+node_modules/
+out/
+# Client brand files and licensed stock stay out of this public repository.
+public/brand/*
+!public/brand/README.md
+public/stock/*
+!public/stock/README.md

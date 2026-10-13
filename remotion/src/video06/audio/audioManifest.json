@@ -1,0 +1,7 @@
+{
+  "_about": "Finished audio stems (paths under remotion/public/). null = not supplied yet. Voice must be the approved recording; music must be licensed. Gitignored media lives in public/audio/voice and public/audio/music.",
+  "voice": null,
+  "voiceIsTemporaryGuide": false,
+  "music": null,
+  "musicLicence": null
+}

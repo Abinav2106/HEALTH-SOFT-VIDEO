@@ -1,12 +1,12 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {COLORS, FONT_SANS, GUIDANCE_RISE, GUIDANCE_STEPS, HEIGHT, SHOTS} from '../constants';
-import {EASE_IN_OUT, EASE_OUT, progress} from '../lib/motion';
+import {COLORS, FONT_SANS, GUIDANCE_OUT, GUIDANCE_RISE, GUIDANCE_STEPS, HEIGHT, SHOTS} from '../constants';
+import {EASE_IN, EASE_IN_OUT, EASE_OUT, progress} from '../lib/motion';
 import {MaskedLines} from './MaskedLines';
 import {NODE_Y, SPINE_X} from './Thread';
 
-// Panel 10. A cream foreground rises out of the label scrim; three steps hang off the orange spine.
-// Editorial only: no icons, dashboards, readings or onboarding states.
+// Panel 10 (22–27 s). A cream foreground rises out of the label scrim; the three locked steps hang off
+// the orange spine as the narration reaches them. Editorial only: no icons, dashboards or readings.
 export const Guidance: React.FC = () => {
   const frame = useCurrentFrame();
   if (frame < GUIDANCE_RISE.from || frame >= SHOTS.s10.to) return null;
@@ -26,7 +26,7 @@ export const Guidance: React.FC = () => {
         }}
       />
       {GUIDANCE_STEPS.map((s, i) => {
-        const node = progress(frame, s.at - 2, 8, EASE_OUT);
+        const node = progress(frame, s.at - 2, 8, EASE_OUT) * (1 - progress(frame, GUIDANCE_OUT + 4, 6, EASE_IN));
         return (
           <React.Fragment key={s.num}>
             {node > 0 ? (
@@ -45,13 +45,13 @@ export const Guidance: React.FC = () => {
             ) : null}
             <MaskedLines
               inAt={s.at}
+              outAt={GUIDANCE_OUT}
               stagger={3}
               dur={14}
-              style={{left: SPINE_X + 62, top: NODE_Y[i] - 82, fontFamily: FONT_SANS}}
+              style={{left: SPINE_X + 62, top: NODE_Y[i] - 76, fontFamily: FONT_SANS}}
               lines={[
                 {text: s.num, style: {fontSize: 24, fontWeight: 600, letterSpacing: '0.14em', color: COLORS.orange, lineHeight: 1}},
-                {text: s.a, style: {fontSize: 68, fontWeight: 600, letterSpacing: '-0.025em', color: COLORS.ink, lineHeight: 1, marginTop: 22}},
-                {text: s.b, style: {fontSize: 68, fontWeight: 400, letterSpacing: '-0.02em', color: COLORS.inkSoft, lineHeight: 1, marginTop: 8}},
+                {text: s.a, style: {fontSize: 84, fontWeight: 600, letterSpacing: '-0.03em', color: COLORS.ink, lineHeight: 1, marginTop: 18}},
               ]}
             />
           </React.Fragment>

@@ -54,13 +54,11 @@ export const Opening: React.FC = () => {
         <AbsoluteFill>
           <StockShot id="s01" from={SHOTS.s01.from} to={SHOTS.s01.to} />
           {quad01 ? <PinnedScreen quad={quad01} w={SCREEN_CANVAS.w} h={SCREEN_CANVAS.h} chrome={1} glare={1} /> : null}
-          <Title a="You" b="buy it." inAt={6} outAt={46} />
+          <Title a="You" b="buy it." inAt={6} outAt={62} />
         </AbsoluteFill>
       ) : null}
 
       {within(frame, SHOTS.s02) ? <StockShot id="s02" from={SHOTS.s02.from} to={SHOTS.s02.to} /> : null}
-      {/* "But…" lands as she pauses and holds across the cut into her close-up. */}
-      {frame >= 50 && frame < 92 ? <MaskedLines inAt={52} outAt={84} style={{left: 84, top: 900}} lines={[{text: 'But…', style: serif(150)}]} /> : null}
 
       {within(frame, SHOTS.s03) ? (
         <AbsoluteFill>
@@ -72,10 +70,8 @@ export const Opening: React.FC = () => {
       {within(frame, SHOTS.s04) ? (
         <AbsoluteFill>
           <StockShot id="s04" from={SHOTS.s04.from} to={SHOTS.s04.to} />
-          {/* One continuous routine shot; the lines accumulate and stay still once revealed. */}
-          <MaskedLines inAt={148} outAt={209} style={{left: 84, top: 1190}} lines={[{text: 'Their day.', style: serif(124)}]} />
-          <MaskedLines inAt={164} outAt={209} style={{left: 84, top: 1350}} lines={[{text: 'Simple routines', style: serif(76)}]} />
-          <MaskedLines inAt={180} outAt={209} style={{left: 84, top: 1446}} lines={[{text: 'Things they love', style: serif(76)}]} />
+          {/* One continuous routine shot; the footage carries the movement. */}
+          <MaskedLines inAt={150} outAt={208} style={{left: 84, top: 1380}} lines={[{text: 'Their day.', style: serif(132)}]} />
         </AbsoluteFill>
       ) : null}
 

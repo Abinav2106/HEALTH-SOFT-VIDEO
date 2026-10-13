@@ -1,0 +1,30 @@
+stem,frame_in,timecode_in,frame_out,timecode_out,content,gain_db,status
+voice,6,00:00:00.250,34,00:00:01.417,You buy it.,0,PENDING approved recording (stem silent)
+voice,98,00:00:04.083,134,00:00:05.583,They live with it.,0,PENDING approved recording (stem silent)
+voice,150,00:00:06.250,190,00:00:07.917,So it should fit their day.,0,PENDING approved recording (stem silent)
+voice,224,00:00:09.333,250,00:00:10.417,Their comfort.,0,PENDING approved recording (stem silent)
+voice,296,00:00:12.333,322,00:00:13.417,And their choice.,0,PENDING approved recording (stem silent)
+voice,326,00:00:13.583,350,00:00:14.583,Choose together.,0,PENDING approved recording (stem silent)
+voice,392,00:00:16.333,512,00:00:21.333,"Start with what they need: safety, health or medication.  [anchors: {'safety': 408, 'health': 456, 'medication': 500}]",0,PENDING approved recording (stem silent)
+voice,540,00:00:22.500,628,00:00:26.167,"Explore suitable options with Healthsoft, with guidance to get started.",0,PENDING approved recording (stem silent)
+voice,656,00:00:27.333,690,00:00:28.750,Care that fits real life.,0,PENDING approved recording (stem silent)
+voice,726,00:00:30.250,764,00:00:31.833,Find your fit with Healthsoft.,0,PENDING approved recording (stem silent)
+sfx,19,00:00:00.792,23,00:00:00.958,tap.wav — 'buy it.' settles,-16,"in mix (synthesised, original)"
+sfx,109,00:00:04.542,113,00:00:04.708,tap.wav — 'live with it.' settles,-16,"in mix (synthesised, original)"
+sfx,160,00:00:06.667,164,00:00:06.833,tap.wav — 'Their day.' settles,-17,"in mix (synthesised, original)"
+sfx,235,00:00:09.792,239,00:00:09.958,tap.wav — 'comfort.' settles,-17,"in mix (synthesised, original)"
+sfx,307,00:00:12.792,311,00:00:12.958,tap.wav — 'choice.' settles,-16,"in mix (synthesised, original)"
+sfx,346,00:00:14.417,382,00:00:15.917,swell.wav — push into the laptop screen (peaks as it rectifies),-14,"in mix (synthesised, original)"
+sfx,402,00:00:16.750,404,00:00:16.833,tick.wav — Safety / Guard Rail label lands,-14,"in mix (synthesised, original)"
+sfx,450,00:00:18.750,452,00:00:18.833,tick.wav — Health / Health Guard label lands,-14,"in mix (synthesised, original)"
+sfx,498,00:00:20.750,500,00:00:20.833,tick.wav — Medication / The Keeper label lands,-14,"in mix (synthesised, original)"
+sfx,512,00:00:21.333,548,00:00:22.833,swell.wav — cream foreground rises into guidance,-17,"in mix (synthesised, original)"
+sfx,544,00:00:22.667,546,00:00:22.750,tick.wav — node 01 Understand,-15,"in mix (synthesised, original)"
+sfx,568,00:00:23.667,570,00:00:23.750,tick.wav — node 02 Choose,-15,"in mix (synthesised, original)"
+sfx,592,00:00:24.667,594,00:00:24.750,tick.wav — node 03 Get started,-15,"in mix (synthesised, original)"
+sfx,667,00:00:27.792,671,00:00:27.958,tap.wav — 'fits real life.' settles,-16,"in mix (synthesised, original)"
+sfx,698,00:00:29.083,734,00:00:30.583,swell.wav — white foreground rises into the end card,-17,"in mix (synthesised, original)"
+sfx,720,00:00:30.000,758,00:00:31.583,bloom.wav — official logo reveal,-12,"in mix (synthesised, original)"
+sfx,734,00:00:30.583,736,00:00:30.667,tick.wav — CTA underline completes,-14,"in mix (synthesised, original)"
+music,0,00:00:00.000,768,00:00:32.000,"warm instrumental bed, ducks -8 dB under narration",,PENDING licensed track (stem silent)
+ambience,0,00:00:00.000,720,00:00:30.000,stock clips' own location sound,,follows stock clips (none in edit yet)

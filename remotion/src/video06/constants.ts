@@ -24,18 +24,18 @@ export const FONT_SERIF = 'HS Newsreader';
 // Storyboard panels → frame ranges [from, to), retimed to the 0–3 / 3–6 / … / 27–30 / 30–32 s segment plan.
 // Live-action panels take their clip from stock/manifest.json.
 export const SHOTS = {
-  s01: {from: 0, to: 72}, // You buy it. · But…     — R1 daughter browsing on laptop (0–3 s)
-  s02: {from: 72, to: 92}, //                       — R2 daughter close-up, match cut out (3.0–3.8 s)
+  s01: {from: 0, to: 72}, // You buy it.            — R1 daughter browsing on laptop (0–3 s)
+  s02: {from: 72, to: 92}, //                       — R2 close-up, match cut out (3.0–3.8 s)
   s03: {from: 92, to: 144}, // They live with it.   — mother close-up, matched eyeline (3.8–6 s)
   s04: {from: 144, to: 216}, // Their day.          — R3 mother's routine, one continuous shot
   s05: {from: 216, to: 288}, // Their comfort.      — R4 tea / reading
   s06: {from: 288, to: 384}, // Their choice.       — R5 mother + daughter at laptop
-  s07: {from: 384, to: 456}, // Safety — Guard Rail
-  s08: {from: 456, to: 528}, // Health — Health Guard
-  s09: {from: 528, to: 600}, // Medication — The Keeper
-  s10: {from: 600, to: 664}, // Understand → Choose → Get started
-  s11: {from: 664, to: 716}, // More good days ahead. — R6 same mother, confident moment
-  s12: {from: 716, to: 768}, // End card: logo, line, CTA
+  s07: {from: 384, to: 432}, // Safety — Guard Rail            (16–18 s)
+  s08: {from: 432, to: 480}, // Health — Health Guard          (18–20 s)
+  s09: {from: 480, to: 528}, // Medication — The Keeper        (20–22 s)
+  s10: {from: 528, to: 648}, // Understand · Choose · Get started (22–27 s)
+  s11: {from: 648, to: 720}, // Care that fits real life.      — R6 closing human moment (27–30 s)
+  s12: {from: 720, to: 768}, // Official logo + Find your fit → (30–32 s)
 } as const;
 
 // Push-in through the shared laptop screen into the product stage.
@@ -43,9 +43,9 @@ export const SCREEN_PUSH = {from: 352, to: 388};
 // The pinned screen is rasterised softer than the 2D stage; finish the push early and dissolve once aligned.
 export const SCREEN_SETTLE = 6;
 // Product stage (continuous virtual camera across the three products).
-export const STAGE = {from: 388, to: 612};
+export const STAGE = {from: 388, to: 540};
 // Stage → guidance: cream foreground rises from the label scrim.
-export const GUIDANCE_RISE = {from: 588, to: 608};
+export const GUIDANCE_RISE = {from: 522, to: 540};
 
 // Product photograph (original, unmodified). Source pixel space.
 export const PRODUCT_PHOTO = {
@@ -61,19 +61,20 @@ export const PRODUCTS: Record<
   ProductKey,
   {category: string; name: string; box: [number, number, number, number]; labelIn: number; labelOut: number}
 > = {
-  guardRail: {category: 'Safety', name: 'Guard Rail', box: [555, 920, 892, 1382], labelIn: 404, labelOut: 452},
-  healthGuard: {category: 'Health', name: 'Health Guard', box: [22, 715, 440, 1245], labelIn: 466, labelOut: 516},
-  keeper: {category: 'Medication', name: 'The Keeper', box: [235, 195, 910, 905], labelIn: 530, labelOut: 584},
+  guardRail: {category: 'Safety', name: 'Guard Rail', box: [555, 920, 892, 1382], labelIn: 394, labelOut: 432},
+  healthGuard: {category: 'Health', name: 'Health Guard', box: [22, 715, 440, 1245], labelIn: 442, labelOut: 480},
+  keeper: {category: 'Medication', name: 'The Keeper', box: [235, 195, 910, 905], labelIn: 490, labelOut: 526},
 };
 
 export const PRODUCT_ORDER: ProductKey[] = ['guardRail', 'healthGuard', 'keeper'];
 
-// Guidance copy exactly as on the approved storyboard (panel 10).
+// Guidance copy as locked by the client: "Understand. Choose. Get started."
 export const GUIDANCE_STEPS = [
-  {num: '01', a: 'Understand', b: 'your needs', at: 608},
-  {num: '02', a: 'Choose', b: 'the right fit', at: 622},
-  {num: '03', a: 'Get started', b: 'with support', at: 636},
+  {num: '01', a: 'Understand', at: 544},
+  {num: '02', a: 'Choose', at: 568},
+  {num: '03', a: 'Get started', at: 592},
 ] as const;
+export const GUIDANCE_OUT = 636;
 
 // Placeholder corner-pin targets for the laptop screen (frame px, TL TR BR BL).
 // Replace with per-frame tracked corners once the real clips are approved.

@@ -8,7 +8,7 @@ import {useRenderMode} from '../lib/renderMode';
 // its native speed from `sourceIn`. Review renders show a neutral plate if the clip is not in yet;
 // master renders throw instead, so a placeholder can never reach a deliverable.
 export const StockShot: React.FC<{id: ShotId; from: number; to: number; style?: React.CSSProperties}> = ({id, from, to, style}) => {
-  const {strict} = useRenderMode();
+  const {strict, mix} = useRenderMode();
   const clip = strict ? assertStock(id) : stockClip(id);
 
   if (!isReady(clip)) {
@@ -21,7 +21,8 @@ export const StockShot: React.FC<{id: ShotId; from: number; to: number; style?: 
         <OffthreadVideo
           src={staticFile(`stock/${clip.file}`)}
           startFrom={Math.round(clip.sourceIn * FPS)}
-          muted
+          volume={mix.ambience}
+          muted={mix.ambience === 0}
           style={{position: 'absolute', left: l.left, top: l.top, width: l.dw, height: l.dh}}
         />
       </AbsoluteFill>

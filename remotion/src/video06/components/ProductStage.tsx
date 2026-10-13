@@ -35,13 +35,13 @@ const key = (f: number, z: number, k: ProductKey | null, ease: Key['ease']): Key
 
 const KEYS: Key[] = [
   key(388, 1.0, null, 'drift'), // lands from the screen push: all three options, all sharp
-  key(396, 1.0, null, 'move'),
-  key(416, 1.06, 'guardRail', 'drift'),
-  key(452, 1.085, 'guardRail', 'move'),
-  key(476, 1.06, 'healthGuard', 'drift'),
-  key(516, 1.085, 'healthGuard', 'move'),
-  key(540, 1.06, 'keeper', 'drift'),
-  key(612, 1.1, 'keeper', 'drift'),
+  key(392, 1.0, null, 'move'),
+  key(406, 1.06, 'guardRail', 'drift'), // "safety" (VO ~17.0 s)
+  key(432, 1.08, 'guardRail', 'move'),
+  key(448, 1.06, 'healthGuard', 'drift'), // "health" (VO ~19.0 s)
+  key(480, 1.08, 'healthGuard', 'move'),
+  key(496, 1.06, 'keeper', 'drift'), // "or medication" (VO ~20.9 s)
+  key(540, 1.09, 'keeper', 'drift'),
 ];
 
 const sample = (frame: number) => {
@@ -91,7 +91,7 @@ export const ProductStage: React.FC<{opacity?: number}> = ({opacity = 1}) => {
       <AbsoluteFill
         style={{
           background: `radial-gradient(1040px 700px at 0% 100%, rgba(252,246,239,0.97) 0%, rgba(252,246,239,0.90) 48%, rgba(252,246,239,0) 100%)`,
-          opacity: Math.min(1, Math.max(0, (frame - 396) / 10)),
+          opacity: Math.min(1, Math.max(0, (frame - 390) / 8)),
         }}
       />
       {(Object.keys(PRODUCTS) as ProductKey[]).map((k) => {

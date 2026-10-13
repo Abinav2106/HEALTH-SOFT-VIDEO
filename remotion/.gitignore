@@ -5,3 +5,5 @@ public/brand/*
 !public/brand/README.md
 public/stock/*
 !public/stock/README.md
+public/audio/voice/*
+public/audio/music/*

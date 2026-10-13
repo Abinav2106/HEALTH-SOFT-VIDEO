@@ -94,6 +94,21 @@ export const ProductStage: React.FC<{opacity?: number}> = ({opacity = 1}) => {
           opacity: Math.min(1, Math.max(0, (frame - 390) / 8)),
         }}
       />
+      {/* Section header, over a soft ivory top scrim; leaves before the camera reaches The Keeper. */}
+      <AbsoluteFill
+        style={{
+          background: 'linear-gradient(to bottom, rgba(250,247,242,0.94) 0px, rgba(250,247,242,0.80) 300px, rgba(250,247,242,0) 560px)',
+          opacity: Math.min(1, Math.max(0, (frame - 388) / 8)) * (1 - Math.min(1, Math.max(0, (frame - 476) / 10))),
+        }}
+      />
+      {frame < 486 ? (
+        <MaskedLines
+          inAt={392}
+          outAt={472}
+          style={{left: LABEL.x, top: 300, fontFamily: FONT_SANS}}
+          lines={[{text: 'Start with what they need.', style: {fontSize: 60, fontWeight: 600, letterSpacing: '-0.025em', color: COLORS.navy, lineHeight: 1}}]}
+        />
+      ) : null}
       {(Object.keys(PRODUCTS) as ProductKey[]).map((k) => {
         const p = PRODUCTS[k];
         if (frame < p.labelIn - 1 || frame > p.labelOut + 12) return null;

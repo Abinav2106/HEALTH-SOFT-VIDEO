@@ -1,10 +1,11 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {COLORS, FONT_SANS, FONT_SERIF, HEIGHT, Quad, SCREEN_CANVAS, SCREEN_PUSH, SCREEN_QUAD_S06, SCREEN_SETTLE, SHOTS, WIDTH} from '../constants';
+import {HEIGHT, Quad, SCREEN_CANVAS, SCREEN_PUSH, SCREEN_QUAD_S06, SCREEN_SETTLE, SHOTS, WIDTH} from '../constants';
 import {lerpQuad, quadCentroid, transformQuad} from '../lib/cornerPin';
 import {EASE_IN_OUT, lerp, progress} from '../lib/motion';
 import {useRenderMode} from '../lib/renderMode';
 import {MissingStockError, stockClip, trackedQuad} from '../stock/stock';
+import {Headline, headlineStyle} from './Headline';
 import {MaskedLines} from './MaskedLines';
 import {PinnedScreen} from './ScreenGraphic';
 import {StockShot} from './StockShot';
@@ -47,24 +48,13 @@ export const SharedChoice: React.FC = () => {
         <StockShot id="s06" from={SHOTS.s06.from} to={SCREEN_PUSH.to} />
       </AbsoluteFill>
       <PinnedScreen quad={quad} w={w} h={h} chrome={1 - progress(frame, SCREEN_PUSH.from, 14)} glare={1 - rectify} />
-      <MaskedLines
-        inAt={294}
-        outAt={338}
-        stagger={5}
-        style={{left: 84, top: 1180}}
-        lines={[
-          {text: 'Their', style: {fontFamily: FONT_SANS, fontSize: 104, fontWeight: 500, color: COLORS.white, letterSpacing: '-0.02em', lineHeight: 1, textShadow: '0 2px 28px rgba(0,0,0,0.38)'}},
-          {
-            text: 'choice.',
-            style: {fontFamily: FONT_SERIF, fontStyle: 'italic', fontSize: 138, fontWeight: 500, color: COLORS.orange, lineHeight: 1, marginTop: 6, textShadow: '0 2px 28px rgba(0,0,0,0.38)'},
-          },
-        ]}
-      />
+      <Headline lines={['Their choice.']} inAt={294} outAt={338} top={1290} />
+      {/* The shared-selection marker: the underline steps down beneath this line as it lands. */}
       <MaskedLines
         inAt={318}
         outAt={340}
-        style={{left: 84, top: 1500}}
-        lines={[{text: 'Choose together.', style: {fontFamily: FONT_SANS, fontSize: 52, fontWeight: 400, color: COLORS.white, letterSpacing: '-0.01em', textShadow: '0 2px 28px rgba(0,0,0,0.38)'}}]}
+        style={{left: 84, top: 1478}}
+        lines={[{text: 'Choose together.', style: {...headlineStyle(64), fontWeight: 600, letterSpacing: '-0.02em'}}]}
       />
     </AbsoluteFill>
   );

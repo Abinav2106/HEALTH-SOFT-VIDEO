@@ -22,8 +22,14 @@ export const Guidance: React.FC = () => {
           right: 0,
           top: top - 160,
           height: HEIGHT + 160,
-          background: `linear-gradient(to bottom, rgba(252,246,239,0) 0px, ${COLORS.cream} 160px)`,
+          background: `linear-gradient(to bottom, rgba(250,247,242,0) 0px, ${COLORS.ivory} 160px)`,
         }}
+      />
+      <MaskedLines
+        inAt={606}
+        outAt={GUIDANCE_OUT}
+        style={{left: SPINE_X, top: 1420, fontFamily: FONT_SANS}}
+        lines={[{text: 'Guidance to get started.', style: {fontSize: 46, fontWeight: 500, letterSpacing: '-0.015em', color: COLORS.inkSoft, lineHeight: 1}}]}
       />
       {GUIDANCE_STEPS.map((s, i) => {
         const node = progress(frame, s.at - 2, 8, EASE_OUT) * (1 - progress(frame, GUIDANCE_OUT + 4, 6, EASE_IN));

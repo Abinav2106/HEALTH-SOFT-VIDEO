@@ -17,7 +17,8 @@ const UNDERLINES: Underline[] = [
   {x: 84, y: 1600, drawAt: 22, retractAt: 60}, // You buy it.
   {x: 84, y: 1600, drawAt: 112, retractAt: 136}, // They live with it.
   {x: 84, y: 1600, drawAt: 236, retractAt: 278}, // Their comfort.
-  {x: 84, y: 1466, drawAt: 310, retractAt: 340}, // Their choice.
+  {x: 84, y: 1440, drawAt: 308, retractAt: 318}, // Their choice.
+  {x: 84, y: 1600, drawAt: 322, retractAt: 342}, // Choose together. (the marker steps down: shared selection)
   {x: 84, y: 1600, drawAt: 670, retractAt: 702}, // Care that fits real life.
 ];
 

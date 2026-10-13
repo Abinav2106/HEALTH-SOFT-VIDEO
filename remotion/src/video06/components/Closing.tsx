@@ -1,15 +1,15 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
-import {COLORS, FONT_SANS, FONT_SERIF, HEIGHT, SHOTS, WIDTH} from '../constants';
+import {COLORS, FONT_SANS, HEIGHT, SHOTS, WIDTH} from '../constants';
 import {EASE_IN_OUT, EASE_OUT, progress} from '../lib/motion';
+import {Headline} from './Headline';
 import {MaskedLines} from './MaskedLines';
 import {StockShot} from './StockShot';
 
 const LOGO = {src: 'brand/healthsoft_logo_original.png', size: 447};
-// The closing shot hands over to the end card through a white foreground that rises from the bottom,
-// the same gesture as the guidance foreground, landing on the logo's own white.
+// The closing shot hands over to the end card through an ivory foreground that rises from the bottom,
+// the same gesture as the guidance foreground, landing on the ivory end card.
 const WHITE_RISE = {from: 708, to: SHOTS.s12.from};
-const shadow = '0 2px 28px rgba(0,0,0,0.38)';
 
 // 27–30 s: closing human moment with the tagline. 30–32 s: official logo and the single CTA.
 export const Closing: React.FC = () => {
@@ -22,19 +22,7 @@ export const Closing: React.FC = () => {
     return (
       <AbsoluteFill>
         <StockShot id="s11" from={SHOTS.s11.from} to={SHOTS.s11.to} />
-        <MaskedLines
-          inAt={654}
-          outAt={702}
-          stagger={5}
-          style={{left: 84, top: 1300}}
-          lines={[
-            {text: 'Care that', style: {fontFamily: FONT_SANS, fontSize: 104, fontWeight: 500, color: COLORS.white, letterSpacing: '-0.02em', lineHeight: 1, textShadow: shadow}},
-            {
-              text: 'fits real life.',
-              style: {fontFamily: FONT_SERIF, fontStyle: 'italic', fontSize: 138, fontWeight: 500, color: COLORS.orange, letterSpacing: '-0.01em', lineHeight: 1, marginTop: 6, textShadow: shadow},
-            },
-          ]}
-        />
+        <Headline lines={['Care that', 'fits real life.']} inAt={654} outAt={702} />
         {rise > 0 ? (
           <div
             style={{
@@ -43,7 +31,7 @@ export const Closing: React.FC = () => {
               right: 0,
               top: top - 160,
               height: HEIGHT + 160,
-              background: `linear-gradient(to bottom, rgba(255,255,255,0) 0px, ${COLORS.white} 160px)`,
+              background: `linear-gradient(to bottom, rgba(250,247,242,0) 0px, ${COLORS.ivory} 160px)`,
             }}
           />
         ) : null}
@@ -55,8 +43,8 @@ export const Closing: React.FC = () => {
   const underline = progress(frame, 730, 12, EASE_OUT);
 
   return (
-    <AbsoluteFill style={{background: COLORS.white}}>
-      {/* Official logo file, unaltered, on the same pure white as its own background; drawn 1:1. */}
+    <AbsoluteFill style={{background: COLORS.ivory}}>
+      {/* Official logo file, unaltered, drawn 1:1; multiply lets its white ground take the ivory card. */}
       <div
         style={{
           position: 'absolute',
@@ -67,6 +55,7 @@ export const Closing: React.FC = () => {
           clipPath: `inset(${(1 - logo) * 100}% 0 0 0)`,
           opacity: Math.min(1, logo * 1.6),
           transform: `translateY(${(1 - logo) * 14}px)`,
+          mixBlendMode: 'multiply',
         }}
       >
         <Img src={staticFile(LOGO.src)} style={{width: LOGO.size, height: LOGO.size, display: 'block'}} />

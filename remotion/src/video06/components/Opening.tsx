@@ -1,38 +1,11 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {COLORS, FONT_SANS, FONT_SERIF, SCREEN_CANVAS, SHOTS} from '../constants';
+import {SCREEN_CANVAS, SHOTS} from '../constants';
 import {useRenderMode} from '../lib/renderMode';
 import {MissingStockError, stockClip, trackedQuad} from '../stock/stock';
-import {MaskedLines} from './MaskedLines';
+import {Headline} from './Headline';
 import {PinnedScreen} from './ScreenGraphic';
 import {StockShot} from './StockShot';
-
-const shadow = '0 2px 28px rgba(0,0,0,0.38)';
-const sans = (size: number): React.CSSProperties => ({fontFamily: FONT_SANS, fontSize: size, fontWeight: 500, color: COLORS.white, letterSpacing: '-0.02em', lineHeight: 1.0, textShadow: shadow});
-const serif = (size: number, color: string = COLORS.white): React.CSSProperties => ({
-  fontFamily: FONT_SERIF,
-  fontStyle: 'italic',
-  fontSize: size,
-  fontWeight: 500,
-  color,
-  letterSpacing: '-0.01em',
-  lineHeight: 1.0,
-  textShadow: shadow,
-});
-
-// Two-line title used across the opening: plain word, then the orange serif word.
-const Title: React.FC<{a: string; b: string; inAt: number; outAt: number; top?: number}> = ({a, b, inAt, outAt, top = 1300}) => (
-  <MaskedLines
-    inAt={inAt}
-    outAt={outAt}
-    stagger={5}
-    style={{left: 84, top}}
-    lines={[
-      {text: a, style: sans(104)},
-      {text: b, style: {...serif(138, COLORS.orange), marginTop: 6}},
-    ]}
-  />
-);
 
 const within = (frame: number, s: {from: number; to: number}) => frame >= s.from && frame < s.to;
 
@@ -54,7 +27,7 @@ export const Opening: React.FC = () => {
         <AbsoluteFill>
           <StockShot id="s01" from={SHOTS.s01.from} to={SHOTS.s01.to} />
           {quad01 ? <PinnedScreen quad={quad01} w={SCREEN_CANVAS.w} h={SCREEN_CANVAS.h} chrome={1} glare={1} /> : null}
-          <Title a="You" b="buy it." inAt={6} outAt={62} />
+          <Headline lines={['You buy it.']} inAt={6} outAt={62} />
         </AbsoluteFill>
       ) : null}
 
@@ -63,7 +36,7 @@ export const Opening: React.FC = () => {
       {within(frame, SHOTS.s03) ? (
         <AbsoluteFill>
           <StockShot id="s03" from={SHOTS.s03.from} to={SHOTS.s03.to} />
-          <Title a="They" b="live with it." inAt={96} outAt={137} />
+          <Headline lines={['They live', 'with it.']} inAt={96} outAt={137} />
         </AbsoluteFill>
       ) : null}
 
@@ -71,14 +44,14 @@ export const Opening: React.FC = () => {
         <AbsoluteFill>
           <StockShot id="s04" from={SHOTS.s04.from} to={SHOTS.s04.to} />
           {/* One continuous routine shot; the footage carries the movement. */}
-          <MaskedLines inAt={150} outAt={208} style={{left: 84, top: 1380}} lines={[{text: 'Their day.', style: serif(132)}]} />
+          <Headline lines={['Their day.']} inAt={150} outAt={208} />
         </AbsoluteFill>
       ) : null}
 
       {within(frame, SHOTS.s05) ? (
         <AbsoluteFill>
           <StockShot id="s05" from={SHOTS.s05.from} to={SHOTS.s05.to} />
-          <Title a="Their" b="comfort." inAt={222} outAt={279} />
+          <Headline lines={['Their', 'comfort.']} inAt={222} outAt={279} />
         </AbsoluteFill>
       ) : null}
     </>

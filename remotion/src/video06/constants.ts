@@ -9,11 +9,14 @@ export const DURATION = 32 * FPS; // 768 frames — storyboard panel timecodes r
 export const COLORS = {
   // Measured from the official logo file (median of orange pixels).
   orange: '#EC8D1F',
-  // Measured from the product photograph's background.
+  // Measured from the product photograph's background (the stage keeps the photo's own ground).
   cream: '#FCF6EF',
+  // Approved brand palette.
+  ivory: '#FAF7F2',
+  navy: '#0B1F3A',
   white: '#FFFFFF',
-  ink: '#1D1F24',
-  inkSoft: '#62656D',
+  ink: '#0B1F3A', // important messaging = navy
+  inkSoft: '#4E5B70', // navy-tinted secondary text
   plateA: '#2B2723',
   plateB: '#171513',
 } as const;

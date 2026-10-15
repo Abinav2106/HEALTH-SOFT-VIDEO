@@ -249,7 +249,9 @@ export const DoubtSequence: React.FC = () => {
         const x = released ? (target ? lerp(hold.sx, target.x, gather) : hold.sx) : sx;
         const y = released ? (target ? lerp(hold.sy, target.y, gather) : hold.sy + drop) : sy;
         const kk = released ? (target ? lerp(hold.k, target.k, gather) : hold.k) : k;
-        const rot = target ? target.rot * gather : 0;
+        // R3: the layered cards stay alive and jolt when the button is pressed
+        const bump = target ? Math.exp(-Math.max(0, t - 14.26) * 9) * (t >= 14.26 ? 1 : 0) * (p.id === 'branding' ? -3 : 3.5) : 0;
+        const rot = target ? target.rot * gather + 1.4 * Math.sin(2 * Math.PI * 0.35 * t + i) * gather + bump : 0;
         return (
           <div
             key={p.id}

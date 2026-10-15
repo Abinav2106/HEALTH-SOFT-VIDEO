@@ -6,6 +6,30 @@ import {EASE_EXPAND, EASE_OUT, EASE_RISE, lerp, prog} from '../lib/motion';
 // a lead panel's interior changes to the next scene's colour, then the panel grows until that interior
 // IS the next scene. No transition presets.
 
+/** Secondary life on resting cards (R3: background cards never freeze). Seeded, frame-pure. */
+export const alive = (frame: number, seed: number, amp: number, on = 1) => {
+  const t = frame / FPS;
+  const ph = (seed % 97) * 0.37;
+  return {
+    r: amp * Math.sin(2 * Math.PI * 0.33 * t + ph) * on,
+    y: amp * 4 * Math.sin(2 * Math.PI * 0.27 * t + ph * 1.3) * on,
+    x: amp * 2.5 * Math.sin(2 * Math.PI * 0.21 * t + ph * 0.7) * on,
+  };
+};
+
+/** Small hand-keyed settle after a drop: lands, rebounds once, rests (R3 coins). Returns y offset px. */
+export const dropY = (frame: number, at: number, from = -260, dur = 0.42) => {
+  const t = frame / FPS - at;
+  if (t <= 0) return from;
+  if (t < dur) {
+    const k = t / dur;
+    return from * (1 - k * k); // accelerating fall
+  }
+  const b = t - dur;
+  if (b < 0.22) return -26 * Math.sin((Math.PI * b) / 0.22); // one rebound
+  return 0;
+};
+
 /** Card entrance: rises from below, rotation settles to its resting angle. */
 export const rise = (frame: number, at: number, dur = 0.55) => {
   const p = prog(frame, at, dur, EASE_RISE);
@@ -25,10 +49,12 @@ export const Card: React.FC<{
   shadow?: boolean;
   exitAt?: number;
   z?: number;
+  drift?: number; // R3 keeps every resting card alive: slow rotation / float, degrees
   children?: React.ReactNode;
-}> = ({frame, at, x, y, w, h, rot, r = 28, bg, shadow = true, exitAt, z, children}) => {
+}> = ({frame, at, x, y, w, h, rot, r = 28, bg, shadow = true, exitAt, z, drift = 1.6, children}) => {
   const e = rise(frame, at);
   const out = exitAt === undefined ? 0 : prog(frame, exitAt, 0.45, (v) => v * v * v);
+  const d = alive(frame, x + y, drift, e.p);
   return (
     <div
       style={{
@@ -41,7 +67,7 @@ export const Card: React.FC<{
         background: bg,
         overflow: 'hidden',
         zIndex: z,
-        transform: `translateY(${e.dy + out * 1500}px) rotate(${rot + e.drot + out * 6}deg)`,
+        transform: `translate(${d.x}px, ${e.dy + out * 1500 + d.y}px) rotate(${rot + e.drot + out * 6 + d.r}deg)`,
         boxShadow: shadow ? '0 18px 40px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.08)' : undefined,
       }}
     >
@@ -134,7 +160,8 @@ export const ExpandingPanel: React.FC<{
   const ih = h - inset * 2;
   const S = Math.max(WIDTH / iw, HEIGHT / ih) * 1.08;
   const scale = lerp(1, S, ex);
-  const rotNow = (rot + e.drot) * (1 - ex);
+  const d = alive(frame, x * 3 + y, 1.2, e.p * (1 - ex));
+  const rotNow = (rot + e.drot) * (1 - ex) + d.r;
   return (
     <div
       style={{
@@ -144,7 +171,7 @@ export const ExpandingPanel: React.FC<{
         width: w,
         height: h,
         zIndex: 5,
-        transform: `translate(${(WIDTH / 2 - x) * ex}px, ${(HEIGHT / 2 - y) * ex + e.dy}px) rotate(${rotNow}deg) scale(${scale})`,
+        transform: `translate(${(WIDTH / 2 - x) * ex + d.x}px, ${(HEIGHT / 2 - y) * ex + e.dy + d.y}px) rotate(${rotNow}deg) scale(${scale})`,
       }}
     >
       <div

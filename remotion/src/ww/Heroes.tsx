@@ -3,7 +3,7 @@ import {AbsoluteFill, Sequence} from 'remotion';
 import {C, HeroId, f} from './constants';
 import {loadWWFonts} from './lib/fonts';
 import {Logo, QMark} from './components/Brand';
-import {Doubt} from './components/Doubt';
+import {DoubtRig, REST} from './rig/DoubtRig';
 import {QuestionGrid} from './components/QuestionGrid';
 import {KeyVisual, SceneA, SceneB, SceneC} from './components/Scenes';
 
@@ -50,7 +50,7 @@ export const Hero: React.FC<{id: HeroId}> = ({id}) => (
     ) : null}
     {id === 'doubt' ? (
       <AbsoluteFill style={{background: C.callBg}}>
-        <Doubt cam={{s: 0.72, sx: 540, sy: 250}} />
+        <DoubtRig cam={{s: 0.72, sx: 540, sy: 250}} frame={0} pose={{...REST, armL: {s: 165, e: 55, w: 10}, qTilt: -6}} />
       </AbsoluteFill>
     ) : null}
     {id === 'poster' ? (

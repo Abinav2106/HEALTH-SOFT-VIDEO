@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 assets/stock/
+.venv-ww/
+ww/source/*
+!ww/source/README.md

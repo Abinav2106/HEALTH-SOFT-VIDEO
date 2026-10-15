@@ -7,3 +7,6 @@ public/stock/*
 !public/stock/README.md
 public/audio/voice/*
 public/audio/music/*
+# W&W client brand files, cut layers and hero stills derived from them (regenerate: see ww/README.md).
+public/ww/brand/*
+public/ww/hero/*

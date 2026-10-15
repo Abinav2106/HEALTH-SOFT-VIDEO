@@ -1,0 +1,79 @@
+[
+  {
+    "id": "l01",
+    "speaker": "caller",
+    "text": "Hello. Who’s this?",
+    "at": 5.75,
+    "end": 7.0
+  },
+  {
+    "id": "l02",
+    "speaker": "doubt",
+    "text": "Doubt. Good place to start.",
+    "at": 7.2,
+    "end": 9.0
+  },
+  {
+    "id": "l03",
+    "speaker": "caller",
+    "text": "What does Why & Whatever do?",
+    "at": 9.2,
+    "end": 10.85
+  },
+  {
+    "id": "l04",
+    "speaker": "doubt",
+    "text": "Good question.",
+    "at": 11.0,
+    "end": 11.85
+  },
+  {
+    "id": "l05",
+    "speaker": "doubt",
+    "text": "We find your direction. Then give your brand a point of view.",
+    "at": 15.6,
+    "end": 19.2
+  },
+  {
+    "id": "l06",
+    "speaker": "doubt",
+    "text": "We create the message, plan the marketing, and make the advertising count.",
+    "at": 20.4,
+    "end": 24.6
+  },
+  {
+    "id": "l07",
+    "speaker": "doubt",
+    "text": "And get your Meta business ready to run.",
+    "at": 25.7,
+    "end": 28.4
+  },
+  {
+    "id": "l08",
+    "speaker": "doubt",
+    "text": "Different skills. One clear direction.",
+    "at": 33.9,
+    "end": 36.4
+  },
+  {
+    "id": "l09",
+    "speaker": "caller",
+    "text": "So… whatever?",
+    "at": 38.6,
+    "end": 39.4
+  },
+  {
+    "id": "l10",
+    "speaker": "doubt",
+    "text": "Whatever. Never random.",
+    "at": 39.5,
+    "end": 40.45
+  },
+  {
+    "id": "l11",
+    "speaker": "voice",
+    "text": "Why & Whatever. Start with why.",
+    "at": 41.3,
+    "end": 43.6
+  }
+]

@@ -5,14 +5,13 @@ import {C, DIALOGUE, FONT, FPS, T} from '../constants';
 // Internal-preview burn-ins only (never in the master): timecode, section, blocked shots, scratch captions.
 
 type Flag = {from: number; to: number; text: string; kind: 'blocked' | 'provisional'};
+const RIG = 'PROVISIONAL · 2D cut-out rig of the approved render (no turns/depth) — replace with 3D rig renders';
 export const FLAGS: Flag[] = [
-  {from: T.stage.from, to: T.pickup.from, kind: 'provisional', text: 'STAND-IN · approved render layers, no rig (question-mark motion only)'},
-  {from: T.pickup.from, to: T.pickup.to, kind: 'blocked', text: 'BLOCKED · phone pickup + video-call grip — needs rigged Doubt (.blend / rigged .glb)'},
-  {from: T.call.from, to: T.layer.from, kind: 'blocked', text: 'BLOCKED · hand gestures, body lean/turn — needs rigged Doubt; stand-in uses question-mark tilt only'},
+  {from: T.stage.from, to: T.layer.from, kind: 'provisional', text: RIG},
   {from: 13.86, to: 14.6, kind: 'provisional', text: 'PROVISIONAL · 2D cutout of the approved hand; replace with rig render'},
   {from: 25.9, to: 26.9, kind: 'provisional', text: 'PROVISIONAL · 2D cutout of the approved hand; replace with rig render'},
   {from: T.r4.from + 0.3, to: T.r4.to, kind: 'provisional', text: 'CONCEPT MATERIAL · cards are stills from this film, not client campaigns'},
-  {from: T.callback.from, to: T.callback.to, kind: 'blocked', text: 'BLOCKED · call performance needs rigged Doubt; stand-in uses question-mark tilt only'},
+  {from: T.callback.from, to: T.callback.to, kind: 'provisional', text: RIG},
 ];
 
 const SECTIONS: [number, string][] = [

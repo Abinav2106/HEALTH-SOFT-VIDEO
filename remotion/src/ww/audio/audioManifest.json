@@ -73,6 +73,41 @@
     },
     {
       "file": "ww/audio/sfx/tick.wav",
+      "at": 4.44,
+      "volume": 0.45
+    },
+    {
+      "file": "ww/audio/sfx/rise.wav",
+      "at": 4.85,
+      "volume": 0.3
+    },
+    {
+      "file": "ww/audio/sfx/rise.wav",
+      "at": 5.55,
+      "volume": 0.45
+    },
+    {
+      "file": "ww/audio/sfx/tap.wav",
+      "at": 7.4,
+      "volume": 0.35
+    },
+    {
+      "file": "ww/audio/sfx/tap.wav",
+      "at": 7.6,
+      "volume": 0.3
+    },
+    {
+      "file": "ww/audio/sfx/expand.wav",
+      "at": 10.98,
+      "volume": 0.4
+    },
+    {
+      "file": "ww/audio/sfx/rise.wav",
+      "at": 12.86,
+      "volume": 0.3
+    },
+    {
+      "file": "ww/audio/sfx/tick.wav",
       "at": 5.95,
       "volume": 0.35
     },

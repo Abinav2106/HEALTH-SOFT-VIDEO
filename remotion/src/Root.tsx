@@ -5,6 +5,7 @@ import {Video06, Video06Props} from './video06/Video06';
 import * as WWC from './ww/constants';
 import {WW} from './ww/WW';
 import {Hero} from './ww/Heroes';
+import {RIG_TEST_FRAMES, RigTest} from './ww/rig/RigTest';
 
 const MG_FROM = SHOTS.s06.from; // motion-graphics section: shared choice → end card
 const OPENING_TO = SHOTS.s06.to; // 0–16 s: every live-action shot up to the product entrance
@@ -31,6 +32,8 @@ export const RemotionRoot: React.FC = () => (
     {WWC.HEROES.map((id) => (
       <Composition key={id} id={`WW-Hero-${id}`} component={Hero} durationInFrames={1} fps={WWC.FPS} width={1080} height={1080} defaultProps={{id}} />
     ))}
+    <Composition id="WW-RigTest" component={RigTest} durationInFrames={RIG_TEST_FRAMES} fps={WWC.FPS} width={WWC.WIDTH} height={WWC.HEIGHT} />
+    <Composition id="WW-Preview12" component={WW} durationInFrames={WWC.f(12)} fps={WWC.FPS} width={WWC.WIDTH} height={WWC.HEIGHT} defaultProps={{mode: 'review' as const, captions: true}} />
     <Composition id="WW-Opening" component={WW} durationInFrames={WWC.f(15)} fps={WWC.FPS} width={WWC.WIDTH} height={WWC.HEIGHT} defaultProps={{mode: 'review' as const, captions: true}} />
   </>
 );

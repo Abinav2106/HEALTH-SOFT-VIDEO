@@ -111,7 +111,16 @@ def main() -> None:
     dark = np.clip((bg_level - g) / bg_level, 0, 1) * bg
     dark[: SHADOW_ROWS[0]] = 0
     dark[SHADOW_ROWS[1]:] = 0
-    shadow[..., 3] = np.clip(dark * 1.15, 0, 1) * 255
+    sa = np.clip(dark * 1.15, 0, 1)
+    # Under the soles the render shows feet, not floor: continue each column's shadow from just below the
+    # figure so the shadow has no hole once Doubt leaves the floor (hops).
+    for x in np.where(fig[SHADOW_ROWS[0]:SHADOW_ROWS[1]].any(0))[0]:
+        col = fig[SHADOW_ROWS[0]:SHADOW_ROWS[1], x]
+        last = SHADOW_ROWS[0] + int(np.where(col)[0].max())
+        below = sa[min(last + 3, SHADOW_ROWS[1] - 1), x]
+        rows_fig = SHADOW_ROWS[0] + np.where(col)[0]
+        sa[rows_fig, x] = below * np.clip((rows_fig - 1090) / 50, 0, 1)
+    shadow[..., 3] = sa * 255
     sx = (0, SHADOW_ROWS[0], w, SHADOW_ROWS[1])
     save(shadow[sx[1]:sx[3], sx[0]:sx[2]], "doubt_shadow.png")
 
@@ -122,6 +131,13 @@ def main() -> None:
     hand_mask[:, :783] = False
     hx = bbox(hand_mask, 2)
     save(layer(hand_mask)[hx[1]:hx[3], hx[0]:hx[2]], "doubt_hand.png")
+
+    # ── 2D cut-out rig from the approved render (no redrawing) ─────────────────────────────────
+    # The arms meet the torso at a soft shading crease (measured: near-linear lines below). Each arm is cut
+    # on its crease; the torso continues a few px under the arm and gets the render's own contour weight on
+    # that new edge, so the rest pose reproduces the render and a raised arm reveals a clean torso side.
+    rig = rig_layers(rgb, alpha, fig, body)
+    metrics_rig = rig
 
     # Official wordmark → alpha mask (exact letterforms; luminance inverted, tight crop, no resampling).
     lg = np.asarray(Image.open(logo_p).convert("L")).astype(np.float32)
@@ -138,6 +154,7 @@ def main() -> None:
         "qmark": {"x": qx[0], "y": qx[1], "w": qx[2] - qx[0], "h": qx[3] - qx[1]},
         "shadow": {"x": sx[0], "y": sx[1], "w": sx[2] - sx[0], "h": sx[3] - sx[1]},
         "hand": {"x": hx[0], "y": hx[1], "w": hx[2] - hx[0], "h": hx[3] - hx[1]},
+        "rig": metrics_rig,
         "logo": {
             "file": logo_p.name,
             "sha256": sha(logo_p),
@@ -150,6 +167,108 @@ def main() -> None:
     ts = ROOT / "remotion/src/ww/assetMetrics.json"
     ts.write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))
+
+
+# Crease lines x(y) = x0 + (y - 560) * k, measured by per-row luminance minimum (ww/docs/rig.md).
+CREASE = {"l": (304.0, 0.091), "r": (816.0, -0.076)}
+ARM_TOP = {"l": 500, "r": 485}  # crease meets the outer contour here
+SHOULDER = (520, 650)  # torso side leaves the outer contour / reaches the crease
+WAIST = 905  # cuff / belt row; below it only the mitten is arm
+HAND_SPLIT = {"l": 345, "r": 781}  # mitten inner outline vs trousers
+PANTS_EDGE = {"l": (341.0, 356.0), "r": (785.0, 770.0)}  # trouser side under the mitten, at WAIST → row 1040 (measured below the hands)
+OUTLINE = 7  # render contour thickness, px
+OVERLAP = 2  # arm keeps its own crease shading as its inner edge
+TUCK = 6  # torso extends under the arm; its new contour sits fully under the arm at rest
+PIVOT = {"l": (284.0, 585.0), "r": (842.0, 585.0)}
+
+
+def crease_x(side: str, y: np.ndarray) -> np.ndarray:
+    x0, k = CREASE[side]
+    return x0 + (y - 560.0) * k
+
+
+def rig_layers(rgb: np.ndarray, alpha: np.ndarray, fig: np.ndarray, body: np.ndarray) -> dict:
+    h, w, _ = rgb.shape
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    torso_keep = body.copy()
+    out = {}
+    torso_rgb = rgb.copy()
+    torso_a = np.where(body, alpha, 0).astype(np.float32)
+    removed_total = np.zeros_like(body)
+    for side in ("l", "r"):
+        cx = crease_x(side, yy)
+        rows = (yy >= ARM_TOP[side]) & (yy <= WAIST)
+        hand_rows = (yy > WAIST) & (yy <= 1040)
+        # Torso side boundary: leaves the outer contour at SHOULDER[0] and eases onto the crease (minus TUCK)
+        # by SHOULDER[1], so a raised arm reveals a rounded shoulder, not a shelf.
+        cols = np.where(body.any(0))[0]
+        edge_x = np.full(h, np.nan, np.float32)
+        for y in range(SHOULDER[0], WAIST + 1):
+            xs = np.where(body[y])[0]
+            edge_x[y] = xs.min() if side == "l" else xs.max()
+        t = np.clip((np.arange(h) - SHOULDER[0]) / (SHOULDER[1] - SHOULDER[0]), 0, 1)
+        t = t * t * (3 - 2 * t)
+        target = crease_x(side, np.arange(h, dtype=np.float32)) + (-TUCK if side == "l" else TUCK)
+        bnd = np.where(np.isnan(edge_x), target, edge_x * (1 - t) + target * t)[:, None]
+        band = (yy >= SHOULDER[0]) & (yy <= WAIST)
+        if side == "l":
+            arm = rows & (xx < cx + OVERLAP) | hand_rows & (xx <= HAND_SPLIT["l"])
+            pants = PANTS_EDGE["l"][0] + (yy - WAIST) * (PANTS_EDGE["l"][1] - PANTS_EDGE["l"][0]) / (1040 - WAIST)
+            cut = band & (xx < bnd) | hand_rows & (xx < pants)
+            mitt = hand_rows & (xx >= pants) & (xx < pants + 14)
+            fill_dx = 20
+        else:
+            arm = rows & (xx > cx - OVERLAP) | hand_rows & (xx >= HAND_SPLIT["r"])
+            pants = PANTS_EDGE["r"][0] + (yy - WAIST) * (PANTS_EDGE["r"][1] - PANTS_EDGE["r"][0]) / (1040 - WAIST)
+            cut = band & (xx > bnd) | hand_rows & (xx > pants)
+            mitt = hand_rows & (xx <= pants) & (xx > pants - 14)
+            fill_dx = -20
+        arm &= body
+        # Arm layer: approved pixels; top feathered into the (intact) shoulder; its inner edge is the source crease.
+        a = np.where(arm, alpha, 0).astype(np.float32)
+        top = ARM_TOP[side]
+        a *= np.clip((yy - top) / 60.0, 0, 1)
+        bx = bbox(arm, 2)
+        layer = np.dstack([rgb, a * 255])[bx[1]:bx[3], bx[0]:bx[2]]
+        save(layer, f"doubt_arm_{side}.png")
+        torso_keep &= ~cut
+        removed_total |= cut & body
+        # Trouser pixels that sat under the mitten edge: continue the trouser shading from just inside.
+        m = mitt & torso_keep
+        for y in np.where(m.any(1))[0]:
+            xs_ = np.where(m[y])[0]
+            src = int(round(pants[y, 0] + fill_dx))
+            torso_rgb[y, xs_] = rgb[y, src]
+            torso_a[y, xs_] = 1.0
+        # 1 px anti-aliased trouser side
+        for y in range(WAIST + 1, 1041):
+            e = float(pants[y, 0])
+            xi = int(np.floor(e)) if side == "l" else int(np.ceil(e))
+            frac = (xi + 1 - e) if side == "l" else (e - xi + 1)
+            torso_a[y, xi] = min(1.0, max(0.0, frac))
+            torso_rgb[y, xi] = rgb[y, int(round(e + fill_dx))]
+            torso_keep[y, xi] = True
+        out[side] = {
+            "x": bx[0], "y": bx[1], "w": bx[2] - bx[0], "h": bx[3] - bx[1],
+            "pivot": PIVOT[side], "crease": CREASE[side], "top": ARM_TOP[side], "waist": WAIST,
+            "elbow": 760, "wrist": 905, "palm": (290.0, 975.0) if side == "l" else (836.0, 975.0),
+            "tip": (287.0, 1028.0) if side == "l" else (838.0, 1028.0),
+        }
+    # The render's contour weight along every new torso edge (distance to the removed region).
+    dist = nd.distance_transform_edt(~removed_total)
+    edge = torso_keep & (dist <= OUTLINE) & (yy >= SHOULDER[0] - 10) & (yy <= WAIST + 2)
+    torso_rgb[edge] = torso_rgb[edge] * 0.0
+    # Below the hands only black trousers / feet exist: drop floor-light pixels baked in under the soles
+    # and between the legs (they only showed once Doubt could hop).
+    lum = rgb.mean(2)
+    floor = (yy >= 1040) & (lum > 150)
+    torso_a = np.where(floor, torso_a * np.clip((200 - lum) / 50, 0, 1), torso_a)
+    ta = np.where(torso_keep, torso_a, 0)
+    tb = bbox(torso_keep, 4)
+    save(np.dstack([torso_rgb, ta * 255])[tb[1]:tb[3], tb[0]:tb[2]], "doubt_torso.png")
+    out["torso"] = {"x": tb[0], "y": tb[1], "w": tb[2] - tb[0], "h": tb[3] - tb[1]}
+    out["feet"] = (563.0, 1195.0)
+    return out
 
 
 if __name__ == "__main__":

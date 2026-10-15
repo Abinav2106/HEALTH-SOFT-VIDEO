@@ -150,6 +150,14 @@ def main() -> None:
     add("ring", 4.38, 0.6)
     add("ring", 4.95, 0.45)
     add("tap", 5.5, 0.5)
+    # character beats (2D rig performance)
+    add("tick", 4.44, 0.45)  # startle
+    add("rise", 4.85, 0.3)  # phone lifted
+    add("rise", 5.55, 0.45)  # pops up into the call
+    add("tap", 7.4, 0.35)  # chest taps
+    add("tap", 7.6, 0.3)
+    add("expand", 10.98, 0.4)  # question-mark twirl
+    add("rise", 12.86, 0.3)  # little hop before presenting
     add("tick", 5.95, 0.35)
     add("rise", 12.62, 0.4)
     add("rise", 13.4, 0.55)

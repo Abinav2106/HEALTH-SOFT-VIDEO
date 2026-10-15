@@ -21,8 +21,7 @@ FRAME_W, FRAME_H = 1080, 1920
 # Composition frame ranges [from, to) of each live-action shot. s06 runs to the end of the screen push.
 SHOT_RANGES = {
     "s01": (0, 72),
-    "s02": (72, 92),
-    "s03": (92, 144),
+    "s03": (72, 144),
     "s04": (144, 216),
     "s05": (216, 288),
     "s06": (288, 388),
@@ -32,7 +31,6 @@ SHOT_RANGES = {
 # Frame-space rectangles (x0, y0, x1, y1) where titles sit, per shot. Faces should stay clear of them.
 TEXT_ZONES = {
     "s01": [(84, 1290, 720, 1610)],
-    "s02": [],
     "s03": [(84, 1290, 760, 1610)],
     "s04": [(84, 1370, 720, 1530)],
     "s05": [(84, 1290, 720, 1610)],

@@ -3,7 +3,7 @@ import manifest from './manifest.json';
 import s01Track from './tracks/s01.json';
 import s06Track from './tracks/s06.json';
 
-export type ShotId = 's01' | 's02' | 's03' | 's04' | 's05' | 's06' | 's11';
+export type ShotId = 's01' | 's03' | 's04' | 's05' | 's06' | 's11';
 
 export type StockSource = {
   provider: string;
@@ -22,6 +22,7 @@ export type StockClip = {
   height: number | null;
   fps: number | null;
   sourceIn: number; // seconds into the source at the first frame of the shot
+  playbackRate?: number; // 0.96 for 25 fps sources conformed to the 24 fps timeline
   focus: [number, number]; // 0..1 point of the source kept on the same relative point of the frame
   zoom: number; // ≥ 1, extra scale over a cover fit (keep ≤ 1.15 to protect resolution)
   screenTrack: string | null;

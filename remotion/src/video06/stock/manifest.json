@@ -2,85 +2,91 @@
   "_about": "Video 06 stock manifest. One entry per live-action shot. 'file' stays null until the clip is licensed and downloaded into remotion/public/stock/ (never committed). Written by video06/tools/ingest.py; edit sourceIn/focus/zoom by hand while editing.",
   "shots": {
     "s01": {
-      "role": "R1 — daughter browsing on a laptop (screen visible)",
+      "role": "R1 \u2014 daughter browsing on a laptop (screen visible)",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.5],
+      "focus": [
+        0.5,
+        0.5
+      ],
       "zoom": 1,
       "screenTrack": "s01",
       "source": null
     },
-    "s02": {
-      "role": "R2 — daughter close-up: she pauses (match-cut out on her eyeline)",
-      "file": null,
-      "width": null,
-      "height": null,
-      "fps": null,
-      "sourceIn": 0,
-      "focus": [0.5, 0.4],
-      "zoom": 1,
-      "screenTrack": null,
-      "source": null
-    },
     "s03": {
-      "role": "R3 — mother close-up, matched eyeline/gesture (same mother throughout)",
+      "role": "Older mother, genuine expression (3\u20136 s)",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.4],
+      "focus": [
+        0.5,
+        0.4
+      ],
       "zoom": 1,
       "screenTrack": null,
       "source": null
     },
     "s04": {
-      "role": "R3 — mother's everyday routine, gardening preferred; one continuous shot",
+      "role": "R3 \u2014 mother's everyday routine, gardening preferred; one continuous shot",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.5],
+      "focus": [
+        0.5,
+        0.5
+      ],
       "zoom": 1,
       "screenTrack": null,
       "source": null
     },
     "s05": {
-      "role": "R4 — same mother relaxing: reading or tea",
+      "role": "R4 \u2014 same mother relaxing: reading or tea",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.45],
+      "focus": [
+        0.5,
+        0.45
+      ],
       "zoom": 1,
       "screenTrack": null,
       "source": null
     },
     "s06": {
-      "role": "R5 — mother and adult daughter deciding together on a laptop/tablet; mother visibly participates",
+      "role": "R5 \u2014 mother and adult daughter deciding together on a laptop/tablet; mother visibly participates",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.5],
+      "focus": [
+        0.5,
+        0.5
+      ],
       "zoom": 1,
       "screenTrack": "s06",
       "source": null
     },
     "s11": {
-      "role": "R6 — same mother, an ordinary confident moment in natural light",
+      "role": "R6 \u2014 same mother, an ordinary confident moment in natural light",
       "file": null,
       "width": null,
       "height": null,
       "fps": null,
       "sourceIn": 0,
-      "focus": [0.5, 0.4],
+      "focus": [
+        0.5,
+        0.4
+      ],
       "zoom": 1,
       "screenTrack": null,
       "source": null

@@ -29,7 +29,9 @@ EXPECT = {"width": 1080, "height": 1920, "fps": 24.0, "frames": 768, "duration":
 PLATE_RGB = np.array([[0x2B, 0x27, 0x23], [0x17, 0x15, 0x13]], float)  # review plate gradient ends
 PHOTO = REMOTION / "public/brand/healthsoft_products_original.webp"
 LOGO = REMOTION / "public/brand/healthsoft_logo_original.png"
-STAGE_FRAME, END_FRAME, LOGO_XY = 396, 767, (317, 462)
+# f390: stage held at z=1 before the camera moves; rows 620–1350 sit below the header scrim and above the label scrim.
+STAGE_FRAME, STAGE_ROWS, END_FRAME, LOGO_XY = 390, (620, 1350), 767, (317, 600)
+IVORY = np.array([0xFA, 0xF7, 0xF2], float)
 
 
 def psnr(a, b):
@@ -63,7 +65,9 @@ def main() -> int:
     aud = [s for s in probe["streams"] if s["codec_type"] == "audio"]
     num, den = map(int, v["r_frame_rate"].split("/"))
     fmt = {"width": v["width"], "height": v["height"], "fps": num / den, "frames": int(v["nb_read_frames"]), "duration": round(float(probe["format"]["duration"]), 3)}
-    check("format", all(abs(fmt[k] - EXPECT[k]) < 1e-3 for k in EXPECT), fmt)
+    # Frame count is exact; the container may run a few ms long from AAC encoder padding.
+    ok_fmt = all(abs(fmt[k] - EXPECT[k]) < 1e-3 for k in ("width", "height", "fps", "frames")) and 0 <= fmt["duration"] - EXPECT["duration"] < 0.05
+    check("format", ok_fmt, fmt)
     check("pixel format / colour", v.get("pix_fmt") == "yuv420p" and v.get("color_space") == "bt709", {k: v.get(k) for k in ("pix_fmt", "color_space", "color_range")})
 
     small = decode_all(a.video, fmt["width"], fmt["height"])
@@ -103,13 +107,15 @@ def main() -> int:
         ref = cv2.resize(ref, (round(ref.shape[1] * k), round(ref.shape[0] * k)), interpolation=cv2.INTER_LANCZOS4)
         ox = (ref.shape[1] - 1080) // 2
         stage = frame_at(a.video, STAGE_FRAME)
-        p = psnr(stage[100:1350], ref[100:1350, ox:ox + 1080])
-        check("product photo unaltered (f396 vs original)", p > 28, {"psnr_db": round(p, 2)})
+        r0, r1 = STAGE_ROWS
+        p = psnr(stage[r0:r1], ref[r0:r1, ox:ox + 1080])
+        check(f"product photo unaltered (f{STAGE_FRAME} vs original)", p > 28, {"psnr_db": round(p, 2)})
     if LOGO.exists():
         lg = cv2.cvtColor(cv2.imread(str(LOGO)), cv2.COLOR_BGR2RGB)
         end = frame_at(a.video, END_FRAME)
         x, y = LOGO_XY
-        p = psnr(end[y:y + lg.shape[0], x:x + lg.shape[1]], lg)
+        # The logo is multiplied onto the ivory card: expected = logo × ivory.
+        p = psnr(end[y:y + lg.shape[0], x:x + lg.shape[1]], lg * IVORY / 255)
         check("official logo unaltered (f767 vs file)", p > 26, {"psnr_db": round(p, 2)})
 
     # Audio.

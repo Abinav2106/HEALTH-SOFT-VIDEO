@@ -28,8 +28,7 @@ export const FONT_SERIF = 'HS Newsreader';
 // Live-action panels take their clip from stock/manifest.json.
 export const SHOTS = {
   s01: {from: 0, to: 72}, // You buy it.            — R1 daughter browsing on laptop (0–3 s)
-  s02: {from: 72, to: 92}, //                       — R2 close-up, match cut out (3.0–3.8 s)
-  s03: {from: 92, to: 144}, // They live with it.   — mother close-up, matched eyeline (3.8–6 s)
+  s03: {from: 72, to: 144}, // They live with it.   — older mother, genuine expression (3–6 s)
   s04: {from: 144, to: 216}, // Their day.          — R3 mother's routine, one continuous shot
   s05: {from: 216, to: 288}, // Their comfort.      — R4 tea / reading
   s06: {from: 288, to: 384}, // Their choice.       — R5 mother + daughter at laptop
@@ -79,21 +78,7 @@ export const GUIDANCE_STEPS = [
 ] as const;
 export const GUIDANCE_OUT = 636;
 
-// Placeholder corner-pin targets for the laptop screen (frame px, TL TR BR BL).
-// Replace with per-frame tracked corners once the real clips are approved.
 export type Quad = [[number, number], [number, number], [number, number], [number, number]];
-export const SCREEN_QUAD_S01: Quad = [
-  [318, 560],
-  [952, 488],
-  [972, 896],
-  [336, 934],
-];
-export const SCREEN_QUAD_S06: Quad = [
-  [250, 760],
-  [830, 706],
-  [846, 1074],
-  [266, 1110],
-];
 // Virtual screen canvas (16:10) that the selection graphic is laid out on before pinning.
 export const SCREEN_CANVAS = {w: 1600, h: 1000};
 

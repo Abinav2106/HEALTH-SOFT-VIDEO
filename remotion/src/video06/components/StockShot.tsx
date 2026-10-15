@@ -21,6 +21,7 @@ export const StockShot: React.FC<{id: ShotId; from: number; to: number; style?: 
         <OffthreadVideo
           src={staticFile(`stock/${clip.file}`)}
           startFrom={Math.round(clip.sourceIn * FPS)}
+          playbackRate={clip.playbackRate ?? 1}
           volume={mix.ambience}
           muted={mix.ambience === 0}
           style={{position: 'absolute', left: l.left, top: l.top, width: l.dw, height: l.dh}}

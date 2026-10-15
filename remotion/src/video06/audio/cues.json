@@ -2,7 +2,7 @@
   "_about": "Video 06 audio timing (24 fps frames). Narration = locked script, timed to picture; the VO stem stays silent until an approved recording exists (audioManifest.json). SFX gains are dB relative to the SFX stem fader.",
   "narration": [
     {"id": "vo01", "text": "You buy it.", "from": 6, "to": 34},
-    {"id": "vo02", "text": "They live with it.", "from": 98, "to": 134},
+    {"id": "vo02", "text": "They live with it.", "from": 80, "to": 116},
     {"id": "vo03", "text": "So it should fit their day.", "from": 150, "to": 190},
     {"id": "vo04", "text": "Their comfort.", "from": 224, "to": 250},
     {"id": "vo05", "text": "And their choice.", "from": 296, "to": 322},
@@ -14,7 +14,7 @@
   ],
   "sfx": [
     {"at": 19, "file": "tap", "gainDb": -16, "motion": "'buy it.' settles"},
-    {"at": 109, "file": "tap", "gainDb": -16, "motion": "'live with it.' settles"},
+    {"at": 91, "file": "tap", "gainDb": -16, "motion": "'with it.' settles"},
     {"at": 160, "file": "tap", "gainDb": -17, "motion": "'Their day.' settles"},
     {"at": 235, "file": "tap", "gainDb": -17, "motion": "'comfort.' settles"},
     {"at": 307, "file": "tap", "gainDb": -16, "motion": "'choice.' settles"},

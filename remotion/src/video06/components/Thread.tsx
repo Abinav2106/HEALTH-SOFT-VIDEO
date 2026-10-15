@@ -15,7 +15,7 @@ export const NODE_Y = [744, 984, 1224];
 type Underline = {x: number; y: number; drawAt: number; retractAt?: number};
 const UNDERLINES: Underline[] = [
   {x: 84, y: 1600, drawAt: 22, retractAt: 60}, // You buy it.
-  {x: 84, y: 1600, drawAt: 112, retractAt: 136}, // They live with it.
+  {x: 84, y: 1600, drawAt: 94, retractAt: 136}, // They live with it.
   {x: 84, y: 1600, drawAt: 236, retractAt: 278}, // Their comfort.
   {x: 84, y: 1440, drawAt: 308, retractAt: 318}, // Their choice.
   {x: 84, y: 1600, drawAt: 322, retractAt: 342}, // Choose together. (the marker steps down: shared selection)

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -43,7 +44,9 @@ def main() -> int:
     src = a.file.expanduser().resolve()
     info = ffprobe(src)
     shot_frames = SHOT_RANGES[a.shot][1] - SHOT_RANGES[a.shot][0]
-    need = a.source_in + shot_frames / FPS
+    # 25 fps sources are conformed (every source frame used once): plays at 24/25 = 0.96x.
+    rate = round(FPS / info["fps"], 6) if abs(info["fps"] - 25) < 0.01 else 1.0
+    need = a.source_in + shot_frames / FPS * rate
     upscale = max(1080 / info["width"], 1920 / info["height"])
     problems = []
     if need > info["duration"] + 1e-3:
@@ -55,7 +58,9 @@ def main() -> int:
         return 1
     if upscale > MAX_UPSCALE_WARN:
         print(f"warning: {upscale:.2f}x upscale for 9:16 — expect softness", file=sys.stderr)
-    if abs(info["fps"] - FPS) > 0.01 and abs(info["fps"] - 2 * FPS) > 0.01:
+    if rate != 1.0:
+        print(f"note: {info['fps']:.0f} fps source conformed to 24 fps (playbackRate {rate})", file=sys.stderr)
+    elif abs(info["fps"] - FPS) > 0.01 and abs(info["fps"] - 2 * FPS) > 0.01:
         print(f"note: source is {info['fps']:.3f} fps; it plays at native speed, sampled at 24 fps", file=sys.stderr)
 
     sha = hashlib.sha256(src.read_bytes()).hexdigest()
@@ -63,7 +68,11 @@ def main() -> int:
     safe_id = "".join(ch if ch.isalnum() or ch in "-_" else "-" for ch in a.asset_id)
     dest = STOCK_DIR / f"{a.shot}__{a.provider.lower().replace(' ', '-')}_{safe_id}{src.suffix.lower()}"
     if dest.resolve() != src:
-        shutil.copy2(src, dest)
+        dest.unlink(missing_ok=True)
+        try:
+            os.link(src, dest)  # same bytes, no second copy of a 100+ MB original
+        except OSError:
+            shutil.copy2(src, dest)
 
     m = load_manifest()
     shot = m["shots"][a.shot]
@@ -73,6 +82,7 @@ def main() -> int:
         "height": info["height"],
         "fps": round(info["fps"], 3),
         "sourceIn": a.source_in,
+        "playbackRate": rate,
         "source": {
             "provider": a.provider,
             "assetId": a.asset_id,

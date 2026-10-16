@@ -1,0 +1,47 @@
+[
+  {
+    "id": "P1a",
+    "speaker": "NARRATOR",
+    "text": "Every AI tip online comes with a promise."
+  },
+  {
+    "id": "P1b",
+    "speaker": "NARRATOR",
+    "text": "Ten times faster."
+  },
+  {
+    "id": "P1c",
+    "speaker": "NARRATOR",
+    "text": "Works every time."
+  },
+  {
+    "id": "P2",
+    "speaker": "PATCH",
+    "text": "That sounds impressive. Let's see whether it actually works."
+  },
+  {
+    "id": "P3",
+    "speaker": "NARRATOR",
+    "text": "So every trick here goes through the same three checks."
+  },
+  {
+    "id": "P4a",
+    "speaker": "NARRATOR",
+    "text": "Where the feature lives."
+  },
+  {
+    "id": "P4b",
+    "speaker": "NARRATOR",
+    "text": "What you actually do."
+  },
+  {
+    "id": "P4c",
+    "speaker": "NARRATOR",
+    "text": "And what happened when we tried it."
+  },
+  {
+    "id": "P5",
+    "speaker": "NARRATOR",
+    "text": "If a step fails, you'll see that too."
+  }
+]

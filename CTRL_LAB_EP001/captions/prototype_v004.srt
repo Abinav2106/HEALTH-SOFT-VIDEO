@@ -1,0 +1,37 @@
+1
+00:00:00,500 --> 00:00:03,035
+Every AI tip online comes with a promise.
+
+2
+00:00:03,250 --> 00:00:04,536
+Ten times faster.
+
+3
+00:00:04,700 --> 00:00:05,883
+Works every time.
+
+4
+00:00:06,400 --> 00:00:09,487
+PATCH: That sounds impressive. Let's see
+whether it actually works.
+
+5
+00:00:10,100 --> 00:00:12,745
+So every trick here goes through the same
+three checks.
+
+6
+00:00:13,000 --> 00:00:14,255
+Where the feature lives.
+
+7
+00:00:14,500 --> 00:00:15,688
+What you actually do.
+
+8
+00:00:15,900 --> 00:00:17,504
+And what happened when we tried it.
+
+9
+00:00:18,300 --> 00:00:20,194
+If a step fails, you'll see that too.

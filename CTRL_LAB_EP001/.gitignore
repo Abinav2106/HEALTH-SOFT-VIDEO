@@ -1,0 +1,8 @@
+# large or regenerable outputs
+renders/**/*.mp4
+renders/tests/*.png
+!renders/tests/sheet_*.png
+!renders/tests/patch_v1_yaw*.png
+project/*.log
+project/CTRL_LAB_EP001_PROTO_v00[123].ecproj
+__pycache__/

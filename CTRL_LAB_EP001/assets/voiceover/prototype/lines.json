@@ -1,0 +1,83 @@
+[
+  {
+    "id": "P1a",
+    "speaker": "NARRATOR",
+    "text": "Every AI tip online comes with a promise.",
+    "file": "assets/voiceover/prototype/P1a.wav",
+    "seconds": 2.535,
+    "frames30": 77,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P1b",
+    "speaker": "NARRATOR",
+    "text": "Ten times faster.",
+    "file": "assets/voiceover/prototype/P1b.wav",
+    "seconds": 1.2855,
+    "frames30": 39,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P1c",
+    "speaker": "NARRATOR",
+    "text": "Works every time.",
+    "file": "assets/voiceover/prototype/P1c.wav",
+    "seconds": 1.1831,
+    "frames30": 36,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P2",
+    "speaker": "PATCH",
+    "text": "That sounds impressive. Let's see whether it actually works.",
+    "file": "assets/voiceover/prototype/P2.wav",
+    "seconds": 3.0866,
+    "frames30": 93,
+    "voice": "am_puck"
+  },
+  {
+    "id": "P3",
+    "speaker": "NARRATOR",
+    "text": "So every trick here goes through the same three checks.",
+    "file": "assets/voiceover/prototype/P3.wav",
+    "seconds": 2.6453,
+    "frames30": 80,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P4a",
+    "speaker": "NARRATOR",
+    "text": "Where the feature lives.",
+    "file": "assets/voiceover/prototype/P4a.wav",
+    "seconds": 1.2552,
+    "frames30": 38,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P4b",
+    "speaker": "NARRATOR",
+    "text": "What you actually do.",
+    "file": "assets/voiceover/prototype/P4b.wav",
+    "seconds": 1.1878,
+    "frames30": 36,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P4c",
+    "speaker": "NARRATOR",
+    "text": "And what happened when we tried it.",
+    "file": "assets/voiceover/prototype/P4c.wav",
+    "seconds": 1.6036,
+    "frames30": 49,
+    "voice": "af_heart"
+  },
+  {
+    "id": "P5",
+    "speaker": "NARRATOR",
+    "text": "If a step fails, you'll see that too.",
+    "file": "assets/voiceover/prototype/P5.wav",
+    "seconds": 1.8937,
+    "frames30": 57,
+    "voice": "af_heart"
+  }
+]

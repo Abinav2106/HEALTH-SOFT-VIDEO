@@ -34,3 +34,18 @@ is not installed globally.
 - Apparel placement figures (50 mm front symbol, 260 mm back block) are starting specifications for
   a sew-out / print test.
 - Contact details on stationery are placeholders.
+
+## Polo Apparel System (5 pages)
+
+`apparel/` builds a short client / vendor guide for the final polo collection: overview, brand DNA,
+front / back design system with measured occupancy, M / L / XL scaling, and the production standard.
+
+```bash
+apparel/build.sh [--png]   # → apparel/out/Healthsoft_Polo_Apparel_System.pdf
+```
+
+Needs Pillow and SciPy as well. Garments are cut from the approved Apparel Collection V3 sheets with
+their pixels unchanged. For the size diagram only, the 01 navy polo's artwork is lifted off
+(`tools/blank_base.py`) and the same artwork is placed back at one fixed size on M, L and XL.
+Physical sizes are measured on the mockups, calibrated to a size L body length of 74 cm plus a 4 cm
+collar, and the M / L / XL grading is typical. Both need confirming against the vendor's spec and a sample.

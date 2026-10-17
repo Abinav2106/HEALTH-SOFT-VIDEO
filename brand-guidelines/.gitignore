@@ -1,0 +1,7 @@
+# Client brand files, derived artwork and rendered output stay out of this public repository.
+source/*
+!source/README.md
+assets/
+out/
+index.html
+__pycache__/

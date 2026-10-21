@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Café La Mirajh — Brand Research &amp; Positioning</title>
+<style>
+@font-face{font-family:'Glyphs';src:url(fonts/noto-sans-latin-ext-400-normal.woff2) format('woff2');font-weight:300 500;unicode-range:U+20B9;}
+@font-face{font-family:'Glyphs';src:url(fonts/noto-sans-latin-ext-700-normal.woff2) format('woff2');font-weight:600 900;unicode-range:U+20B9;}
+@font-face{font-family:'Glyphs';src:url(file:///usr/share/fonts/truetype/dejavu/DejaVuSans.ttf);font-weight:100 500;unicode-range:U+2190-21FF,U+2200-22FF,U+25A0-25FF,U+2600-26FF,U+2713;}
+@font-face{font-family:'Glyphs';src:url(file:///usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf);font-weight:600 900;unicode-range:U+2190-21FF,U+2200-22FF,U+25A0-25FF,U+2600-26FF,U+2713;}
+@font-face{font-family:'Lato';src:url(fonts/lato-latin-300-normal.woff2) format('woff2');font-weight:300;}
+@font-face{font-family:'Lato';src:url(fonts/lato-latin-400-normal.woff2) format('woff2');font-weight:400;}
+@font-face{font-family:'Lato';src:url(fonts/lato-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;}
+@font-face{font-family:'Lato';src:url(fonts/lato-latin-700-normal.woff2) format('woff2');font-weight:700;}
+@font-face{font-family:'EB Garamond';src:url(fonts/eb-garamond-latin-400-normal.woff2) format('woff2');font-weight:400;}
+@font-face{font-family:'EB Garamond';src:url(fonts/eb-garamond-latin-500-normal.woff2) format('woff2');font-weight:500;}
+@font-face{font-family:'EB Garamond';src:url(fonts/eb-garamond-latin-600-normal.woff2) format('woff2');font-weight:600;}
+@font-face{font-family:'EB Garamond';src:url(fonts/eb-garamond-latin-700-normal.woff2) format('woff2');font-weight:700;}
+@font-face{font-family:'EB Garamond';src:url(fonts/eb-garamond-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;}
+
+:root{--cream:#FFF2D4;--blue:#004C6A;--brown:#8A5D3B;--red:#BE1E2D;--gold:#D6A84A;--ink:#0d3a4f;--line:rgba(0,76,106,.28);--tint:#F8E6BE;--tint2:#FBEBC9;}
+@page{size:297mm 210mm;margin:0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--cream);}
+body{font-family:'Glyphs','Lato',sans-serif;color:var(--ink);font-size:9.4pt;line-height:1.36;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:297mm;height:210mm;padding:11mm 14mm 0 14mm;position:relative;overflow:hidden;background:var(--cream);page-break-after:always;break-after:page;}
+.page:last-child{page-break-after:auto;break-after:auto;}
+.ph{display:flex;align-items:center;height:9mm;margin-bottom:4.5mm;}
+.ph .num{font-family:'Glyphs','Lato';font-weight:700;font-size:13pt;letter-spacing:.06em;color:var(--blue);width:22mm;}
+.ph .sec{border-left:1px solid var(--blue);padding-left:4mm;font-size:9pt;color:var(--blue);height:9mm;display:flex;align-items:center;}
+.ph .mark{margin-left:auto;height:9mm;}
+.pf{position:absolute;left:14mm;right:14mm;bottom:6mm;border-top:1px solid var(--blue);padding-top:1.6mm;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--blue);}
+h1{font-family:'Glyphs','EB Garamond',serif;font-weight:700;color:var(--blue);font-size:27pt;line-height:1.02;letter-spacing:-.005em;}
+h2{font-family:'Glyphs','EB Garamond',serif;font-weight:700;color:var(--blue);font-size:17pt;line-height:1.08;margin-bottom:2mm;}
+h3{font-family:'Glyphs','Lato';font-weight:700;color:var(--brown);font-size:7.8pt;letter-spacing:.11em;text-transform:uppercase;margin-bottom:1.4mm;}
+h4{font-family:'Glyphs','EB Garamond',serif;font-weight:700;color:var(--blue);font-size:12.5pt;line-height:1.1;margin-bottom:1mm;}
+p{margin-bottom:1.6mm;}
+b,strong{font-weight:700;color:var(--blue);}
+a{color:var(--blue);text-decoration:none;}
+a.r{font-size:7pt;font-weight:700;color:var(--brown);vertical-align:.18em;margin-left:.3mm;white-space:nowrap;}
+.t{display:inline-block;font-size:6.2pt;font-weight:700;line-height:1;padding:.5mm .9mm .45mm;border-radius:1mm;margin-right:.8mm;vertical-align:.12em;letter-spacing:.04em;}
+.t.v{background:var(--blue);color:var(--cream);}
+.t.c{background:var(--brown);color:var(--cream);}
+.t.s{background:var(--gold);color:#3b2a10;}
+.t.h{border:.25mm solid var(--red);color:var(--red);padding:.3mm .8mm .25mm;}
+.muted{color:#4d6a78;}
+.small{font-size:8pt;line-height:1.32;}
+.xs{font-size:7.4pt;line-height:1.3;}
+ul{list-style:none;}
+ul.b li{position:relative;padding-left:3.2mm;margin-bottom:1.1mm;}
+ul.b li:before{content:"";position:absolute;left:0;top:1.75mm;width:1.3mm;height:1.3mm;background:var(--gold);border-radius:50%;}
+.grid{display:grid;gap:6mm;}
+.box{background:var(--tint2);border:1px solid var(--line);border-radius:1.5mm;padding:3.2mm 3.6mm;}
+.box.blue{background:var(--blue);color:var(--cream);border:none;}
+.box.blue b,.box.blue strong,.box.blue h4{color:var(--cream);}
+.box.blue h3{color:var(--gold);}
+.rule{border-top:1px solid var(--line);margin:2.4mm 0;}
+table{border-collapse:collapse;width:100%;}
+th{font-family:'Glyphs','Lato';font-weight:700;font-size:7.3pt;letter-spacing:.06em;text-transform:uppercase;color:var(--cream);background:var(--blue);text-align:left;padding:1.5mm 1.8mm;vertical-align:bottom;}
+td{font-size:8.1pt;line-height:1.3;padding:1.35mm 1.8mm;border-bottom:1px solid var(--line);vertical-align:top;}
+tr.lm td{background:#F6DFAE;}
+td.n{font-weight:700;color:var(--blue);}
+.kv{display:grid;grid-template-columns:27mm 1fr;border-top:1px solid var(--line);}
+.kv>div{padding:1.05mm 0;border-bottom:1px solid var(--line);font-size:8.1pt;line-height:1.3;}
+.kv>div:nth-child(odd){font-weight:700;color:var(--brown);font-size:7.2pt;letter-spacing:.05em;text-transform:uppercase;padding-top:1.35mm;padding-right:2mm;}
+.legend{display:flex;gap:3.5mm;flex-wrap:wrap;font-size:7.4pt;align-items:center;}
+.pill{display:inline-block;background:var(--blue);color:var(--cream);font-weight:700;font-size:7pt;padding:.6mm 1.8mm;border-radius:3mm;letter-spacing:.04em;}
+.big{font-family:'Glyphs','EB Garamond',serif;font-weight:700;color:var(--blue);font-size:20pt;line-height:1;}
+.lead{font-family:'Glyphs','EB Garamond',serif;font-size:13pt;line-height:1.22;color:var(--blue);}
+.chain{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:1.5mm;overflow:hidden;}
+.chain>div{padding:1.6mm 2.4mm;font-size:8pt;line-height:1.3;border-right:1px solid var(--line);background:var(--tint2);}
+.chain>div:last-child{border-right:none;background:#F6DFAE;}
+.chain .lab{font-weight:700;font-size:6.8pt;letter-spacing:.08em;text-transform:uppercase;color:var(--brown);display:block;margin-bottom:.6mm;}
+.rank th{text-transform:none;letter-spacing:0;font-size:7.6pt;}
+.score{font-weight:700;color:var(--blue);text-align:center;}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:3mm;}
+.q{border-radius:1.5mm;padding:2.6mm 3mm;border:1px solid var(--line);background:var(--tint2);}
+.q .qt{font-family:'Glyphs','EB Garamond',serif;font-weight:700;font-size:13pt;color:var(--blue);margin-bottom:1mm;display:flex;align-items:baseline;gap:2mm;}
+.q .qt span{font-family:'Glyphs','Lato';font-size:6.8pt;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);font-weight:700;}
+.q ol{list-style:none;}
+.q li{font-size:7.85pt;line-height:1.28;padding:1.1mm 0;border-top:1px solid var(--line);}
+.q li:first-child{border-top:none;}
+.q li b{display:block;font-size:8.2pt;}
+.q li i{font-style:normal;color:var(--brown);font-weight:700;font-size:6.8pt;letter-spacing:.04em;text-transform:uppercase;}
+.stage{display:grid;grid-template-columns:repeat(5,1fr);gap:2mm;}
+.stage>div{background:var(--tint2);border:1px solid var(--line);border-radius:1.5mm;padding:2.2mm 2.4mm;font-size:7.9pt;line-height:1.28;position:relative;}
+.stage .st{font-family:'Glyphs','EB Garamond',serif;font-weight:700;font-size:12pt;color:var(--blue);display:block;margin-bottom:.8mm;}
+.stage .bar{margin-top:1.4mm;padding-top:1.2mm;border-top:1px dashed var(--red);color:#7a1c24;}
+.stage .bar b{color:var(--red);}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;width:5mm;height:5mm;border-radius:50%;background:var(--gold);color:#3b2a10;font-weight:700;font-size:7.6pt;margin-right:1.6mm;flex:none;}
+.dec{display:flex;gap:2.5mm;align-items:flex-start;margin-bottom:2mm;}
+.src{list-style:none;columns:2;column-gap:7mm;font-size:7.8pt;line-height:1.3;}
+.src li{break-inside:avoid;margin-bottom:.9mm;padding-left:6mm;text-indent:-6mm;}
+.src li span.sn{display:inline-block;width:6mm;text-indent:0;font-weight:700;color:var(--brown);}
+.src li em{font-style:normal;color:var(--red);font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<section class="page" id="p1">
+  <div style="display:grid;grid-template-columns:56mm 1fr;gap:8mm;align-items:start;">
+    <div>
+      <img src="assets/logo-primary.png" alt="Café La Mirajh primary logo" style="width:56mm;display:block;">
+      <div class="xs muted" style="margin-top:2mm;">Primary logo reproduced from the client-supplied artwork without modification.</div>
+    </div>
+    <div>
+      <div class="ph" style="margin-bottom:2mm;"><span class="num">01</span><span class="sec">Executive research conclusion</span></div>
+      <h1>Brand research &amp; positioning</h1>
+      <div class="lead" style="margin-top:1.6mm;">Café La Mirajh · Anna Nagar East, Chennai — competitor analysis, target audience, SWOT and positioning</div>
+      <div class="xs muted" style="margin-top:1.4mm;">Prepared by W&amp;W ahead of the programme starting 1 November 2026 · Evidence observed 21 October 2026 · Client-facing summary</div>
+    </div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:76mm 1fr 1fr;gap:5.5mm;margin-top:4mm;">
+    <div>
+      <h3>Business context</h3>
+      <p class="small"><span class="t c">C</span>An operating café, several months old. Current revenue is about <b>₹1–1.5 lakh a month</b>. The first objective is <b>₹4 lakh a month within three months</b> of the programme; the later ambition is <b>₹8 lakh</b>, once demand, capacity and profitability are validated. These are management objectives, not verified results.</p>
+      <div class="box" style="margin-top:2mm;">
+        <h3 style="margin-bottom:1mm;">What the target implies <span class="t s" style="margin-left:1mm;">S</span></h3>
+        <table style="margin:1mm 0 1.4mm;">
+          <tr><td style="padding:.8mm 0;border-color:var(--line);">Monthly revenue</td><td style="padding:.8mm 0;text-align:right;">Guests / month</td><td style="padding:.8mm 0;text-align:right;">≈ per day</td></tr>
+          <tr><td class="n" style="padding:.8mm 0;">₹1.25 lakh (today)</td><td style="padding:.8mm 0;text-align:right;">≈ 250</td><td style="padding:.8mm 0;text-align:right;">8</td></tr>
+          <tr><td class="n" style="padding:.8mm 0;">₹4 lakh</td><td style="padding:.8mm 0;text-align:right;">≈ 800</td><td style="padding:.8mm 0;text-align:right;">27</td></tr>
+          <tr><td class="n" style="padding:.8mm 0;border:none;">₹8 lakh</td><td style="padding:.8mm 0;text-align:right;border:none;">≈ 1,600</td><td style="padding:.8mm 0;text-align:right;border:none;">53</td></tr>
+        </table>
+        <p class="xs" style="margin:0;">Illustrative only: uses the platform-listed ₹1,000 for two (≈ ₹500 per guest)<a class="r" href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east">[3]</a><a class="r" href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">[5]</a>, not actual spend data. Reaching ₹4 lakh needs roughly <b>three times today’s guests</b>, a higher spend per table, or both. Awareness alone will not close that gap. It needs a repeatable occasion.</p>
+      </div>
+    </div>
+
+    <div>
+      <h3>Strongest finding</h3>
+      <h4>The rooftop is real, but it isn’t a moat. The proof gap is the bigger problem.</h4>
+      <p class="small"><span class="t v">V</span>Zomato and District both list rooftop seating and about ₹1,000 for two<a class="r" href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east">[3]</a><a class="r" href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">[5]</a>. But at least three other rooftop venues are listed in Anna Nagar East and Shanthi Colony: On De Roof (₹800–1,100; 4.1 from 1,225 Zomato ratings)<a class="r" href="https://www.zomato.com/chennai/on-de-roof-anna-nagar-east">[10]</a>, the new Ibiza Rooftop Lounge &amp; Bistro Café (₹700)<a class="r" href="https://www.zomato.com/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[13]</a>, and The Living Room (≈₹2,100)<a class="r" href="https://www.eazydiner.com/chennai/the-living-room-anna-nagar-east-chennai-673240">[28]</a>.</p>
+      <p class="small"><span class="t v">V</span>La Mirajh has almost no public proof. District says it is “new” and has too few ratings to show a score. Zomato snapshots disagree, showing either 3.7 from 16 ratings or a single rating. The website and Instagram could not be verified, and the platforms disagree on what the café serves.</p>
+      <p class="small" style="margin:0;"><span class="t s">S</span>A customer comparing options online has a weak reason to choose La Mirajh over rooftops with thousands of reviews.</p>
+    </div>
+
+    <div>
+      <h3>Recommended direction</h3>
+      <div class="box blue">
+        <div style="font-family:'Glyphs','EB Garamond',serif;font-weight:700;font-size:15pt;line-height:1.08;margin-bottom:1.6mm;">“The rooftop café made for conversation.”</div>
+        <p class="small" style="margin-bottom:1.2mm;">Make La Mirajh Anna Nagar’s unhurried evening table for <b>small friend groups</b> (primary audience) and <b>couples</b> (secondary). The rooftop is the setting, coffee and comfort food are the product, PS5 is a social extra, and attentive hosting is the promise.</p>
+        <p class="small" style="margin:0;">This builds on the café’s own idea, <i>Coffee · Community · Convo</i><a class="r" style="color:var(--gold);" href="https://drive.google.com/file/d/1vDv6sP4myUIB99LaGe39bNbXJYZTIJqR/view">[1]</a>, and moves away from the “affordable luxury / night-life” language, which neighbouring rooftops already own.</p>
+      </div>
+      <h3 style="margin-top:3mm;">Prove before promoting</h3>
+      <ul class="b small">
+        <li>Weather cover and capacity during the Nov–Dec monsoon <span class="t h">H</span></li>
+        <li>PS5 status, hours and booking route <span class="t h">H</span></li>
+        <li>Three named signatures with visible prices</li>
+        <li>A steady flow of recent reviews</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:4mm;">
+    <div class="box" style="padding:2.6mm 3.2mm;"><div class="big">4+</div><div class="xs" style="margin-top:1mm;">rooftop venues listed in Anna Nagar East and Shanthi Colony, La Mirajh included. <b>Rooftop gets it shortlisted; it doesn’t win the choice.</b></div></div>
+    <div class="box" style="padding:2.6mm 3.2mm;"><div class="big">0–16 vs 1,225+</div><div class="xs" style="margin-top:1mm;">public ratings for La Mirajh compared with each established direct rival (Zomato and Justdial counts). <b>Proof is the first job.</b></div></div>
+    <div class="box" style="padding:2.6mm 3.2mm;"><div class="big">23:45</div><div class="xs" style="margin-top:1mm;">listed closing time, the latest among outlets in the set with known hours (rivals close at 21:00–23:00). <b>The late evening is an ownable slot.</b></div></div>
+    <div class="box" style="padding:2.6mm 3.2mm;"><div class="big">≈ 3×</div><div class="xs" style="margin-top:1mm;">more guests needed to reach ₹4 lakh at today’s listed price point. <b>Prioritise friend groups who return weekly, then couples, then hosted gatherings.</b></div></div>
+  </div>
+  <div class="rule" style="margin-top:3.4mm;"></div>
+  <div class="legend">
+    <b style="font-size:7.4pt;">Evidence key</b>
+    <span><span class="t v">V</span>Verified observation in a public listing (indexed 21 Oct 2026)</span>
+    <span><span class="t c">C</span>Client-stated (brief or brand manual)</span>
+    <span><span class="t s">S</span>Strategic interpretation</span>
+    <span><span class="t h">H</span>Hypothesis that needs validation</span>
+    <span class="muted">Bracketed numbers link to sources (p.10).</span>
+  </div>
+  <div class="pf"><span>Café La Mirajh · Brand Research &amp; Positioning · W&amp;W · October 2026</span><span>1 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 2 ============ -->
+<section class="page" id="p2">
+  <div class="ph"><span class="num">02</span><span class="sec">Competitive landscape</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:78mm 1fr;gap:7mm;">
+    <div>
+      <h2>Who customers actually weigh La Mirajh against</h2>
+      <h3>What La Mirajh offers today</h3>
+      <div class="kv" style="grid-template-columns:22mm 1fr;">
+        <div>Location</div><div><span class="t v">V</span>Plot 273, 2nd Main Rd, F Block, Anna Nagar East<a class="r" href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east">[3]</a></div>
+        <div>Food &amp; drink</div><div><span class="t v">V</span>Zomato lists coffee, beverages, Chinese, South Indian, pizza, burgers, momos and desserts. District lists Continental, American and Mexican<a class="r" href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">[5]</a>. <span class="t c">C</span>The manual’s packaging covers burgers, sandwiches, fries, wraps, and hot and cold drinks<a class="r" href="https://drive.google.com/file/d/1vDv6sP4myUIB99LaGe39bNbXJYZTIJqR/view">[1]</a>.</div>
+        <div>Price</div><div><span class="t v">V</span>≈ ₹1,000 for two on both platforms. Item prices could not be retrieved.</div>
+        <div>Seating</div><div><span class="t v">V</span>Rooftop, indoor and outdoor seating (District).</div>
+        <div>Play</div><div><span class="t c">C</span>A PS5 gaming lounge (manual). <span class="t v">V</span>A city guide mentions “gaming zones” and Wi-Fi<a class="r" href="https://www.superchennai.com/visit/restaurants-in-chennai">[6]</a>. Current PS5 status has not been confirmed.</div>
+        <div>Hours</div><div><span class="t v">V</span>Opens 10:00 (Zomato) and closes 23:45 (District data). That’s the latest close of any outlet in this set with listed hours.</div>
+        <div>Booking</div><div><span class="t v">V</span>Listed on District. Whether table reservations are enabled could not be confirmed.</div>
+        <div>Brand</div><div><span class="t c">C</span>“A premium yet accessible rooftop café where comfort, community and night-time luxury come together.” Tagline: <i>Coffee · Community · Convo</i>.</div>
+      </div>
+      <p class="xs" style="margin-top:2mm;"><span class="t s">S</span><b>Fit with the manual.</b> The venue facts support “accessible rooftop” and “comfort”. Nothing public yet supports “premium” or “luxury”: no reviews, no venue photography and no signature product. Several manual images appear to be illustrative stock rather than photos of the café.</p>
+    </div>
+    <div>
+      <h3>Selection logic</h3>
+      <p class="small" style="margin-bottom:2mm;">Competitors were chosen by customer choice, not fame. A <b>direct</b> competitor overlaps on at least three of four factors: the same Anna Nagar micro-market, a ₹700–1,200 for-two band, café or comfort food, and an evening group or rooftop occasion. An <b>indirect</b> alternative competes for the same outing or spend with a different offer. Only exact Anna Nagar outlets were assessed.</p>
+      <table>
+        <tr><th style="width:27mm;">Outlet</th><th style="width:16mm;">Role</th><th>Core offer &amp; known signatures</th><th style="width:22mm;">Cost for two*</th><th style="width:31mm;">Main occasion</th><th style="width:27mm;">Public proof</th><th style="width:30mm;">Observed friction</th></tr>
+        <tr class="lm"><td class="n">Café La Mirajh</td><td>Subject</td><td>Rooftop café, mixed menu; PS5 (client-stated)</td><td>₹1,000</td><td>Evening hangout (intended)</td><td>Too few ratings; snapshots conflict</td><td>Unclear menu identity</td></tr>
+        <tr><td class="n">On De Roof<a class="r" href="https://www.zomato.com/chennai/on-de-roof-anna-nagar-east">[10]</a></td><td>Direct</td><td>Rooftop restaurant: biryani, Chinese, North Indian, kebabs</td><td>₹800–1,100</td><td>Rooftop dinners, celebrations</td><td>4.1 · 1,225 Zomato; 4,463 Justdial</td><td>Uneven food quality and upkeep in some reviews</td></tr>
+        <tr><td class="n">Ibiza Rooftop Lounge &amp; Bistro<a class="r" href="https://www.zomato.com/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[13]</a></td><td>Direct</td><td>Rooftop café: burgers, pizza, pasta, sandwiches</td><td>₹700</td><td>Casual rooftop meal</td><td>“New”; 3.7 dining (count not shown)</td><td>Thin evidence; cuisine tags conflict</td></tr>
+        <tr><td class="n">The Board Room<a class="r" href="https://www.zomato.com/chennai/the-board-room-anna-nagar-east">[15]</a></td><td>Direct</td><td>Board-game café: 500+ games, teas, pasta, paninis</td><td>₹1,000–1,200</td><td>Group play sessions</td><td>4.5 · ≈1,300 Justdial</td><td>Slow game-guide attention at peak</td></tr>
+        <tr><td class="n">Double Roti<a class="r" href="https://www.zomato.com/chennai/double-roti-anna-nagar-east">[19]</a></td><td>Direct</td><td>Burger café: Illegal Burger, Double Trouble, tacos</td><td>₹950–2,000</td><td>Food-led casual meal</td><td>4.4 · 9,216 Justdial</td><td>Crowds, long waits, “overpriced”</td></tr>
+        <tr><td class="n">VR Game Cafe<a class="r" href="https://vrgamecafe.in/">[24]</a></td><td>Indirect</td><td>PS5 and VR gaming with burgers, pizza, shakes</td><td>PS5 ≈ ₹150/hr</td><td>Gaming sessions, birthdays</td><td>Not assessed</td><td>Daytime-weighted hours</td></tr>
+        <tr><td class="n">India Brew House<a class="r" href="https://www.zomato.com/chennai/india-brew-house-anna-nagar-east">[26]</a></td><td>Indirect</td><td>Coffee, pasta, sandwiches, burgers</td><td>₹450–700</td><td>Everyday coffee, work</td><td>Not assessed</td><td>Closes 21:00</td></tr>
+        <tr><td class="n">The Living Room<a class="r" href="https://www.eazydiner.com/chennai/the-living-room-anna-nagar-east-chennai-673240">[28]</a></td><td>Benchmark</td><td>Rooftop restobar: cocktails, Italian–Indian</td><td>≈ ₹2,100</td><td>Premium nights, DJ, sport</td><td>4.4 (one list)</td><td>Rooftop not always open</td></tr>
+      </table>
+      <p class="xs muted" style="margin-top:1.4mm;">*Platform “cost for two” figures disagree (Double Roti ranges from ₹950 to ₹2,000 across six listings), so they are shown as an indicative band, not precise prices. A like-for-like basket was not possible because La Mirajh’s item prices were unavailable. Other candidates considered: Gaming Garage and Midgard (gaming-first, overlap only on PS5)<a class="r" href="https://gaminggaragechennai.com/">[31]</a>, and Flamingo Rooftop Lounge (too little evidence to assess).</p>
+    </div>
+  </div>
+  <div class="pf"><span>Sources observed 21 Oct 2026 via indexed listings · see p.10 for method and limits</span><span>2 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 3 ============ -->
+<section class="page" id="p3">
+  <div class="ph"><span class="num">03</span><span class="sec">Direct competitor dossiers · 1 of 2</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:8mm;">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><h2 style="margin:0;">On De Roof</h2><span class="pill">Direct · rooftop</span></div>
+      <div class="xs muted" style="margin:1mm 0 2mm;">3rd floor, AA Block 2nd St, Shanthi Colony, Anna Nagar<a class="r" href="https://www.zomato.com/chennai/on-de-roof-anna-nagar-east">[10]</a><a class="r" href="https://www.justdial.com/Chennai/On-D-Roof-Restaurant-Shanthi-Colony-Anna-Nagar/044PXX44-XX44-211214165940-Q8N2_BZDET">[11]</a><a class="r" href="https://www.eazydiner.com/chennai/on-d-roof-anna-nagar-east-chennai-686312">[12]</a></div>
+      <div class="kv">
+        <div>Why direct</div><div>Same micro-market, rooftop setting and price band; competes for the evening group outing.</div>
+        <div>Products</div><div><span class="t v">V</span>Chinese, North Indian, Mughlai, seafood, biryani, kebabs, desserts.</div>
+        <div>Price</div><div><span class="t v">V</span>₹800–1,100 for two across platforms. Chicken biryani ₹239 and Dragon Chicken ₹279 on magicpin, possibly dated.</div>
+        <div>Occasion</div><div><span class="t v">V</span>Rooftop dinners and celebrations. One guide mentions cabanas and live sports screenings.</div>
+        <div>Brand &amp; personality</div><div><span class="t s">S</span>A practical rooftop restaurant, whose appeal is “good value, good rooftop”, not a café identity.</div>
+        <div>Atmosphere</div><div><span class="t v">V</span>Open-air third-floor terrace. Reviews stress ambience and suitability for groups and celebrations rather than quiet.</div>
+        <div>Visual &amp; social</div><div>Not assessed. Official social channels could not be inspected (0 posts sampled).</div>
+        <div>Offers</div><div><span class="t v">V</span>Joined Restaurant Week Chennai with a full-menu price offer.</div>
+        <div>Discovery → visit</div><div><span class="t s">S</span>Aggregator-led: large review bases on Zomato and Justdial make it a default result for “rooftop Anna Nagar”.</div>
+        <div>Strengths</div><div><span class="t v">V</span>Scale of proof: 4.1 from 1,225 Zomato ratings and 4,463 Justdial reviews. Reviewers praise the ambience, the rooftop and its fit for celebrations.</div>
+        <div>Friction</div><div><span class="t v">V</span>Recurring: uneven food quality and upkeep of washrooms, tables and parking. Isolated: smaller portions (one Zomato review).</div>
+        <div>For La Mirajh</div><div><span class="t s">S</span>Don’t fight it on “rooftop dinner”. Own the café-format rooftop evening instead: coffee, shareable comfort food, longer stays, a calmer table.</div>
+      </div>
+      <p class="xs muted" style="margin-top:1.4mm;">Review evidence: Justdial’s review summary, one Zomato review and one January 2026 review surfaced in search. This is not a systematic sample.</p>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><h2 style="margin:0;">Ibiza Rooftop Lounge &amp; Bistro Café</h2><span class="pill">Direct · rooftop café</span></div>
+      <div class="xs muted" style="margin:1mm 0 2mm;">148, 3rd Street, AB Block, Anna Nagar East<a class="r" href="https://www.zomato.com/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[13]</a><a class="r" href="https://www.district.in/dining/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[14]</a></div>
+      <div class="kv">
+        <div>Why direct</div><div>The closest look-alike: a new rooftop café in Anna Nagar East with a burger-and-pizza menu.</div>
+        <div>Products</div><div><span class="t v">V</span>Zomato lists Continental, fast food, pizza, burgers, pasta, sandwiches and salads. District lists North Indian, Italian and American.</div>
+        <div>Price</div><div><span class="t v">V</span>≈ ₹700 for two (Zomato), the lowest rooftop entry point in the set.</div>
+        <div>Occasion</div><div><span class="t s">S</span>Casual rooftop meal or hangout. No activity or event evidence was found.</div>
+        <div>Brand &amp; personality</div><div><span class="t s">S</span>The name signals “lounge / party island”, but the listed menu is generic café food.</div>
+        <div>Atmosphere</div><div><span class="t v">V</span>Rooftop plus indoor seating. No review descriptions of the atmosphere were found.</div>
+        <div>Visual &amp; social</div><div>Not assessed. No official channel was found or inspected (0 posts sampled).</div>
+        <div>Offers</div><div><span class="t v">V</span>District shows flat 20% and 10% offers, which points to price-led acquisition.</div>
+        <div>Discovery → visit</div><div><span class="t v">V</span>Zomato, District and delivery. Takeaway and home delivery are listed.</div>
+        <div>Strengths</div><div><span class="t v">V</span>Lower listed price, 11:00–23:00 hours, and visible discounts.</div>
+        <div>Friction</div><div><span class="t v">V</span>Like La Mirajh, it has little proof: District shows 0.0 (no ratings) and the cuisine tags conflict.</div>
+        <div>For La Mirajh</div><div><span class="t s">S</span>A discount race with a ₹700 rooftop would erode margin. La Mirajh should compete on a clearer occasion and hosting. Whoever builds proof first will win this pair.</div>
+      </div>
+      <p class="xs muted" style="margin-top:1.4mm;">Confidence is low. Treat Ibiza as a watch-list rival and re-check its reviews within 60 days.</p>
+    </div>
+  </div>
+  <div class="box" style="margin-top:3mm;display:grid;grid-template-columns:30mm 1fr 1fr 1fr;gap:5mm;align-items:start;">
+    <div><h3 style="margin:0;">Three competitive patterns</h3><span class="t s">S</span></div>
+    <div class="small"><b>1 · Rooftop is shared, not scarce.</b> At least four rooftop venues sit in Anna Nagar East and Shanthi Colony. “Rooftop” wins a shortlist place but doesn’t win the choice.</div>
+    <div class="small"><b>2 · Winners are known for one thing.</b> Double Roti for burgers, The Board Room for its game library, On De Roof for rooftop celebrations. Each has 1,000+ reviews behind that one idea.</div>
+    <div class="small"><b>3 · Peak-hour service is the shared weak spot.</b> Reviews of three of the four direct rivals mention waits, slow attention or upkeep at busy times.</div>
+  </div>
+  <div class="pf"><span>Visual identity and social content of competitors were not inspectable: see limitations, p.10</span><span>3 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 4 ============ -->
+<section class="page" id="p4">
+  <div class="ph"><span class="num">04</span><span class="sec">Direct competitor dossiers · 2 of 2, plus indirect lessons</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:8mm;">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><h2 style="margin:0;">The Board Room, Anna Nagar</h2><span class="pill">Direct · play café</span></div>
+      <div class="xs muted" style="margin:1mm 0 1.6mm;">30, 4th Ave, AG Block, Anna Nagar East<a class="r" href="https://www.zomato.com/chennai/the-board-room-anna-nagar-east">[15]</a><a class="r" href="https://www.justdial.com/Chennai/The-Board-Room-Anna-Nagar/044PXX44-XX44-230803181114-G4I3_BZDET">[16]</a><a class="r" href="https://www.district.in/dining/chennai/the-board-room-anna-nagar-east">[17]</a><a class="r" href="https://laptopfriendlycafe.com/cafes/chennai/the-board-room">[18]</a><a class="r" href="https://restaurant-guru.in/The-Board-Room-Chennai-2">[32]</a></div>
+      <div class="kv">
+        <div>Why direct</div><div>Same micro-market and price band; its group-play occasion is closest to La Mirajh’s PS5 corner.</div>
+        <div>Products</div><div><span class="t v">V</span>500+ games (counts vary), 30+ teas, pasta, paninis, rice bowls. Popular: spicy hot chocolate, paneer popcorn.</div>
+        <div>Price · hours</div><div><span class="t v">V</span>₹1,000–1,200 for two; open 11:00–22:00. Coworking for ₹350 a day was listed (may be dated).</div>
+        <div>Occasion</div><div><span class="t v">V</span>Friends playing together. <span class="t s">S</span>The activity is the reason to go; food supports it.</div>
+        <div>Brand · visual</div><div><span class="t s">S</span>A knowledgeable, playful games host, with a sister branch in Mylapore. Visual identity and social feed were not assessed (0 posts).</div>
+        <div>Community · discovery</div><div><span class="t v">V</span>Game guides, a coworking day pass, and coverage in local board-game round-ups<a class="r" href="https://thesouthfirst.com/featured/board-games-are-back-these-cosy-cafes-in-chennai-are-reviving-the-offline-play/">[33]</a>. Found mainly through aggregators.</div>
+        <div>Strengths</div><div><span class="t v">V</span>4.5 from ≈1,300 Justdial reviews. Staff are praised for explaining games clearly.</div>
+        <div>Friction</div><div><span class="t v">V</span>Recurring: slow game-guide attention when busy. One District reviewer waited 30 minutes.</div>
+        <div>For La Mirajh</div><div><span class="t s">S</span>Groups will pay for an activity, but a hosted activity fails when staff are stretched. Keep PS5 simple and self-serve, and part of the table.</div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><h2 style="margin:0;">Double Roti, Anna Nagar East</h2><span class="pill">Direct · food-led</span></div>
+      <div class="xs muted" style="margin:1mm 0 1.6mm;">AH 177, 4th Avenue, Anna Nagar East<a class="r" href="https://www.zomato.com/chennai/double-roti-anna-nagar-east">[19]</a><a class="r" href="https://magicpin.in/Chennai/Anna-Nagar-East/Restaurant/Double-Roti/store/89170/">[20]</a><a class="r" href="https://www.eazydiner.com/chennai/double-roti-anna-nagar-east-chennai-658779">[21]</a><a class="r" href="https://www.justdial.com/Chennai/Double-Roti-Near-Shree-Mittai-Marry-Brown-Family-Restaurant-Anna-Nagar-East/044PXX44-XX44-160128175711-D5H3_BZDET">[22]</a><a class="r" href="https://www.district.in/dining/chennai/double-roti-anna-nagar-east">[23]</a><a class="r" href="https://lbb.in/chennai/best-burgers-chennai">[30]</a></div>
+      <div class="kv">
+        <div>Why direct</div><div>Same neighbourhood and the same burger-and-comfort-food category the manual’s packaging targets.</div>
+        <div>Products</div><div><span class="t v">V</span>Homegrown burger specialist: Illegal Burger, Double Trouble, Mexican Wave, birria tacos.</div>
+        <div>Price · hours</div><div><span class="t v">V</span>₹950–2,000 for two (six listings disagree). Tacos ₹345, nachos ₹375, coolers ₹185 on magicpin. Open 12:00–23:00.</div>
+        <div>Occasion</div><div><span class="t s">S</span>“Let’s go eat a great burger”. The food is the destination.</div>
+        <div>Brand · visual</div><div><span class="t s">S</span>Irreverent and food-obsessed, judging by dish names such as “Illegal” and “Area 69”. Multi-outlet, with a Gastronomer sub-brand. Feed not assessed (0 posts).</div>
+        <div>Offers · discovery</div><div><span class="t v">V</span>Featured in local burger guides and listed on six platforms. Walk-in led, so waits are part of the visit. No current offers found.</div>
+        <div>Strengths</div><div><span class="t v">V</span>4.4 across Zomato, District and Justdial (9,216 ratings). Named signatures, and staff praised by name.</div>
+        <div>Friction</div><div><span class="t v">V</span>Recurring: crowds and long waits, slow or missed orders. Isolated: “overpriced”, uneven dishes.</div>
+        <div>For La Mirajh</div><div><span class="t s">S</span>La Mirajh can’t out-burger a 9,000-review specialist. It can give the overflow crowd a calmer seat that’s easy to book, with its own two or three signatures.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:62mm 1fr;gap:6mm;margin-top:2mm;">
+    <div class="box">
+      <h3>Indirect &amp; benchmark lessons</h3>
+      <p class="xs"><b>VR Game Cafe</b><a class="r" href="https://www.eazydiner.com/chennai/vr-game-cafe-anna-nagar-east-chennai-700710">[25]</a>: PS5 at ≈ ₹150 an hour sets a public price for gaming. La Mirajh shouldn’t sell PS5 as an hourly product.</p>
+      <p class="xs"><b>India Brew House</b><a class="r" href="https://www.swiggy.com/restaurants/chennai/anna-nagar/india-brew-house-837695/dineout">[27]</a>: daytime coffee and work at ₹450–700, closing at 21:00. This is the reference price for a casual coffee.</p>
+      <p class="xs" style="margin:0;"><b>The Living Room</b><a class="r" href="https://www.thelivingroomchennai.com/terrace/">[29]</a> (benchmark): reviewers advise booking on Fridays. Booking is a signal of desirability.</p>
+    </div>
+    <div>
+      <h3>Three differentiation opportunities · observed evidence → customer implication → brand response</h3>
+      <div class="chain" style="margin-bottom:1.6mm;">
+        <div><span class="lab">Evidence</span>Nearby rooftops are restaurant or restobar-led: biryani, kebabs, cocktails, DJ, live sport<a class="r" href="https://www.zomato.com/chennai/on-de-roof-anna-nagar-east">[10]</a><a class="r" href="https://www.eazydiner.com/chennai/the-living-room-anna-nagar-east-chennai-673240">[28]</a>.</div>
+        <div><span class="lab">Implication</span>People who want a calm, café-priced rooftop evening of coffee, comfort food and long conversation have few clearly defined choices.</div>
+        <div><span class="lab">Response</span>Own “the rooftop café for conversation”: an evening coffee and mocktail menu, soft lighting, low music, and no pressure to leave.</div>
+      </div>
+      <div class="chain" style="margin-bottom:1.6mm;">
+        <div><span class="lab">Evidence</span>Play venues are activity-first: game guides, cover-style charges, PS5 by the hour<a class="r" href="https://www.justdial.com/Chennai/The-Board-Room-Anna-Nagar/044PXX44-XX44-230803181114-G4I3_BZDET">[16]</a><a class="r" href="https://www.eazydiner.com/chennai/vr-game-cafe-anna-nagar-east-chennai-700710">[25]</a>.</div>
+        <div><span class="lab">Implication</span>Groups who want a little play inside a hangout have to pick between a gaming session and a nice setting.</div>
+        <div><span class="lab">Response</span>Present PS5 as a “pass the controller” table extra included in group bookings, never as an arcade.</div>
+      </div>
+      <div class="chain">
+        <div><span class="lab">Evidence</span>Waits and slow attention recur in reviews of the best-rated rivals<a class="r" href="https://www.justdial.com/Chennai/Double-Roti-Near-Shree-Mittai-Marry-Brown-Family-Restaurant-Anna-Nagar-East/044PXX44-XX44-160128175711-D5H3_BZDET">[22]</a><a class="r" href="https://www.district.in/dining/chennai/the-board-room-anna-nagar-east">[17]</a>.</div>
+        <div><span class="lab">Implication</span>Small groups and couples notice, and reward, being looked after.</div>
+        <div><span class="lab">Response</span>Make hosting a stated, measurable standard, such as a named table host and a set time to first order, and ask for reviews that mention it.</div>
+      </div>
+      <p class="xs" style="margin-top:1.8mm;"><b>What La Mirajh must prove to compete:</b> the rooftop is reliably usable, including in rain · there is a product worth returning for · facilities it names are operating · recent reviewers vouch for the hosting.</p>
+    </div>
+  </div>
+  <div class="pf"><span>Review evidence = platform summaries plus individual reviews surfaced in search; not a systematic sample</span><span>4 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 5 ============ -->
+<section class="page" id="p5">
+  <div class="ph"><span class="num">05</span><span class="sec">Target audience · priorities</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:84mm 1fr;gap:7mm;">
+    <div>
+      <h2>Prioritise the table that comes back weekly</h2>
+      <p class="small"><span class="t c">C</span>The manual targets young professionals aged 20–35, couples, Anna Nagar café regulars and small groups, with gamers, students, influencers and weekend explorers as secondary audiences<a class="r" href="https://drive.google.com/file/d/1vDv6sP4myUIB99LaGe39bNbXJYZTIJqR/view">[1]</a>. <span class="t s">S</span>That covers almost everyone. Against a three-month ₹4 lakh target, the useful question is which audience fills the most covers, most often, at an acceptable spend.</p>
+      <h3 style="margin-top:2.4mm;">Audience ranking <span class="t s">S</span></h3>
+      <table class="rank" style="table-layout:fixed;">
+        <colgroup><col style="width:27mm"><col><col><col><col><col><col></colgroup>
+        <tr><th style="padding:1.4mm 1.2mm;">Segment</th><th style="text-align:center;padding:1.4mm .6mm;">Fit</th><th style="text-align:center;padding:1.4mm .6mm;">Reach</th><th style="text-align:center;padding:1.4mm .6mm;">Spend</th><th style="text-align:center;padding:1.4mm .6mm;">Repeat</th><th style="text-align:center;padding:1.4mm .6mm;">Ops</th><th style="text-align:center;padding:1.4mm .6mm;">Total</th></tr>
+        <tr class="lm"><td class="n">Local friend groups</td><td class="score">5</td><td class="score">5</td><td class="score">3</td><td class="score">5</td><td class="score">4</td><td class="score">22</td></tr>
+        <tr><td class="n">Couples</td><td class="score">4</td><td class="score">4</td><td class="score">4</td><td class="score">3</td><td class="score">4</td><td class="score">19</td></tr>
+        <tr><td class="n">Hosted small gatherings</td><td class="score">4</td><td class="score">3</td><td class="score">5</td><td class="score">2</td><td class="score">2</td><td class="score">16</td></tr>
+        <tr><td class="n muted">Daytime laptop workers</td><td class="score muted">2</td><td class="score muted">4</td><td class="score muted">2</td><td class="score muted">4</td><td class="score muted">3</td><td class="score muted">15</td></tr>
+      </table>
+      <p class="xs muted" style="margin-top:1.4mm;">Fit = product fit · Reach = local reachability · Ops = operational fit. Strategist scores from 1 to 5, based on the evidence on pp.2–4. These are not survey or sales data. Daytime workers are deprioritised: India Brew House and The Board Room already serve that occasion<a class="r" href="https://laptopfriendlycafe.com/cafes/chennai/the-board-room">[18]</a>, and a daytime rooftop in Chennai heat is a weak setting <span class="t h">H</span>.</p>
+      <div class="box" style="margin-top:2.2mm;">
+        <h3>Why friend groups come first</h3>
+        <p class="xs" style="margin:0;">Groups of 3–5 fill more seats per table, use the rooftop, the PS5 and shareable food together, live within easy reach, and can turn La Mirajh into a weekly habit. Repeat visits by the same groups are the fastest route from roughly 8 to roughly 27 guests a day.</p>
+      </div>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:5mm;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;"><h4 style="font-size:14pt;">Primary · Local friend groups</h4></div>
+        <div class="kv" style="grid-template-columns:23mm 1fr;">
+          <div>Geography</div><div><span class="t h">H</span>Anna Nagar East and West, Shanthi Colony, plus a 15–20 minute ring: Shenoy Nagar, Kilpauk, Aminjikarai, Mogappair, Villivakkam.</div>
+          <div>Life stage</div><div><span class="t h">H</span>About 20–30: final-year students, early-career professionals, friends from school and college.</div>
+          <div>Occasion</div><div>After-work or after-college hangouts, 18:00–23:45 on weekdays and weekends. Late-night chats are helped by the 23:45 close.</div>
+          <div>Group</div><div>3–5 friends, often mixed gender.</div>
+          <div>Spend <span class="t h">H</span></div><div>Estimated ₹350–600 per head, with shareable plates and a round of drinks.</div>
+          <div>Needs</div><div>A place to sit for hours without pressure, enough seating, a vibe worth photographing, and something to do when the talk dips.</div>
+          <div>Decides via</div><div>Instagram Reels and friends’ stories, then a check of Google and Zomato ratings. One person suggests the place in the group chat.</div>
+          <div>Choose because</div><div>Rooftop at café prices, PS5 at the table, open late.</div>
+          <div>Reject because</div><div>Few reviews, no visible menu or prices, worry about rain or heat on a rooftop.</div>
+          <div>Return trigger</div><div>A standing weekly night, such as a group-table format, and a host who remembers them.</div>
+          <div>Most relevant</div><div>Shareable comfort food, mocktail pitchers, the PS5 corner.</div>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:14pt;">Secondary · Couples</h4>
+        <div class="kv" style="grid-template-columns:23mm 1fr;">
+          <div>Geography</div><div><span class="t h">H</span>The same core catchment. Couples will travel a little further for a known spot.</div>
+          <div>Life stage</div><div><span class="t h">H</span>About 22–35: dating, engaged or young married couples.</div>
+          <div>Occasion</div><div>Date nights and small celebrations, 19:00–23:00, weighted to Friday–Sunday.</div>
+          <div>Group</div><div>Two people.</div>
+          <div>Spend <span class="t h">H</span></div><div>Estimated ₹1,000–1,500 per couple. A plated dessert or special drink lifts the bill.</div>
+          <div>Needs</div><div>Privacy, soft light, a corner table, feeling looked after; “premium but not intimidating” (manual).</div>
+          <div>Decides via</div><div>Instagram ambience posts, rooftop lists, and asking whether a table can be reserved.</div>
+          <div>Choose because</div><div>A cosy rooftop for less than a restobar such as The Living Room (≈ ₹2,100).</div>
+          <div>Reject because</div><div>Noise from groups or gaming, smoke near tables, no booking route.</div>
+          <div>Return trigger</div><div>Anniversaries and “our place”. A reserved corner with a small surprise.</div>
+          <div>Most relevant</div><div>The quiet rooftop corner, evening coffee and dessert pairings.</div>
+        </div>
+        <p class="xs" style="margin-top:1.6mm;"><span class="t s">S</span><b>Managing both:</b> zone the space. Group tables and PS5 sit in one area, couples’ corners at the far edge of the roof. Otherwise each audience rejects the café because of the other.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pf"><span>Ages, spend and geography are strategist estimates or hypotheses; no customer data was supplied</span><span>5 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 6 ============ -->
+<section class="page" id="p6">
+  <div class="ph"><span class="num">06</span><span class="sec">Audience behaviour · opportunity segment and decision journey</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:96mm 1fr;gap:8mm;">
+    <div>
+      <h2>Selective opportunity · Hosted small gatherings</h2>
+      <p class="small" style="margin-bottom:2mm;">Birthdays, farewells and small team outings of 6–15 people, booked ahead, ideally on Monday to Thursday evenings when tables would otherwise sit empty.</p>
+      <div class="kv" style="grid-template-columns:24mm 1fr;">
+        <div>Geography</div><div><span class="t h">H</span>Anna Nagar residents, plus offices and colleges within about 20 minutes.</div>
+        <div>Life stage</div><div><span class="t h">H</span>About 20–35; the organiser is usually one person choosing for a group.</div>
+        <div>Occasion</div><div>Pre-booked evening, 2–3 hours, on a weekday or early weekend slot.</div>
+        <div>Spend <span class="t h">H</span></div><div>A set package, estimated at ₹600–900 per head. It needs costing before launch.</div>
+        <div>Needs</div><div>A reserved area, a fixed price per head, decoration allowed, someone in charge on the night.</div>
+        <div>Decides via</div><div>Lists of party venues and rooftops, WhatsApp enquiries, comparing quotes. On De Roof is a known celebration venue<a class="r" href="https://www.justdial.com/Chennai/On-D-Roof-Restaurant-Shanthi-Colony-Anna-Nagar/044PXX44-XX44-211214165940-Q8N2_BZDET">[11]</a>, and VR Game Cafe promotes birthdays<a class="r" href="https://vrgamecafe.in/">[24]</a>.</div>
+        <div>Choose / reject</div><div>Chosen for a rooftop plus play at a café price. Rejected over capacity doubts, weather risk, or no package.</div>
+        <div>Return trigger</div><div>Guests who come back on their own; each event is a sampling event.</div>
+      </div>
+      <p class="xs" style="margin-top:1.8mm;"><span class="t s">S</span><b>Why only selective:</b> it brings the highest spend per booking, but repeat rates and operational fit are weaker. Large parties can crowd out the regulars the brand depends on. Cap the number of events per week and keep them off peak.</p>
+    </div>
+    <div>
+      <h3>Customer decision journey · friend groups and couples</h3>
+      <div class="stage">
+        <div><span class="st">Discovery</span>Reels and stories, a friend’s post, “rooftop café Anna Nagar” searches on Google, Zomato and District.<div class="bar"><b>Barrier:</b> no official website or Instagram presence could be verified, so La Mirajh barely appears in search<a class="r" href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east">[3]</a>.</div></div>
+        <div><span class="st">Comparison</span>Ratings, photos and menu prices side by side with On De Roof and Double Roti.<div class="bar"><b>Barrier:</b> 0–16 ratings against 1,000s for rivals; the cuisine tags contradict each other, and no item prices are visible.</div></div>
+        <div><span class="st">Visit decision</span>“Is it open, can we get a table, will it rain, is the PS5 free?”<div class="bar"><b>Barrier:</b> the Nov–Dec monsoon <span class="t h">H</span>, unclear booking, unconfirmed PS5 status.</div></div>
+        <div><span class="st">Experience</span>Arrival, seating, ordering, food, play, lingering.<div class="bar"><b>Barrier:</b> unknown. Rooftop access, service speed and food consistency all need an on-site audit <span class="t h">H</span>.</div></div>
+        <div><span class="st">Return / recommend</span>Back next week, posts a story, leaves a review.<div class="bar"><b>Barrier:</b> no known loyalty mechanic, no regular night, and no prompt to review.</div></div>
+      </div>
+      <div class="box" style="margin-top:3.2mm;">
+        <h3>Where the journey breaks today <span class="t s">S</span></h3>
+        <p class="small" style="margin-bottom:1.2mm;">The biggest losses come <b>before the visit</b>, at discovery and comparison. The venue may be good, but a customer can’t see it. Proof work on reviews, real photography, a visible menu and consistent listings is therefore the cheapest and fastest lever, and it should come before paid reach.</p>
+        <p class="small" style="margin:0;">The <b>return</b> stage is the second lever. A ₹4 lakh month needs regulars, and regulars need a reason to come back on a set day.</p>
+      </div>
+      <h3 style="margin-top:3mm;">Psychographic hypotheses to test <span class="t h">H</span></h3>
+      <ul class="b small">
+        <li>The core audience values <b>time and space to talk</b> more than novelty dishes, and leaves when rushed.</li>
+        <li>Gaming works as an <b>icebreaker</b> for mixed groups, not as the main reason to visit.</li>
+        <li>“Premium” to this audience means <b>being looked after</b>, not expensive décor.</li>
+      </ul>
+      <p class="xs muted">Suggested validation: 30 short exit conversations over two weeks, plus a tally of party size, time of day and PS5 use.</p>
+    </div>
+  </div>
+  <div class="pf"><span>Monsoon note: Chennai’s north-east monsoon typically runs October–December, which overlaps the programme launch</span><span>6 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 7 ============ -->
+<section class="page" id="p7">
+  <div class="ph"><span class="num">07</span><span class="sec">SWOT · evidence, implications, actions</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:1fr 74mm;gap:6mm;">
+    <div class="swot">
+      <div class="q"><div class="qt">Strengths <span>internal advantages</span></div><ol>
+        <li><b>S1 · Rooftop seating at a café price</b>Rooftop listed at ≈ ₹1,000 for two<a class="r" href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">[5]</a>, below The Living Room and level with On De Roof. <i>Implication</i> An accessible setting for repeat visits. <i>Response</i> Make the rooftop evening the hero occasion and publish prices.</li>
+        <li><b>S2 · Multi-zone venue, open late</b>Rooftop, indoor and outdoor seating, a gaming zone<a class="r" href="https://www.superchennai.com/visit/restaurants-in-chennai">[6]</a>, and a 23:45 close, the latest in the set. <i>Implication</i> It can host groups and couples side by side and fall back indoors. <i>Response</i> Zone by occasion and own the late slot.</li>
+        <li><b>S3 · A ready identity with an ownable idea</b>A complete manual covering logo suite, palette, voice and packaging, plus <i style="text-transform:none;color:inherit;font-weight:400;letter-spacing:0;font-size:inherit;">Coffee · Community · Convo</i><a class="r" href="https://drive.google.com/file/d/1vDv6sP4myUIB99LaGe39bNbXJYZTIJqR/view">[1]</a>. <i>Implication</i> No rebrand cost; the conversation idea is already in the logo. <i>Response</i> Build the positioning on “Convo”.</li>
+      </ol></div>
+      <div class="q"><div class="qt">Weaknesses <span>internal limits</span></div><ol>
+        <li><b>W1 · Almost no public proof</b>District shows “not enough ratings” and the Zomato snapshots conflict (3.7 from 16, or a single rating). Website and Instagram are unverified. <i>Implication</i> It loses at the comparison stage. <i>Response</i> A post-visit review routine and listings brought into line.</li>
+        <li><b>W2 · No product identity</b>Platform cuisine tags contradict each other, and there is no signature item or visible price. <i>Implication</i> No “you must order…” reason to return. <i>Response</i> Choose three signatures and align every menu and listing.</li>
+        <li><b>W3 · Unverified facilities and a scale gap</b>PS5, smoke zone and rain cover are unconfirmed. The target needs about three times today’s guests (p.1). <i>Implication</i> There is a risk of promising what can’t be delivered. <i>Response</i> An operations audit and a weekly tally of guests and spend.</li>
+      </ol></div>
+      <div class="q"><div class="qt">Opportunities <span>external demand</span></div><ol>
+        <li><b>O1 · Sustained rooftop demand in this micro-market</b>On De Roof alone carries 1,225 Zomato and 4,463 Justdial ratings<a class="r" href="https://www.justdial.com/Chennai/On-D-Roof-Restaurant-Shanthi-Colony-Anna-Nagar/044PXX44-XX44-211214165940-Q8N2_BZDET">[11]</a>. <i>Implication</i> The category doesn’t need creating. <i>Response</i> Win one specific rooftop occasion.</li>
+        <li><b>O2 · Appetite for social play</b>Board-game and gaming cafés are active nearby: The Board Room (≈1,300 reviews), VR Game Cafe, Gaming Garage<a class="r" href="https://gaminggaragechennai.com/">[31]</a>. <i>Implication</i> Groups value something to do. <i>Response</i> Light, included play as the group icebreaker.</li>
+        <li><b>O3 · Rivals’ peak-time friction</b>Waits and slow attention recur at Double Roti and The Board Room<a class="r" href="https://www.justdial.com/Chennai/Double-Roti-Near-Shree-Mittai-Marry-Brown-Family-Restaurant-Anna-Nagar-East/044PXX44-XX44-160128175711-D5H3_BZDET">[22]</a>. <i>Implication</i> Room to win on hosting. <i>Response</i> A measurable hosting standard.</li>
+      </ol></div>
+      <div class="q"><div class="qt">Threats <span>external pressures</span></div><ol>
+        <li><b>T1 · Look-alike rooftops and discounting</b>Ibiza at ₹700 with 20% offers<a class="r" href="https://www.district.in/dining/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[14]</a>, On De Roof and Flamingo nearby. <i>Implication</i> “Rooftop” is becoming a commodity and invites a price war. <i>Response</i> Differentiate on occasion, not discounts.</li>
+        <li><b>T2 · Weather exposure at launch</b>The 1 Nov start falls in the north-east monsoon; summer heat follows <span class="t h">H</span>. <i>Implication</i> Rooftop demand will be volatile. <i>Response</i> Confirm covered capacity before launch and make it visible.</li>
+        <li><b>T3 · Regulatory and reputational risk</b>“Smoke-friendly” is a manual positioning point. Tobacco promotion is restricted in India (COTPA), and smoke deters couples. <i>Implication</i> Legal and audience risk. <i>Response</i> Get legal advice and drop it from marketing.</li>
+      </ol></div>
+    </div>
+    <div>
+      <h3>Strategic actions · ranked</h3>
+      <div class="box" style="padding:2.6mm 3mm;margin-bottom:2mm;">
+        <div class="dec"><span class="num-badge">1</span><div class="small"><b>W→O · Close the proof gap first.</b> Fix W1 and W2 to win comparisons against rivals with large review bases (O1, O3): three signatures, consistent listings, real photography and a review routine.<div class="xs muted">Relevance high · feasibility high · cost low</div></div></div>
+      </div>
+      <div class="box" style="padding:2.6mm 3mm;margin-bottom:2mm;">
+        <div class="dec"><span class="num-badge">2</span><div class="small"><b>S→O · A weekly rooftop group night.</b> Use the rooftop, the zones and the late close (S1, S2) to capture group and play demand (O1, O2) with a recurring, bookable group table that includes the PS5.<div class="xs muted">Relevance high · feasibility medium</div></div></div>
+      </div>
+      <div class="box" style="padding:2.6mm 3mm;margin-bottom:2mm;">
+        <div class="dec"><span class="num-badge">3</span><div class="small"><b>W×T · Audit before 1 November.</b> Confirm rain cover, PS5 and hours, and get legal advice on the smoking language (W3 meets T2 and T3). Promote nothing that can’t be delivered on a wet Friday.<div class="xs muted">Relevance high · feasibility high · protects reputation</div></div></div>
+      </div>
+      <div class="box" style="padding:2.6mm 3mm;">
+        <div class="dec"><span class="num-badge">4</span><div class="small"><b>S→T · Compete on hosting, not price.</b> Use the identity system (S3) and a hosting standard to resist rooftop commoditisation and the discounting from Ibiza (T1).<div class="xs muted">Relevance medium-high · builds over time</div></div></div>
+      </div>
+      <p class="xs muted" style="margin-top:1.6mm;">Rankings are strategist judgement on commercial relevance and feasibility. No measured performance data was available.</p>
+    </div>
+  </div>
+  <div class="pf"><span>COTPA = Cigarettes and Other Tobacco Products Act, 2003 · seek qualified legal advice before any smoking-related communication</span><span>7 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 8 ============ -->
+<section class="page" id="p8">
+  <div class="ph"><span class="num">08</span><span class="sec">Positioning graph</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:158mm 1fr;gap:6mm;">
+    <div>
+      <h2 style="margin-bottom:1mm;">Why people choose · what they come for × how the table behaves</h2>
+      <p class="xs muted" style="margin-bottom:1mm;">These two axes separate the real choices in this set. Price is left off the graph because platform cost-for-two figures are inconsistent. It sits in the table instead.</p>
+      <svg viewBox="0 0 600 400" width="158mm" height="105.3mm" style="display:block;font-family:Glyphs,Lato,sans-serif;">
+        <!-- plot area 70..580 x, 20..350 y -->
+        <rect x="70" y="20" width="510" height="330" fill="#FBEBC9" stroke="#004C6A" stroke-opacity=".35"/>
+        <line x1="325" y1="20" x2="325" y2="350" stroke="#004C6A" stroke-opacity=".3" stroke-dasharray="4 4"/>
+        <line x1="70" y1="185" x2="580" y2="185" stroke="#004C6A" stroke-opacity=".3" stroke-dasharray="4 4"/>
+        <!-- quadrant labels -->
+        <text x="78" y="36" font-size="10" fill="#8A5D3B" font-weight="700" letter-spacing=".5">FOOD-LED · LIVELY</text>
+        <text x="572" y="36" font-size="10" fill="#8A5D3B" font-weight="700" text-anchor="end" letter-spacing=".5">ACTIVITY &amp; PARTY VENUES</text>
+        <text x="78" y="342" font-size="10" fill="#8A5D3B" font-weight="700" letter-spacing=".5">COFFEE &amp; FOOD · QUIET</text>
+        <text x="572" y="342" font-size="10" fill="#8A5D3B" font-weight="700" text-anchor="end" letter-spacing=".5">SETTING-LED · CALM EVENINGS</text>
+        <!-- axes labels -->
+        <text x="70" y="370" font-size="11" fill="#004C6A" font-weight="700">← Food-and-drink-led visit</text>
+        <text x="580" y="370" font-size="11" fill="#004C6A" font-weight="700" text-anchor="end">Venue-and-experience-led visit →</text>
+        <text x="325" y="392" font-size="10" fill="#004C6A" text-anchor="middle" opacity=".8">X · what the customer goes for (0–10)</text>
+        <text transform="translate(28 185) rotate(-90)" font-size="11" fill="#004C6A" font-weight="700" text-anchor="middle">Quiet conversation ↔ Active group interaction</text>
+        <text transform="translate(48 185) rotate(-90)" font-size="9.5" fill="#004C6A" text-anchor="middle" opacity=".8">Y · how the table behaves (0–10)</text>
+        <!-- ticks -->
+        <g font-size="9" fill="#004C6A" opacity=".7">
+          <text x="70" y="362" text-anchor="middle">0</text><text x="325" y="362" text-anchor="middle">5</text><text x="580" y="362" text-anchor="middle">10</text>
+          <text x="64" y="353" text-anchor="end">0</text><text x="64" y="188" text-anchor="end">5</text><text x="64" y="24" text-anchor="end">10</text>
+        </g>
+        <!-- helper: x = 70 + 51*X ; y = 350 - 33*Y -->
+        <!-- Double Roti (2.0,5.6) -->
+        <circle cx="172" cy="165.2" r="7" fill="#004C6A"/>
+        <text x="182" y="160" font-size="11.5" fill="#0d3a4f" font-weight="700">Double Roti</text>
+        <!-- India Brew House (2.4,2.0) indirect -->
+        <circle cx="192.4" cy="284" r="7" fill="#FFF2D4" stroke="#004C6A" stroke-width="2.2"/>
+        <text x="203" y="288" font-size="11.5" fill="#0d3a4f" font-weight="700">India Brew House</text>
+        <!-- On De Roof (5.8,6.3) -->
+        <circle cx="365.8" cy="142.1" r="7" fill="#004C6A"/>
+        <text x="355" y="138" font-size="11.5" fill="#0d3a4f" font-weight="700" text-anchor="end">On De Roof</text>
+        <!-- Living Room (7.2,7.4) benchmark diamond -->
+        <rect x="431.2" y="98.8" width="12" height="12" transform="rotate(45 437.2 104.8)" fill="#D6A84A" stroke="#8A5D3B" stroke-width="1.2"/>
+        <text x="449" y="101" font-size="11.5" fill="#0d3a4f" font-weight="700">The Living Room</text>
+        <!-- Board Room (7.8,8.5) -->
+        <circle cx="467.8" cy="69.5" r="7" fill="#004C6A"/>
+        <text x="457" y="66" font-size="11.5" fill="#0d3a4f" font-weight="700" text-anchor="end">The Board Room</text>
+        <!-- VR Game Cafe (9.1,9.2) indirect -->
+        <circle cx="534.1" cy="46.4" r="7" fill="#FFF2D4" stroke="#004C6A" stroke-width="2.2"/>
+        <text x="534" y="70" font-size="11.5" fill="#0d3a4f" font-weight="700" text-anchor="middle">VR Game Cafe</text>
+        <!-- Ibiza (5.2,4.3) low confidence -->
+        <circle cx="335.2" cy="208.1" r="7" fill="#FFF2D4" stroke="#004C6A" stroke-width="2" stroke-dasharray="3 2"/>
+        <circle cx="335.2" cy="208.1" r="3" fill="#004C6A"/>
+        <text x="324" y="226" font-size="11.5" fill="#0d3a4f" font-weight="700" text-anchor="end">Ibiza Rooftop</text>
+        <text x="324" y="238" font-size="9" fill="#0d3a4f" text-anchor="end">(low evidence)</text>
+        <!-- La Mirajh current (6.6,5.5) -->
+        <circle cx="406.6" cy="168.5" r="10" fill="none" stroke="#BE1E2D" stroke-width="2.4" stroke-dasharray="4 3"/>
+        <circle cx="406.6" cy="168.5" r="3.2" fill="#BE1E2D"/>
+        <text x="421" y="166" font-size="11.5" fill="#BE1E2D" font-weight="700">La Mirajh · today</text>
+        <text x="421" y="179" font-size="9" fill="#BE1E2D">evidence-supported, unclear</text>
+        <!-- arrow to target (7.8,3.2) -->
+        <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#BE1E2D"/></marker></defs>
+        <path d="M414 180 Q 445 215 459 236" fill="none" stroke="#BE1E2D" stroke-width="2" marker-end="url(#ah)"/>
+        <!-- La Mirajh target star (7.8,3.2) => x=467.8 y=244.4 -->
+        <polygon points="467.8,230.4 471.9,240.2 482.4,240.9 474.4,247.6 476.9,257.8 467.8,252.2 458.7,257.8 461.2,247.6 453.2,240.9 463.7,240.2" fill="#BE1E2D"/>
+        <text x="467.8" y="276" font-size="11.5" fill="#BE1E2D" font-weight="700" text-anchor="middle">La Mirajh · target</text>
+        <text x="467.8" y="289" font-size="9" fill="#BE1E2D" text-anchor="middle">rooftop café for conversation</text>
+      </svg>
+      <div class="legend" style="margin-top:1mm;font-size:7.2pt;">
+        <span>● Direct competitor</span><span>○ Indirect alternative</span><span>◌ Low-evidence placement</span><span style="color:#8A5D3B;">◆ Aspirational benchmark</span><span style="color:var(--red);">◎ La Mirajh today (dashed) · ★ recommended target</span>
+      </div>
+    </div>
+    <div>
+      <h3>Scoring rubric</h3>
+      <p class="xs"><b>X:</b> 0 means the reason to visit is a dish or a coffee. Points are added for rooftop or terrace, a structured activity, events, DJ or sport, and points are removed where listings centre on named signature dishes. <b>Y:</b> 0 means work, study or quiet talk. Points are added for games, parties, live sport and group packages.</p>
+      <table style="margin-top:1.2mm;">
+        <tr><th>Outlet</th><th style="text-align:center;">X</th><th style="text-align:center;">Y</th><th>₹ for two</th><th>Main evidence</th></tr>
+        <tr><td class="n">Double Roti</td><td class="score">2.0</td><td class="score">5.6</td><td style="white-space:nowrap;">950–2,000</td><td>Burger signatures; crowds<a class="r" href="https://lbb.in/chennai/best-burgers-chennai">[30]</a></td></tr>
+        <tr><td class="n">India Brew House</td><td class="score">2.4</td><td class="score">2.0</td><td style="white-space:nowrap;">450–700</td><td>Work and hangouts, coffee<a class="r" href="https://www.swiggy.com/restaurants/chennai/anna-nagar/india-brew-house-837695/dineout">[27]</a></td></tr>
+        <tr><td class="n">Ibiza Rooftop</td><td class="score">5.2</td><td class="score">4.3</td><td style="white-space:nowrap;">700</td><td>Rooftop, generic menu; thin<a class="r" href="https://www.zomato.com/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">[13]</a></td></tr>
+        <tr><td class="n">On De Roof</td><td class="score">5.8</td><td class="score">6.3</td><td style="white-space:nowrap;">800–1,100</td><td>Rooftop, celebrations, sport<a class="r" href="https://www.justdial.com/Chennai/On-D-Roof-Restaurant-Shanthi-Colony-Anna-Nagar/044PXX44-XX44-211214165940-Q8N2_BZDET">[11]</a></td></tr>
+        <tr><td class="n">The Living Room</td><td class="score">7.2</td><td class="score">7.4</td><td style="white-space:nowrap;">≈2,100</td><td>Restobar, DJ, sport<a class="r" href="https://www.eazydiner.com/chennai/the-living-room-anna-nagar-east-chennai-673240">[28]</a></td></tr>
+        <tr><td class="n">The Board Room</td><td class="score">7.8</td><td class="score">8.5</td><td style="white-space:nowrap;">1,000–1,200</td><td>500+ games, guides<a class="r" href="https://www.justdial.com/Chennai/The-Board-Room-Anna-Nagar/044PXX44-XX44-230803181114-G4I3_BZDET">[16]</a></td></tr>
+        <tr><td class="n">VR Game Cafe</td><td class="score">9.1</td><td class="score">9.2</td><td style="white-space:nowrap;">PS5 ₹150/hr</td><td>PS5/VR by the hour, birthdays<a class="r" href="https://vrgamecafe.in/">[24]</a></td></tr>
+        <tr class="lm"><td class="n" style="color:var(--red);">La Mirajh today</td><td class="score">6.6</td><td class="score">5.5</td><td style="white-space:nowrap;">1,000</td><td>Rooftop, gaming zone, mixed menu; conflicting signals</td></tr>
+        <tr class="lm"><td class="n" style="color:var(--red);">La Mirajh target</td><td class="score">7.8</td><td class="score">3.2</td><td style="white-space:nowrap;">1,000*</td><td>Proposed. Not yet earned</td></tr>
+      </table>
+      <p class="xs muted" style="margin-top:1.2mm;">Placements are strategist assessments of public evidence. They are not consumer survey results. Prices are indicative platform bands. *Target assumes today’s price frame, with spend lifted through shareables.</p>
+      <h3 style="margin-top:2mm;">Reading the map <span class="t s">S</span></h3>
+      <ul class="b xs">
+        <li><b>Clusters:</b> experience-led venues sit high and loud (games, sport, DJ). Quiet options are food or coffee-led.</li>
+        <li><b>The trade-off:</b> a memorable setting usually means noise, and a calm table usually means an ordinary room.</li>
+        <li><b>Emphasise:</b> setting-led <i>and</i> calm, the lower-right. It’s contested (Ibiza sits nearby), not empty.</li>
+        <li><b>To earn it:</b> rain-ready seating, a quiet zone kept apart from PS5, an evening menu, and reviews that mention hosting.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pf"><span>Scale 0–10 per axis · all coordinates re-derived from evidence observed 21 Oct 2026</span><span>8 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 9 ============ -->
+<section class="page" id="p9">
+  <div class="ph"><span class="num">09</span><span class="sec">Recommended brand position</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:3mm;margin-bottom:3mm;">
+    <div class="box" style="padding:2.2mm 2.6mm;"><h3 style="margin-bottom:.6mm;">Customer need</h3><div class="xs">An unhurried evening out with friends or a partner that feels special without restobar prices or noise.</div></div>
+    <div class="box" style="padding:2.2mm 2.6mm;"><h3 style="margin-bottom:.6mm;">Priority audience</h3><div class="xs">Local friend groups of 3–5, aged about 20–30. Couples second.</div></div>
+    <div class="box" style="padding:2.2mm 2.6mm;"><h3 style="margin-bottom:.6mm;">Frame of reference</h3><div class="xs">Evening café and rooftop hangouts in Anna Nagar, ₹700–1,200 for two.</div></div>
+    <div class="box" style="padding:2.2mm 2.6mm;"><h3 style="margin-bottom:.6mm;">Distinctive benefit</h3><div class="xs">A rooftop table you can keep all evening: calm, hosted, with something to share and something to play.</div></div>
+    <div class="box" style="padding:2.2mm 2.6mm;"><h3 style="margin-bottom:.6mm;">Evidence today</h3><div class="xs">Rooftop, ₹1,000 for two, 23:45 close (V). PS5 and the Convo identity (C). Hosting not yet proven.</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 112mm;gap:6mm;">
+    <div>
+      <h3>Three territories evaluated <span class="t s">S</span></h3>
+      <table>
+        <tr><th>Territory</th><th style="text-align:center;">Relevance</th><th style="text-align:center;">Differentiation</th><th style="text-align:center;">Credibility</th><th style="text-align:center;">Commercial</th><th style="text-align:center;">Ops fit</th><th>Verdict</th></tr>
+        <tr><td class="n">A · Affordable rooftop luxury (current manual)</td><td class="score">4</td><td class="score">2</td><td class="score">2</td><td class="score">3</td><td class="score">3</td><td class="xs">Shared with 3+ rooftops; “luxury” unproven</td></tr>
+        <tr><td class="n">B · Rooftop play lounge (PS5-led)</td><td class="score">3</td><td class="score">4</td><td class="score">2</td><td class="score">3</td><td class="score">2</td><td class="xs">Fights gaming cafés on their ground; PS5 unverified; alienates couples</td></tr>
+        <tr class="lm"><td class="n">C · The rooftop café made for conversation</td><td class="score">5</td><td class="score">4</td><td class="score">3</td><td class="score">4</td><td class="score">4</td><td class="xs"><b>Recommended.</b> Already in the logo; play and rooftop become proof points</td></tr>
+      </table>
+      <p class="xs muted" style="margin-top:1mm;">Scored 1–5 by the strategist. Credibility for C rises to 4–5 once the proof points below are in place.</p>
+
+      <div class="box blue" style="margin-top:2.6mm;">
+        <h3>Positioning statement</h3>
+        <p style="font-family:'Glyphs','EB Garamond',serif;font-size:12.6pt;line-height:1.2;margin-bottom:2mm;">For friends and couples around Anna Nagar who want an evening that feels special without a restobar’s noise or bill, Café La Mirajh is the rooftop café made for conversation: good coffee, shareable comfort food and an easy game keep the table together under an open sky, with hosts who let you stay.</p>
+        <h3>Brand promise</h3>
+        <p style="font-family:'Glyphs','EB Garamond',serif;font-weight:700;font-size:15pt;line-height:1.1;margin:0;">“Your table on the rooftop, for as long as the conversation lasts.”</p>
+      </div>
+      <h3 style="margin-top:2.6mm;">Commercial implications <span class="t s">S</span></h3>
+      <ul class="b xs">
+        <li><b>Volume:</b> weekly group nights and repeat regulars are the main route to the illustrative ≈27 guests a day needed for ₹4 lakh.</li>
+        <li><b>Spend:</b> shareable plates, pitchers and dessert pairings raise the bill per table without breaking the café price frame.</li>
+        <li><b>₹8 lakh</b> depends on covered capacity and staffing. Validate both before planning the second step.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Three reasons to believe</h3>
+      <div class="kv" style="grid-template-columns:32mm 1fr;margin-bottom:2.4mm;">
+        <div>Open-sky tables, café prices</div><div><span class="t v">V</span>Rooftop seating at ≈ ₹1,000 for two, open until 23:45<a class="r" href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">[5]</a>.</div>
+        <div>Play that brings the table together</div><div><span class="t c">C</span>A PS5 corner for groups. It must be confirmed as operating before it is claimed.</div>
+        <div>Hosted, never hurried</div><div><span class="t h">H</span>To be built: a named table host, a time-to-first-order standard, and reviews that mention it.</div>
+      </div>
+      <h3>Communication priorities</h3>
+      <ol class="small" style="list-style:none;margin-bottom:2.4mm;">
+        <li style="margin-bottom:1mm;"><b>1 · Show the real evening table.</b> Real photography of groups and couples at dusk on the roof, in place of stock imagery.</li>
+        <li style="margin-bottom:1mm;"><b>2 · Name the signatures and prices.</b> Three items and a clear “₹ for two” so people can decide quickly.</li>
+        <li><b>3 · Make the ritual bookable.</b> One recurring group night and a visible table-booking route.</li>
+      </ol>
+      <h3>Avoid claiming</h3>
+      <ul class="b small">
+        <li><b>“Anna Nagar’s best or most-loved rooftop”:</b> there is no review base to support it.</li>
+        <li><b>“Luxury” or “premium” as a headline:</b> the price is mid-market and unproven by reviews. Let guests say it.</li>
+        <li><b>“Smoke-friendly”, “gaming lounge”, or “panoramic views”:</b> legally sensitive, unverified, or not yet confirmed respectively.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pf"><span>Positioning builds on the client’s existing tagline “Coffee · Community · Convo” and brand voice</span><span>9 / 10</span></div>
+</section>
+
+<!-- ============ PAGE 10 ============ -->
+<section class="page" id="p10">
+  <div class="ph"><span class="num">10</span><span class="sec">Sources, methodology, limitations and next decisions</span><img class="mark" src="assets/logo-mark.png" alt=""></div>
+  <div class="grid" style="grid-template-columns:1fr 88mm;gap:7mm;">
+    <div>
+      <h3>Sources · all observed 21 Oct 2026 unless stated</h3>
+      <ol class="src">
+        <li><span class="sn">1</span><a href="https://drive.google.com/file/d/1vDv6sP4myUIB99LaGe39bNbXJYZTIJqR/view">Café La Mirajh Brand Guidelines</a> (client PDF, 36 pp., reviewed in full)</li>
+        <li><span class="sn">2</span><a href="https://drive.google.com/drive/folders/1PzuZ5YMsOgiGwDWjxW0ukcz2CA0lNeWz">Drive logo pack</a>: 5 files listed (files modified Nov 2025). Logo taken from the supplied primary artwork.</li>
+        <li><span class="sn">3</span><a href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east">Zomato · Cafe la Mirajh</a></li>
+        <li><span class="sn">4</span><a href="https://www.zomato.com/chennai/cafe-la-mirajh-anna-nagar-east/menu">Zomato · Cafe la Mirajh menu</a> (sections only; item prices not retrievable)</li>
+        <li><span class="sn">5</span><a href="https://www.district.in/dining/chennai/cafe-la-mirajh-anna-nagar-east">District · Cafe la Mirajh</a></li>
+        <li><span class="sn">6</span><a href="https://www.superchennai.com/visit/restaurants-in-chennai">Superchennai · Restaurants in Chennai</a> (mention of gaming zones; low confidence)</li>
+        <li><span class="sn">7</span><a href="https://www.instagram.com/cafe_la_mirajh_/">Instagram @cafe_la_mirajh_</a> <em>Not accessible</em></li>
+        <li><span class="sn">8</span><a href="https://share.google/JqZsHD68KvKeSnacR">Google Business Profile</a> <em>Not accessible</em></li>
+        <li><span class="sn">9</span><a href="https://www.lamirajh.in/">lamirajh.in</a> <em>Not accessible; not found in search index</em></li>
+        <li><span class="sn">10</span><a href="https://www.zomato.com/chennai/on-de-roof-anna-nagar-east">Zomato · On De Roof</a></li>
+        <li><span class="sn">11</span><a href="https://www.justdial.com/Chennai/On-D-Roof-Restaurant-Shanthi-Colony-Anna-Nagar/044PXX44-XX44-211214165940-Q8N2_BZDET">Justdial · On D Roof</a></li>
+        <li><span class="sn">12</span><a href="https://www.eazydiner.com/chennai/on-d-roof-anna-nagar-east-chennai-686312">EazyDiner · On D Roof</a></li>
+        <li><span class="sn">13</span><a href="https://www.zomato.com/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">Zomato · Ibiza Rooftop Lounge &amp; Bistro Cafe</a></li>
+        <li><span class="sn">14</span><a href="https://www.district.in/dining/chennai/ibiza-rooftop-lounge-bistro-cafe-anna-nagar-east">District · Ibiza Rooftop</a></li>
+        <li><span class="sn">15</span><a href="https://www.zomato.com/chennai/the-board-room-anna-nagar-east">Zomato · The Board Room, Anna Nagar East</a></li>
+        <li><span class="sn">16</span><a href="https://www.justdial.com/Chennai/The-Board-Room-Anna-Nagar/044PXX44-XX44-230803181114-G4I3_BZDET">Justdial · The Board Room, Anna Nagar</a></li>
+        <li><span class="sn">17</span><a href="https://www.district.in/dining/chennai/the-board-room-anna-nagar-east">District · The Board Room</a></li>
+        <li><span class="sn">18</span><a href="https://laptopfriendlycafe.com/cafes/chennai/the-board-room">Laptop Friendly Cafe · The Board Room</a> (may be dated)</li>
+        <li><span class="sn">19</span><a href="https://www.zomato.com/chennai/double-roti-anna-nagar-east">Zomato · Double Roti, Anna Nagar East</a></li>
+        <li><span class="sn">20</span><a href="https://magicpin.in/Chennai/Anna-Nagar-East/Restaurant/Double-Roti/store/89170/">magicpin · Double Roti</a></li>
+        <li><span class="sn">21</span><a href="https://www.eazydiner.com/chennai/double-roti-anna-nagar-east-chennai-658779">EazyDiner · Double Roti</a></li>
+        <li><span class="sn">22</span><a href="https://www.justdial.com/Chennai/Double-Roti-Near-Shree-Mittai-Marry-Brown-Family-Restaurant-Anna-Nagar-East/044PXX44-XX44-160128175711-D5H3_BZDET">Justdial · Double Roti</a></li>
+        <li><span class="sn">23</span><a href="https://www.district.in/dining/chennai/double-roti-anna-nagar-east">District · Double Roti</a></li>
+        <li><span class="sn">24</span><a href="https://vrgamecafe.in/">VR Game Cafe · official site</a></li>
+        <li><span class="sn">25</span><a href="https://www.eazydiner.com/chennai/vr-game-cafe-anna-nagar-east-chennai-700710">EazyDiner · VR Game Cafe</a></li>
+        <li><span class="sn">26</span><a href="https://www.zomato.com/chennai/india-brew-house-anna-nagar-east">Zomato · India Brew House, Anna Nagar East</a></li>
+        <li><span class="sn">27</span><a href="https://www.swiggy.com/restaurants/chennai/anna-nagar/india-brew-house-837695/dineout">Swiggy Dineout · India Brew House</a></li>
+        <li><span class="sn">28</span><a href="https://www.eazydiner.com/chennai/the-living-room-anna-nagar-east-chennai-673240">EazyDiner · The Living Room</a></li>
+        <li><span class="sn">29</span><a href="https://www.thelivingroomchennai.com/terrace/">The Living Room · Terrace page</a></li>
+        <li><span class="sn">30</span><a href="https://lbb.in/chennai/best-burgers-chennai">LBB · Best burgers in Chennai</a></li>
+        <li><span class="sn">31</span><a href="https://gaminggaragechennai.com/">Gaming Garage</a> · <a href="https://midgardesportss.com/">Midgard E-sports</a> (considered, not selected)</li>
+        <li><span class="sn">32</span><a href="https://restaurant-guru.in/The-Board-Room-Chennai-2">Restaurant Guru · The Board Room</a></li>
+        <li><span class="sn">33</span><a href="https://thesouthfirst.com/featured/board-games-are-back-these-cosy-cafes-in-chennai-are-reviving-the-offline-play/">South First · Chennai board-game cafés</a></li>
+      </ol>
+      <div class="rule"></div>
+      <h3>Methodology &amp; limitations</h3>
+      <ul class="b xs" style="columns:2;column-gap:7mm;">
+        <li><b>Access:</b> our research environment could not load Instagram, Google, Zomato, District or lamirajh.in directly. Platform facts come from search-engine-indexed listing content, cross-checked across platforms. Treat <span class="t v">V</span> items as listing observations, not on-site verification.</li>
+        <li><b>Not reviewed:</b> La Mirajh’s and competitors’ Instagram feeds (0 posts sampled; the 12-post or 60-day sample was not possible), the Google profile and reviews, and the live website. Visual-identity comparisons are therefore omitted, not assumed.</li>
+        <li><b>Reviews:</b> platform review summaries plus a few individual reviews surfaced in search. This is not a bounded systematic sample, so the themes are directional.</li>
+        <li><b>Contradictions recorded, not resolved:</b> La Mirajh’s ratings (none / 1 / 16) and cuisine tags; Double Roti’s cost for two (₹950–2,000).</li>
+        <li><b>Not received:</b> the Le Smash reference files named in the brief were not attached, so the structure follows the brief.</li>
+        <li><b>Effect:</b> conclusions on proof gaps are robust. Conclusions on La Mirajh’s on-site experience are hypotheses until the operations audit.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="box blue" style="padding:4mm 4.2mm;">
+        <h3 style="font-size:8.4pt;">Three immediate decisions</h3>
+        <div class="dec"><span class="num-badge">1</span><div class="small"><b>Adopt “the rooftop café made for conversation”</b>, with friend groups as the primary audience and couples second. Retire “affordable luxury”, “night-life” and “smoke-friendly” as lead messages.</div></div>
+        <div class="dec"><span class="num-badge">2</span><div class="small"><b>Run a proof audit before 1 November.</b> Confirm rain-covered capacity, PS5 status and hours, booking route and current prices, then make Google, Zomato, District, Instagram and the website match.</div></div>
+        <div class="dec" style="margin-bottom:0;"><span class="num-badge">3</span><div class="small"><b>Choose three signatures and one weekly group night</b>, and start a post-visit review routine. Track guests, spend per head and new reviews from week one to test the ₹4 lakh path.</div></div>
+      </div>
+      <div class="box" style="margin-top:3mm;">
+        <h3>To validate in the first 30 days <span class="t h">H</span></h3>
+        <ul class="b xs" style="margin:0;">
+          <li>Party size, daypart and PS5 use: a two-week tally</li>
+          <li>Actual spend per guest compared with the ≈ ₹500 listing assumption</li>
+          <li>Travel distance of guests: is the 15–20 minute ring real?</li>
+          <li>Whether rooftop or indoor seating is preferred on rainy nights</li>
+          <li>Ibiza Rooftop’s review momentum: re-check within 60 days</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="pf"><span>No businesses, customers or creators were contacted; no accounts were changed</span><span>10 / 10</span></div>
+</section>
+
+</body>
+</html>

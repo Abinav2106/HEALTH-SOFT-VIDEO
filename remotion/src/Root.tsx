@@ -4,6 +4,8 @@ import {DURATION, FPS, HEIGHT, SHOTS, WIDTH} from './video06/constants';
 import {Video06, Video06Props} from './video06/Video06';
 import * as GF from './gofloaters/constants';
 import {GoFloatersLogo} from './gofloaters/GoFloatersLogo';
+import * as GFF from './gofloaters/film/timeline';
+import {HidingFilm} from './gofloaters/film/HidingFilm';
 
 const MG_FROM = SHOTS.s06.from; // motion-graphics section: shared choice → end card
 const OPENING_TO = SHOTS.s06.to; // 0–16 s: every live-action shot up to the product entrance
@@ -26,5 +28,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="V06-Master" component={Video06} durationInFrames={DURATION} {...common} defaultProps={{mode: 'master' as const}} />
     {/* GoFloaters: "the logo is the playground", 10 s logo animation (src/gofloaters). */}
     <Composition id="GF-LogoPlayground" component={GoFloatersLogo} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} />
+    {/* GoFloaters: "There's a workspace hiding in our name", typography-led 10 s film with the Tilo rig (src/gofloaters/film). */}
+    <Composition id="GF-HidingInOurName" component={HidingFilm} durationInFrames={GFF.DURATION} fps={GFF.FPS} width={GFF.W} height={GFF.H} />
   </>
 );

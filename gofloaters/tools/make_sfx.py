@@ -14,6 +14,19 @@ Writes 48 kHz / 24-bit stereo WAVs to remotion/public/audio/gofloaters/:
   tick     rhythmic letter landing
   land     plane landing / logo settle
 
+"There's a workspace hiding in our name" (GF-HidingInOurName) adds:
+  roll     the giant "o" rolling in: low rumble with a soft per-turn knock
+  thock    its sudden stop
+  squeak   Tilo's air-brake
+  flop     ears catching up
+  tink     the "6 seats" clue
+  whoosh   the "o" pivoting edge-on / folding back
+  whump    the doorway opening
+  seat1-6  six rising chair ticks (countable)
+  bump     the late "o" bumping over letter tops
+  clunk    the late "o" dropping into its slot, crooked
+  bonk     Tilo nose-first into the G
+
   python3 -I gofloaters/tools/make_sfx.py [out_dir]      (needs numpy only)
 """
 from __future__ import annotations
@@ -188,6 +201,98 @@ def land() -> np.ndarray:
     return stereo(norm(fade(body + air + shine, 0.5, 40), -1))
 
 
+def roll() -> np.ndarray:
+    dur = 1.75
+    tt = t(dur)
+    u = tt / dur
+    rumble = band(rng.standard_normal(len(tt)), 60, 380) * (0.35 + 0.65 * u)
+    knocks = np.zeros_like(tt)
+    for at in np.cumsum(np.full(6, 0.28)) - 0.2:
+        m = tt >= at
+        v = tt[m] - at
+        knocks[m] += tone(v, 140 + 40 * np.exp(-v / 0.02)) * np.exp(-v / 0.03) * 0.5
+    x = (rumble + knocks) * np.clip(u / 0.15, 0, 1)
+    return norm(pan(fade(x, 5, 15), np.linspace(-0.7, 0.0, len(tt))), -6)
+
+
+def thock() -> np.ndarray:
+    tt = t(0.25)
+    body = tone(tt, 95 + 160 * np.exp(-tt / 0.012)) * np.exp(-tt / 0.05)
+    wood = np.sin(2 * np.pi * 620 * tt) * np.exp(-tt / 0.018) * 0.45
+    air = band(rng.standard_normal(len(tt)), 400, 3000) * np.exp(-tt / 0.006) * 0.4
+    return stereo(norm(fade(body + wood + air, 0.3, 30), -1))
+
+
+def squeak() -> np.ndarray:
+    dur = 0.3
+    tt = t(dur)
+    u = tt / dur
+    f = 1500 + 700 * np.sin(np.pi * u) - 500 * u
+    x = (tone(tt, f) + 0.3 * tone(tt, 2 * f)) * np.sin(np.pi * u) ** 0.7
+    air = sweep_noise(dur, np.array([800, 400]), np.array([4000, 1800])) * np.sin(np.pi * u) * 0.6
+    return norm(pan(fade(x * 0.5 + air, 2, 30), np.linspace(0.5, 0.2, len(tt))), -5)
+
+
+def flop() -> np.ndarray:
+    tt = t(0.16)
+    x = tone(tt, 320 - 180 * tt / 0.16) * np.exp(-tt / 0.035)
+    flap = band(rng.standard_normal(len(tt)), 300, 1600) * np.exp(-tt / 0.01) * 0.5
+    return stereo(norm(fade(x + flap, 0.5, 20), -4))
+
+
+def tink() -> np.ndarray:
+    tt = t(0.35)
+    x = (np.sin(2 * np.pi * 2093 * tt) + 0.3 * np.sin(2 * np.pi * 3136 * tt)) * np.exp(-tt / 0.07)
+    return norm(stereo(x, np.roll(x, 120)), -6)
+
+
+def whoosh() -> np.ndarray:
+    dur = 0.4
+    tt = t(dur)
+    x = sweep_noise(dur, np.array([300, 900, 500]), np.array([1400, 4200, 2000]))
+    env = np.sin(np.pi * tt / dur) ** 1.5
+    return norm(pan(x * env, np.linspace(-0.2, 0.3, len(tt))), -4)
+
+
+def whump() -> np.ndarray:
+    tt = t(0.45)
+    body = tone(tt, 55 + 70 * np.exp(-tt / 0.05)) * np.exp(-tt / 0.12)
+    air = sweep_noise(0.45, np.array([200, 120]), np.array([1600, 600])) * np.exp(-tt / 0.08) * 0.5
+    return stereo(norm(fade(body + air, 3, 40), -2))
+
+
+def seat(k: int) -> np.ndarray:
+    tt = t(0.1)
+    f = 660 * 2 ** (k * 2 / 12)
+    x = np.sin(2 * np.pi * f * tt) * np.exp(-tt / 0.02) + tone(tt, 240) * np.exp(-tt / 0.008) * 0.5
+    p = np.full(len(tt), -0.35 if k < 3 else 0.35)
+    return norm(pan(fade(x, 0.3, 12), p), -4)
+
+
+def bump() -> np.ndarray:
+    tt = t(0.1)
+    x = tone(tt, 300 + 120 * np.exp(-tt / 0.01)) * np.exp(-tt / 0.025)
+    return stereo(norm(fade(x, 0.3, 15), -5))
+
+
+def clunk() -> np.ndarray:
+    tt = t(0.22)
+    body = tone(tt, 150 + 120 * np.exp(-tt / 0.01)) * np.exp(-tt / 0.04)
+    rattle = np.sin(2 * np.pi * 880 * tt) * np.exp(-tt / 0.02) * 0.3 * (1 + np.sign(np.sin(2 * np.pi * 38 * tt))) / 2
+    return stereo(norm(fade(body + rattle, 0.3, 25), -2))
+
+
+def bonk() -> np.ndarray:
+    tt = t(0.3)
+    f = 520 * np.exp(-tt / 0.12) + 180
+    x = tone(tt, f) * np.exp(-tt / 0.07)
+    hit = band(rng.standard_normal(len(tt)), 600, 5000) * np.exp(-tt / 0.004) * 0.6
+    return stereo(norm(fade(x + hit, 0.2, 30), -1))
+
+
 if __name__ == "__main__":
-    for fn in [pop, sparkle, swish, dodge, boop, snap, thump, click, ding, swoosh, tick, land]:
+    for fn in [pop, sparkle, swish, dodge, boop, snap, thump, click, ding, swoosh, tick, land,
+               roll, thock, squeak, flop, tink, whoosh, whump, bump, clunk, bonk]:
         write(fn.__name__, fn())
+    for k in range(6):
+        write(f"seat{k + 1}", seat(k))

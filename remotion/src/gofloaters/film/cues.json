@@ -1,0 +1,233 @@
+{
+ "_note": "SFX cue sheet for GF-HidingInOurName. 'at' is a frame at 30 fps; 'file' is a WAV in public/audio/gofloaters/ (gofloaters/tools/make_sfx.py). No music, no narration; silence frames 70-86 hold the joke.",
+ "sfx": [
+  {
+   "at": 0,
+   "file": "roll",
+   "gainDb": -12,
+   "note": "giant \"o\" rolls in"
+  },
+  {
+   "at": 52,
+   "file": "thock",
+   "gainDb": -8,
+   "note": "the \"o\" stops dead"
+  },
+  {
+   "at": 54,
+   "file": "squeak",
+   "gainDb": -15,
+   "note": "Tilo air-brakes"
+  },
+  {
+   "at": 55,
+   "file": "swish",
+   "gainDb": -20,
+   "note": "overshoot"
+  },
+  {
+   "at": 66,
+   "file": "flop",
+   "gainDb": -13,
+   "note": "ears catch up"
+  },
+  {
+   "at": 88,
+   "file": "tink",
+   "gainDb": -16,
+   "note": "\"6 seats\" clue"
+  },
+  {
+   "at": 96,
+   "file": "dodge",
+   "gainDb": -18,
+   "note": "Tilo zips off"
+  },
+  {
+   "at": 100,
+   "file": "swish",
+   "gainDb": -18,
+   "note": "Tilo zips back in"
+  },
+  {
+   "at": 110,
+   "file": "boop",
+   "gainDb": -9,
+   "note": "Tilo taps the \"o\""
+  },
+  {
+   "at": 111,
+   "file": "whoosh",
+   "gainDb": -14,
+   "note": "the \"o\" pivots edge-on"
+  },
+  {
+   "at": 117,
+   "file": "whump",
+   "gainDb": -10,
+   "note": "the doorway opens"
+  },
+  {
+   "at": 120,
+   "file": "seat1",
+   "gainDb": -14,
+   "note": "chair 1"
+  },
+  {
+   "at": 122,
+   "file": "seat2",
+   "gainDb": -14,
+   "note": "chair 2"
+  },
+  {
+   "at": 124,
+   "file": "seat3",
+   "gainDb": -14,
+   "note": "chair 3"
+  },
+  {
+   "at": 126,
+   "file": "seat4",
+   "gainDb": -14,
+   "note": "chair 4"
+  },
+  {
+   "at": 128,
+   "file": "seat5",
+   "gainDb": -14,
+   "note": "chair 5"
+  },
+  {
+   "at": 130,
+   "file": "seat6",
+   "gainDb": -14,
+   "note": "chair 6"
+  },
+  {
+   "at": 131,
+   "file": "sparkle",
+   "gainDb": -14,
+   "note": "Spark Bone in the matching room"
+  },
+  {
+   "at": 146,
+   "file": "pop",
+   "gainDb": -13,
+   "note": "separate \"Book a space\" option"
+  },
+  {
+   "at": 195,
+   "file": "whoosh",
+   "gainDb": -14,
+   "note": "room folds back into the \"o\""
+  },
+  {
+   "at": 200,
+   "file": "swoosh",
+   "gainDb": -7,
+   "note": "airflow becomes the cyan sweep"
+  },
+  {
+   "at": 205,
+   "file": "tick",
+   "gainDb": -21,
+   "note": "letters land"
+  },
+  {
+   "at": 208,
+   "file": "tick",
+   "gainDb": -21,
+   "note": "letters land"
+  },
+  {
+   "at": 211,
+   "file": "tick",
+   "gainDb": -21,
+   "note": "letters land"
+  },
+  {
+   "at": 214,
+   "file": "tick",
+   "gainDb": -21,
+   "note": "letters land"
+  },
+  {
+   "at": 217,
+   "file": "tick",
+   "gainDb": -21,
+   "note": "letters land"
+  },
+  {
+   "at": 221,
+   "file": "bump",
+   "gainDb": -22,
+   "note": "late \"o\" rolls over the letter tops"
+  },
+  {
+   "at": 224,
+   "file": "bump",
+   "gainDb": -21,
+   "note": "late \"o\" rolls over the letter tops"
+  },
+  {
+   "at": 226,
+   "file": "bump",
+   "gainDb": -21,
+   "note": "late \"o\" rolls over the letter tops"
+  },
+  {
+   "at": 228,
+   "file": "bump",
+   "gainDb": -16,
+   "note": "late \"o\" rolls over the letter tops"
+  },
+  {
+   "at": 233,
+   "file": "clunk",
+   "gainDb": -12,
+   "note": "late \"o\" drops in crooked"
+  },
+  {
+   "at": 234,
+   "file": "bonk",
+   "gainDb": -9,
+   "note": "Tilo bonks the G"
+  },
+  {
+   "at": 236,
+   "file": "tick",
+   "gainDb": -22,
+   "note": "ripple through G-o-F-l"
+  },
+  {
+   "at": 238,
+   "file": "tick",
+   "gainDb": -22,
+   "note": "ripple through G-o-F-l"
+  },
+  {
+   "at": 240,
+   "file": "tick",
+   "gainDb": -22,
+   "note": "ripple through G-o-F-l"
+  },
+  {
+   "at": 242,
+   "file": "snap",
+   "gainDb": -12,
+   "note": "the \"o\" clicks into alignment"
+  },
+  {
+   "at": 247,
+   "file": "land",
+   "gainDb": -18,
+   "note": "settle"
+  },
+  {
+   "at": 270,
+   "file": "tick",
+   "gainDb": -30,
+   "note": "blink"
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+  "_note": "SFX cue sheet for GF-LogoPlayground. 'at' is a frame at 30 fps; 'file' is a WAV in public/audio/gofloaters/ (made by gofloaters/tools/make_sfx.py). No music, no narration.",
+  "sfx": [
+    {"at": 0, "file": "pop", "gainDb": -14, "note": "discovery ring pops in"},
+    {"at": 4, "file": "pop", "gainDb": -15, "note": "second ring pops in"},
+    {"at": 30, "file": "sparkle", "gainDb": -18, "note": "Spark Bone appears"},
+    {"at": 37, "file": "swish", "gainDb": -17, "note": "cursor sweeps in"},
+    {"at": 47, "file": "dodge", "gainDb": -13, "note": "bone dodges the cursor"},
+    {"at": 58, "file": "boop", "gainDb": -16, "note": "bone lands, comic pause"},
+    {"at": 74, "file": "snap", "gainDb": -9, "note": "cursor catches the bone"},
+    {"at": 81, "file": "swish", "gainDb": -18, "note": "ring morphs into the pin"},
+    {"at": 101, "file": "thump", "gainDb": -14, "note": "pin lands"},
+    {"at": 118, "file": "click", "gainDb": -14, "note": "choose the workspace"},
+    {"at": 138, "file": "click", "gainDb": -11, "note": "separate booking click"},
+    {"at": 141, "file": "ding", "gainDb": -15, "note": "booking check"},
+    {"at": 153, "file": "swoosh", "gainDb": -8, "note": "Tilo's plane sweep + aqua wipe"},
+    {"at": 172, "file": "snap", "gainDb": -17, "note": "Tilo snaps up the bone"},
+    {"at": 178, "file": "swish", "gainDb": -13, "note": "white wipe"},
+    {"at": 201, "file": "tick", "gainDb": -19, "note": "G"},
+    {"at": 204, "file": "tick", "gainDb": -19, "note": "o"},
+    {"at": 207, "file": "tick", "gainDb": -19, "note": "F"},
+    {"at": 210, "file": "tick", "gainDb": -19, "note": "l"},
+    {"at": 213, "file": "tick", "gainDb": -19, "note": "o"},
+    {"at": 216, "file": "tick", "gainDb": -19, "note": "a"},
+    {"at": 219, "file": "tick", "gainDb": -19, "note": "t"},
+    {"at": 222, "file": "tick", "gainDb": -19, "note": "e"},
+    {"at": 225, "file": "tick", "gainDb": -19, "note": "r"},
+    {"at": 228, "file": "tick", "gainDb": -19, "note": "s"},
+    {"at": 230, "file": "land", "gainDb": -9, "note": "plane lands, logo settles"}
+  ]
+}

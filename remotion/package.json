@@ -9,6 +9,7 @@
     "render:v06:opening": "remotion render src/index.ts V06-Opening out/v06_opening_0-16s_1080x1920_24p.mp4",
     "render:v06:mg": "remotion render src/index.ts V06-MotionSection out/v06_motion_section_1080x1920_24p.mp4",
     "render:v06:master": "remotion render src/index.ts V06-Master out/v06_master_1080x1920_24p.mp4",
+    "render:gf": "remotion render src/index.ts GF-LogoPlayground out/gofloaters_logo_playground_1080x1920_30p.mp4",
     "still": "remotion still src/index.ts",
     "typecheck": "tsc --noEmit"
   },

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GoFloaters Brand Studio</title>
+<link rel="stylesheet" href="../06_BRAND_IDENTITY/tokens/gofloaters-tokens.css">
+<link rel="stylesheet" href="assets/studio.css">
+</head>
+<body>
+<header class="top">
+  <img class="logo" src="../02_MASTER_IDENTITY/original_lockup/gofloaters_lockup_full_colour.svg" alt="GoFloaters">
+  <span class="title">Brand Studio</span>
+  <label class="rm"><input type="checkbox" id="reduced"> Reduced motion</label>
+  <button class="menu" id="menuBtn" aria-label="Sections">☰</button>
+</header>
+<nav class="tabs" id="tabs" role="tablist">
+  <button data-tab="identity" class="on">Identity</button>
+  <button data-tab="rig">Mascot rig</button>
+  <button data-tab="expressions">Expressions</button>
+  <button data-tab="animations">Animations</button>
+  <button data-tab="variants">Logo variants</button>
+  <button data-tab="patterns">Patterns</button>
+  <button data-tab="gallery">Applications</button>
+  <button data-tab="assets">Asset library</button>
+  <a class="bb" href="../07_BRAND_GUIDELINES/editable_source/brandbook.html" target="_blank">Guidelines ↗</a>
+</nav>
+<main>
+  <!-- IDENTITY -->
+  <section id="identity" class="tab on">
+    <h2>Identity viewer</h2>
+    <div class="seg" id="idSeg">
+      <button data-src="../02_MASTER_IDENTITY/original_lockup/gofloaters_lockup_full_colour.svg" class="on">Full lock-up</button>
+      <button data-src="../02_MASTER_IDENTITY/vectors/gofloaters_symbol_dog_aircraft.svg">Symbol</button>
+      <button data-src="../02_MASTER_IDENTITY/mascot_only/gofloaters_mascot_seated.svg">Mascot only</button>
+      <button data-src="../02_MASTER_IDENTITY/aircraft_only/gofloaters_aircraft.svg">Aircraft only</button>
+      <button data-src="../02_MASTER_IDENTITY/vectors/gofloaters_wordmark_tagline.svg">Wordmark + tagline</button>
+      <button data-src="../02_MASTER_IDENTITY/vectors/speed_lines/speed_lines_set.svg">Speed lines</button>
+      <button data-src="../01_SOURCE_REFERENCE/original_logo/gofloaters_original_logo.png">Supplied raster (source)</button>
+    </div>
+    <div class="stage light" id="idStage"><img id="idImg" src="../02_MASTER_IDENTITY/original_lockup/gofloaters_lockup_full_colour.svg" alt=""></div>
+    <div class="seg small" id="idBg"><button data-bg="light" class="on">White</button><button data-bg="cloud">Cloud</button><button data-bg="tint">Turquoise tint</button><button data-bg="check">Transparency</button></div>
+    <p class="note">Vector reconstruction of the supplied logo. Mascot-only and aircraft-only assets include reconstructed hidden areas (see guidelines p.7).</p>
+  </section>
+
+  <!-- RIG -->
+  <section id="rig" class="tab">
+    <h2>Mascot rig viewer</h2>
+    <div class="rigwrap">
+      <div class="stage light rigstage" id="rigStage"></div>
+      <aside class="controls" id="controls">
+        <div class="seg small" id="modeSeg">
+          <button data-mode="full" class="on">Full logo</button><button data-mode="symbol">Symbol</button><button data-mode="dog">Dog only</button><button data-mode="aircraft">Aircraft only</button><button data-mode="free">Full body</button>
+        </div>
+        <div id="sliders"></div>
+        <button class="btn" id="rigReset">Reset to logo pose</button>
+        <button class="btn ghost" id="rigBlink">Blink</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- EXPRESSIONS -->
+  <section id="expressions" class="tab">
+    <h2>Expression library</h2>
+    <div class="exwrap">
+      <div class="stage light exstage" id="exStage"></div>
+      <div class="exgrid" id="exGrid"></div>
+    </div>
+    <p class="note" id="exNote"></p>
+  </section>
+
+  <!-- ANIMATIONS -->
+  <section id="animations" class="tab">
+    <h2>Animation library</h2>
+    <div class="seg small" id="animSrc"><button data-src="video" class="on">Rendered files (MP4)</button><button data-src="live">Live rig playback</button></div>
+    <div class="animwrap">
+      <div class="player">
+        <div class="stage light" id="animStage"><video id="vid" playsinline muted loop></video><div id="liveStage" class="live"></div></div>
+        <div class="transport">
+          <button class="btn" id="play">Pause</button><button class="btn ghost" id="replay">Replay</button>
+          <label>Speed <select id="speed"><option>0.25</option><option>0.5</option><option selected>1</option><option>1.5</option><option>2</option></select></label>
+          <span class="time" id="time">0.00 s</span>
+        </div>
+        <div class="animtitle" id="animTitle"></div>
+      </div>
+      <ul class="list" id="animList"></ul>
+    </div>
+  </section>
+
+  <!-- VARIANTS -->
+  <section id="variants" class="tab">
+    <h2>Logo variant preview</h2>
+    <div class="seg" id="varSeg"></div>
+    <div class="stage" id="varStage"><img id="varImg" alt=""></div>
+    <p class="note" id="varNote"></p>
+  </section>
+
+  <!-- PATTERNS -->
+  <section id="patterns" class="tab">
+    <h2>Pattern viewer</h2>
+    <div class="seg" id="patSeg"></div>
+    <div class="seg small"><button id="patAnim" class="on">Animated</button><button id="patStatic">Static</button></div>
+    <div class="stage pat" id="patStage"></div>
+    <p class="note" id="patNote"></p>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="tab">
+    <h2>Application gallery</h2>
+    <div class="gallery" id="gal"></div>
+  </section>
+
+  <!-- ASSETS -->
+  <section id="assets" class="tab">
+    <h2>Asset library</h2>
+    <div class="assetbar"><input id="q" placeholder="Filter files…"><select id="kind"><option value="">All types</option></select><span id="count"></span></div>
+    <table class="assets"><thead><tr><th>File</th><th>Type</th><th>Size</th><th></th></tr></thead><tbody id="assetRows"></tbody></table>
+  </section>
+  <div class="lightbox" id="lb"><img id="lbImg" alt=""><button id="lbClose">Close ✕</button></div>
+</main>
+<script src="../03_CHARACTER_RIG/rig_source/gofloaters-rig-data.js"></script>
+<script src="../03_CHARACTER_RIG/rig_source/gofloaters-freebody.js"></script>
+<script src="../03_CHARACTER_RIG/rig_source/gofloaters-rig.js"></script>
+<script src="../03_CHARACTER_RIG/rig_source/gofloaters-motion.js"></script>
+<script src="../06_BRAND_IDENTITY/patterns/gofloaters-patterns.js"></script>
+<script src="assets/manifest.js"></script>
+<script src="assets/studio.js"></script>
+</body>
+</html>

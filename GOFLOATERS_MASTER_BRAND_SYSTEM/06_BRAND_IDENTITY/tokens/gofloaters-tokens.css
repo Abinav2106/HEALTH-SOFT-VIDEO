@@ -1,0 +1,27 @@
+/* GoFloaters design tokens — source-sampled colours + proposed extensions */
+@font-face{font-family:'Bricolage Grotesque';font-weight:400;font-style:normal;font-display:swap;src:url('../typography/fonts/bricolage-grotesque-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Bricolage Grotesque';font-weight:600;font-style:normal;font-display:swap;src:url('../typography/fonts/bricolage-grotesque-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Bricolage Grotesque';font-weight:700;font-style:normal;font-display:swap;src:url('../typography/fonts/bricolage-grotesque-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'Bricolage Grotesque';font-weight:800;font-style:normal;font-display:swap;src:url('../typography/fonts/bricolage-grotesque-latin-800-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-weight:400;font-style:normal;font-display:swap;src:url('../typography/fonts/inter-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-weight:500;font-style:normal;font-display:swap;src:url('../typography/fonts/inter-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-weight:600;font-style:normal;font-display:swap;src:url('../typography/fonts/inter-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-weight:700;font-style:normal;font-display:swap;src:url('../typography/fonts/inter-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-weight:400;font-style:normal;font-display:swap;src:url('../typography/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-weight:600;font-style:normal;font-display:swap;src:url('../typography/fonts/jetbrains-mono-latin-600-normal.woff2') format('woff2');}
+:root{
+  --gf-turquoise: #6ED0E0; /* source: Aircraft body */
+  --gf-yellow: #FCE162; /* source: Propeller + cockpit */
+  --gf-orange: #F17B2A; /* source: Eye detailing (goggle ring) */
+  --gf-ink: #050506; /* source: Outlines, wordmark */
+  --gf-white: #FFFFFF; /* source: Mascot body */
+  --gf-slate: #6B6B6C; /* source: Tagline */
+  --gf-deep-sky: #0E2A33; /* proposed: Dark grounds, night mode */
+  --gf-turquoise-deep: #167A8C; /* proposed: Turquoise for text/links on white (AA) */
+  --gf-turquoise-tint: #DCF3F7; /* proposed: Soft panels, pattern grounds */
+  --gf-yellow-tint: #FFF5CC; /* proposed: Highlights, callouts */
+  --gf-cloud: #F4F7F8; /* proposed: Neutral page ground */
+  --gf-font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  --gf-font-text: 'Inter', system-ui, sans-serif;
+  --gf-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}

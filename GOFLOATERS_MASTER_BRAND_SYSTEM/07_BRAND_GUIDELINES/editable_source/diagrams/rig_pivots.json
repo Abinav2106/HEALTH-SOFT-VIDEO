@@ -1,0 +1,53 @@
+{
+ "viewBox": "380 90 560 380",
+ "pivots": {
+  "Head": [
+   600,
+   214
+  ],
+  "Far ear": [
+   593,
+   143
+  ],
+  "Near ear": [
+   598,
+   186
+  ],
+  "Hip / lean": [
+   540,
+   342
+  ],
+  "Tail root": [
+   434,
+   366,
+   5.5
+  ],
+  "Near shoulder": [
+   604,
+   313,
+   6.6
+  ],
+  "Near wrist": [
+   655,
+   374,
+   7.4
+  ],
+  "Far shoulder": [
+   644,
+   260,
+   6
+  ],
+  "Propeller hub": [
+   874,
+   405
+  ],
+  "Wing root": [
+   600,
+   480
+  ],
+  "Seat anchor": [
+   540,
+   400
+  ]
+ }
+}

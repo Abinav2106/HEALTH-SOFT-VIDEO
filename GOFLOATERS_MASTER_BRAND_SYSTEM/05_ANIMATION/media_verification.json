@@ -1,0 +1,363 @@
+{
+ "videos": [
+  {
+   "file": "03_CHARACTER_RIG/rig_preview/rig_proof_playback.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 14.0,
+   "frames_decoded": 420,
+   "pct_frame_pairs_with_motion": 58.2,
+   "max_frame_change": 10.435,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/aircraft_motion/aircraft_only_flight.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 1.941,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/aircraft_motion/propeller_transition.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.5,
+   "frames_decoded": 105,
+   "pct_frame_pairs_with_motion": 74.0,
+   "max_frame_change": 0.488,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/aircraft_motion/speed_line_motion.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.0,
+   "frames_decoded": 90,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.142,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_01_flying.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 2.186,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_02_walking.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 2.0,
+   "frames_decoded": 60,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 6.229,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_03_running.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 1.67,
+   "frames_decoded": 50,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 14.574,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_04_jumping.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 2.4,
+   "frames_decoded": 72,
+   "pct_frame_pairs_with_motion": 98.6,
+   "max_frame_change": 14.764,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_05_waving.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.0,
+   "frames_decoded": 90,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 4.146,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_06_pointing.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.2,
+   "frames_decoded": 96,
+   "pct_frame_pairs_with_motion": 70.5,
+   "max_frame_change": 2.716,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_07_searching.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 99.2,
+   "max_frame_change": 3.224,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_08_dancing.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 6.707,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_09_sleeping.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.343,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_10_celebrating.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.0,
+   "frames_decoded": 90,
+   "pct_frame_pairs_with_motion": 98.9,
+   "max_frame_change": 10.276,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_11_surprise.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 2.6,
+   "frames_decoded": 78,
+   "pct_frame_pairs_with_motion": 41.6,
+   "max_frame_change": 21.492,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/action_12_obstacle.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 11.976,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/character_motion/expression_transitions.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 14.4,
+   "frames_decoded": 432,
+   "pct_frame_pairs_with_motion": 84.0,
+   "max_frame_change": 15.787,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/hero_motion/gofloaters_hero_reduced_motion.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 27.7,
+   "max_frame_change": 0.787,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/hero_motion/gofloaters_hero_signature.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 9.0,
+   "frames_decoded": 270,
+   "pct_frame_pairs_with_motion": 84.8,
+   "max_frame_change": 4.038,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/hero_motion/gofloaters_hero_signature_transparent.webm",
+   "codec": "vp9",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 9.0,
+   "frames_decoded": 270,
+   "pct_frame_pairs_with_motion": 81.4,
+   "max_frame_change": 4.154,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/logo_motion/logo_reveal_assembly.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.2,
+   "frames_decoded": 126,
+   "pct_frame_pairs_with_motion": 69.6,
+   "max_frame_change": 1.609,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/logo_motion/wordmark_entrance.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 3.0,
+   "frames_decoded": 90,
+   "pct_frame_pairs_with_motion": 57.3,
+   "max_frame_change": 0.435,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/application_background_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 8.0,
+   "frames_decoded": 240,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.27,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/campaign_typography_freedom_in_motion.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 6.0,
+   "frames_decoded": 180,
+   "pct_frame_pairs_with_motion": 85.5,
+   "max_frame_change": 8.656,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_aircraft_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.314,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_ears_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 1.339,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_flightpaths_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 6.0,
+   "frames_decoded": 180,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.949,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_mascot_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 0.11,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_propellers_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 2.0,
+   "frames_decoded": 60,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 2.365,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_speedlines_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 4.0,
+   "frames_decoded": 120,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 1.855,
+   "plays": true
+  },
+  {
+   "file": "05_ANIMATION/pattern_motion/pattern_wings_loop.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 5.0,
+   "frames_decoded": 150,
+   "pct_frame_pairs_with_motion": 100.0,
+   "max_frame_change": 4.343,
+   "plays": true
+  },
+  {
+   "file": "09_BRAND_APPLICATIONS/events/event_display_animated.mp4",
+   "codec": "h264",
+   "size": "1920x1080",
+   "fps": "30/1",
+   "duration_s": 9.0,
+   "frames_decoded": 270,
+   "pct_frame_pairs_with_motion": 70.3,
+   "max_frame_change": 2.769,
+   "plays": true
+  }
+ ],
+ "all_play": true,
+ "all_have_motion": true,
+ "hero_final_frame_vs_master_lockup": {
+  "mean_abs_diff_0_255": 0.425,
+  "pct_px_diff_gt_40": 0.23,
+  "note": "difference = H.264 compression only; the final 0.3 s locks off to the traced master artwork"
+ }
+}

@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>GoFloaters rig stage</title>
+<style>html,body{margin:0;background:transparent}#stage{width:100vw;height:100vh}#stage svg{width:100%;height:100%;display:block}</style>
+</head><body><div id="stage"></div>
+<script src="gofloaters-rig-data.js"></script>
+<script src="gofloaters-freebody.js" onerror="void 0"></script>
+<script src="gofloaters-rig.js"></script>
+<script src="gofloaters-motion.js" onerror="void 0"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  window.rig = GoFloatersRig.create(document.getElementById('stage'), { viewBox: q.get('vb') || '0 0 2000 667' });
+  if (q.get('state')) rig.set(JSON.parse(q.get('state')));
+  window.READY = true;
+</script></body></html>

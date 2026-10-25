@@ -1,0 +1,22 @@
+{
+ "source": "01_SOURCE_REFERENCE/original_logo/gofloaters_original_logo.png (2000x667)",
+ "reconstruction_vs_source": {
+  "mean_abs_diff_0_255": 1.971,
+  "pct_pixels_diff_gt_40": 0.507,
+  "ink_iou": 0.9341,
+  "ink_iou_tolerance_1px": 0.9868
+ },
+ "rig_rest_pose_vs_reconstruction": {
+  "mean_abs_diff_0_255": 0.447,
+  "pct_pixels_diff_gt_40": 0.256,
+  "ink_iou": 0.9761,
+  "ink_iou_tolerance_1px": 0.9896
+ },
+ "rig_rest_pose_vs_source": {
+  "mean_abs_diff_0_255": 2.343,
+  "pct_pixels_diff_gt_40": 0.734,
+  "ink_iou": 0.9133,
+  "ink_iou_tolerance_1px": 0.9766
+ },
+ "note": "Rendered at identical dimensions (2000x667). Ink = pixels with max channel < 110. The rig rest pose differs from the traced master only where limbs/tail were redrawn as articulated tubes; the hero animation locks off to the traced master in its final frames."
+}

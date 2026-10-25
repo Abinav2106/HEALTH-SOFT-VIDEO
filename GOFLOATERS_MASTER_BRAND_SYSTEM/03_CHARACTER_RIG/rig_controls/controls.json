@@ -1,0 +1,438 @@
+{
+ "note": "Slider ranges = recommended working ranges. Ears are rigid pieces: keep within \u00b15\u00b0 for seamless joints. Array controls fbFL/fbFR/fbHL/fbHR ([upper, lower] degrees) are set from code.",
+ "groups": [
+  {
+   "name": "Root",
+   "controls": [
+    {
+     "key": "x",
+     "min": -500,
+     "max": 500,
+     "step": 1
+    },
+    {
+     "key": "y",
+     "min": -300,
+     "max": 300,
+     "step": 1
+    },
+    {
+     "key": "rot",
+     "min": -30,
+     "max": 30,
+     "step": 0.5
+    },
+    {
+     "key": "scale",
+     "min": 0.3,
+     "max": 2,
+     "step": 0.01
+    },
+    {
+     "key": "masterLock",
+     "min": 0,
+     "max": 1,
+     "step": 0.01
+    }
+   ]
+  },
+  {
+   "name": "Visibility & modes",
+   "controls": [
+    {
+     "key": "showWordmark",
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "showTagline",
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "showTrails",
+     "min": 0,
+     "max": 1,
+     "step": 1
+    },
+    {
+     "key": "showAircraft",
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "showDog",
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "attached",
+     "min": 0,
+     "max": 1,
+     "step": 1
+    }
+   ]
+  },
+  {
+   "name": "Aircraft",
+   "controls": [
+    {
+     "key": "acX",
+     "min": -1500,
+     "max": 500,
+     "step": 1
+    },
+    {
+     "key": "acY",
+     "min": -300,
+     "max": 300,
+     "step": 1
+    },
+    {
+     "key": "acRot",
+     "min": -20,
+     "max": 20,
+     "step": 0.5
+    },
+    {
+     "key": "acScale",
+     "min": 0.3,
+     "max": 1.5,
+     "step": 0.01
+    },
+    {
+     "key": "propAngle",
+     "min": 0,
+     "max": 720,
+     "step": 1
+    },
+    {
+     "key": "propBlur",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "wingFlex",
+     "min": -3,
+     "max": 3,
+     "step": 0.1
+    }
+   ]
+  },
+  {
+   "name": "Speed lines",
+   "controls": [
+    {
+     "key": "trailPhase",
+     "min": 0,
+     "max": 1,
+     "step": 0.01
+    },
+    {
+     "key": "trailStretch",
+     "min": 0,
+     "max": 2,
+     "step": 0.02
+    },
+    {
+     "key": "trailOpacity",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "trailDrift",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    }
+   ]
+  },
+  {
+   "name": "Dog root",
+   "controls": [
+    {
+     "key": "dogX",
+     "min": -400,
+     "max": 400,
+     "step": 1
+    },
+    {
+     "key": "dogY",
+     "min": -300,
+     "max": 300,
+     "step": 1
+    },
+    {
+     "key": "dogRot",
+     "min": -45,
+     "max": 45,
+     "step": 0.5
+    },
+    {
+     "key": "dogScale",
+     "min": 0.2,
+     "max": 1.5,
+     "step": 0.01
+    },
+    {
+     "key": "dogFlip",
+     "min": 0,
+     "max": 1,
+     "step": 1
+    }
+   ]
+  },
+  {
+   "name": "Body",
+   "controls": [
+    {
+     "key": "lean",
+     "min": -5,
+     "max": 5,
+     "step": 0.1
+    },
+    {
+     "key": "breath",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    }
+   ]
+  },
+  {
+   "name": "Head",
+   "controls": [
+    {
+     "key": "headTilt",
+     "min": -14,
+     "max": 14,
+     "step": 0.5
+    },
+    {
+     "key": "headX",
+     "min": -20,
+     "max": 20,
+     "step": 0.5
+    },
+    {
+     "key": "headY",
+     "min": -20,
+     "max": 20,
+     "step": 0.5
+    },
+    {
+     "key": "earNear",
+     "min": -8,
+     "max": 8,
+     "step": 0.5
+    },
+    {
+     "key": "earFar",
+     "min": -8,
+     "max": 8,
+     "step": 0.5
+    }
+   ]
+  },
+  {
+   "name": "Eyes",
+   "controls": [
+    {
+     "key": "lookX",
+     "min": -1,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "lookY",
+     "min": -1,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "blink",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "lidUpper",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "lidLower",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "lidTilt",
+     "min": -15,
+     "max": 15,
+     "step": 0.5
+    },
+    {
+     "key": "pupil",
+     "min": 0.6,
+     "max": 1.4,
+     "step": 0.02
+    },
+    {
+     "key": "happyEyes",
+     "min": 0,
+     "max": 1,
+     "step": 1
+    }
+   ]
+  },
+  {
+   "name": "Mouth",
+   "controls": [
+    {
+     "key": "mouthSmile",
+     "min": -1,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "key": "mouthOpen",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "mouthWidth",
+     "min": 0.6,
+     "max": 1.3,
+     "step": 0.02
+    },
+    {
+     "key": "mouthO",
+     "min": 0,
+     "max": 1,
+     "step": 0.02
+    },
+    {
+     "key": "mouthTongue",
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    }
+   ]
+  },
+  {
+   "name": "Limbs (seated)",
+   "controls": [
+    {
+     "key": "legNear",
+     "min": -120,
+     "max": 20,
+     "step": 1
+    },
+    {
+     "key": "legNearBend",
+     "min": -80,
+     "max": 20,
+     "step": 1
+    },
+    {
+     "key": "pawNear",
+     "min": -60,
+     "max": 40,
+     "step": 1
+    },
+    {
+     "key": "legFar",
+     "min": -60,
+     "max": 15,
+     "step": 1
+    },
+    {
+     "key": "legFarBend",
+     "min": -40,
+     "max": 20,
+     "step": 1
+    },
+    {
+     "key": "pawFar",
+     "min": -40,
+     "max": 30,
+     "step": 1
+    },
+    {
+     "key": "tail",
+     "min": -12,
+     "max": 12,
+     "step": 0.5
+    },
+    {
+     "key": "tailCurl",
+     "min": -4,
+     "max": 4,
+     "step": 0.1
+    }
+   ]
+  },
+  {
+   "name": "Free body (constructed view)",
+   "controls": [
+    {
+     "key": "fbHipX",
+     "min": 300,
+     "max": 800,
+     "step": 1
+    },
+    {
+     "key": "fbHipY",
+     "min": 350,
+     "max": 600,
+     "step": 1
+    },
+    {
+     "key": "fbSpine",
+     "min": -75,
+     "max": 15,
+     "step": 1
+    },
+    {
+     "key": "fbStretch",
+     "min": 0.8,
+     "max": 1.2,
+     "step": 0.01
+    },
+    {
+     "key": "fbNeck",
+     "min": -20,
+     "max": 85,
+     "step": 1
+    },
+    {
+     "key": "fbTail",
+     "min": -40,
+     "max": 110,
+     "step": 1
+    },
+    {
+     "key": "fbAir",
+     "min": 0,
+     "max": 200,
+     "step": 1
+    },
+    {
+     "key": "fbShadow",
+     "min": 0,
+     "max": 1.5,
+     "step": 0.05
+    }
+   ]
+  }
+ ]
+}

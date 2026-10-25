@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 assets/stock/
 gofloaters/deliverables/
+# GoFloaters rig: generated outputs contain the client's mascot artwork (public repo)
+gofloaters/rig/build/
+gofloaters/rig/ae/
+gofloaters/rig/vectors/
+gofloaters/rig/guide/
+gofloaters/rig/*.pdf
+gofloaters/rig/*.mp4

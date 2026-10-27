@@ -1,0 +1,62 @@
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--s:1}
+html{background:#2A3236}
+body{font-family:var(--gf-font-text);color:var(--gf-ink);-webkit-font-smoothing:antialiased}
+main{zoom:var(--s)}
+.page{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;margin:0 auto 40px;break-after:page;page-break-after:always}
+.page.dark{color:#fff}
+.abs{position:absolute}
+img{display:block}
+.folio{position:absolute;left:120px;right:120px;bottom:34px;display:flex;justify-content:space-between;font-size:14px;opacity:.55;z-index:5}
+.dark .folio{color:#fff}
+.d{font-family:var(--gf-font-display);font-weight:800;letter-spacing:-0.025em;line-height:.93}
+.h2{font-family:var(--gf-font-display);font-weight:800;font-size:64px;letter-spacing:-0.02em;line-height:1}
+h3{font-family:var(--gf-font-display);font-weight:700;font-size:30px;margin:18px 0 8px;letter-spacing:-0.01em}
+.m{font-family:var(--gf-font-mono);letter-spacing:.06em}
+.small{font-size:16px;text-transform:uppercase;letter-spacing:.1em}
+.lead{font-size:30px;line-height:1.38}
+.cap{font-size:19px;line-height:1.45;margin-top:12px}
+.cap b{font-weight:700}
+p{font-size:20px;line-height:1.45}
+.pill{display:inline-block;font-family:var(--gf-font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--gf-yellow);color:#050506;border-radius:999px;padding:4px 10px;vertical-align:middle;margin-left:6px;font-weight:600}
+.card{border-radius:24px;overflow:hidden}
+.tile{border-radius:22px;height:380px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tile.sm{height:210px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:26px}
+.grid3 p{font-size:21px}
+.pr b{font-family:var(--gf-font-mono);color:var(--gf-turquoise-deep)}
+.pr p{font-size:19px}
+.checks{list-style:none}
+.checks li{font-size:22px;line-height:1.35;padding:9px 0 9px 40px;position:relative;border-bottom:1.5px solid rgba(5,5,6,.1)}
+.checks li:before{content:'';position:absolute;left:0;top:14px;width:22px;height:22px;border-radius:50%;background:var(--gf-turquoise);border:3px solid #050506}
+.swatch{border-radius:20px;padding:22px;height:170px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;font-size:15px}
+.swatch.big{height:390px}
+.swatch b{font-family:var(--gf-font-display);font-size:26px}
+.swatch .m{font-size:13px}
+.x{position:absolute;right:12px;top:8px;font-size:38px;color:#E0352B;font-weight:800}
+.tree{font-size:21px;line-height:1.52;background:var(--gf-cloud);border-radius:24px;padding:30px 36px;width:650px;white-space:pre}
+.vid{position:relative;border-radius:22px;overflow:hidden;background:#000}
+.vid video,.vid .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid.bare{background:transparent}
+.vid .poster{display:none}
+.vid .play{display:none}
+.capbox{left:60px;bottom:70px;max-width:760px;background:rgba(255,255,255,.94);border-radius:18px;padding:18px 24px;font-size:19px;line-height:1.45;color:#050506;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+nav#toc{position:fixed;left:0;top:0;bottom:0;width:240px;overflow:auto;background:#0E2A33;color:#BFE7EE;padding:18px 14px;font-size:11px;z-index:50;display:flex;flex-direction:column;gap:6px}
+nav#toc b{color:#fff;margin-bottom:10px}
+nav#toc a{color:inherit;text-decoration:none;opacity:.85}
+nav#toc a:hover{opacity:1;color:#FCE162}
+@media (max-width:1400px){nav#toc{display:none}}
+@media (min-width:1401px){main{margin-left:240px}}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html{background:#fff}
+  nav#toc{display:none}
+  main{zoom:1;margin:0!important}
+  .page{margin:0}
+  .vid video{display:none}
+  .vid .poster{display:block}
+  .vid .play{display:block;position:absolute;left:14px;bottom:12px;background:rgba(5,5,6,.78);color:#fff;font-size:12px;padding:6px 10px;border-radius:999px;letter-spacing:.08em}
+}
+
+.fb .folio{top:22px;bottom:auto;left:auto;right:30px;opacity:1;background:rgba(255,255,255,.92);color:#050506;border-radius:999px;padding:6px 14px;gap:18px;font-size:12px}

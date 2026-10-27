@@ -1,0 +1,112 @@
+[
+ {
+  "name": "studio loads",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "identity switch",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "rig head slider moves head group",
+  "pass": true,
+  "info": "translate(0.00 0.00) rotate(10.000 600 214)"
+ },
+ {
+  "name": "rig paw slider changes leg path",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "dog-only mode hides aircraft",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "aircraft-only mode hides dog",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "full-body mode shows free body",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "expression applies to rig",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "video plays",
+  "pass": true,
+  "info": "1.47 -> 2.48"
+ },
+ {
+  "name": "playback speed",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "pause",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "replay resets",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "live rig playback advances",
+  "pass": true,
+  "info": "1.60 s -> 2.83 s"
+ },
+ {
+  "name": "variant switch",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "animated pattern updates",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "gallery images load",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "all asset links resolve (HTTP 200)",
+  "pass": true,
+  "info": "221 links, 0 broken"
+ },
+ {
+  "name": "download delivers a real file",
+  "pass": true,
+  "info": "gofloaters_lockup_full_colour.svg 65071 bytes"
+ },
+ {
+  "name": "reduced motion pauses media",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "mobile: menu button visible",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "mobile: no horizontal overflow",
+  "pass": true,
+  "info": ""
+ },
+ {
+  "name": "no console errors",
+  "pass": true,
+  "info": ""
+ }
+]

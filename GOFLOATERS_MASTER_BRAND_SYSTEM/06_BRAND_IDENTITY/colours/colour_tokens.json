@@ -1,0 +1,91 @@
+{
+ "colors": {
+  "gf-turquoise": {
+   "value": "#6ED0E0",
+   "role": "Aircraft body",
+   "origin": "source",
+   "contrast_on_white": 1.79,
+   "contrast_on_ink": 11.41
+  },
+  "gf-yellow": {
+   "value": "#FCE162",
+   "role": "Propeller + cockpit",
+   "origin": "source",
+   "contrast_on_white": 1.31,
+   "contrast_on_ink": 15.61
+  },
+  "gf-orange": {
+   "value": "#F17B2A",
+   "role": "Eye detailing (goggle ring)",
+   "origin": "source",
+   "contrast_on_white": 2.76,
+   "contrast_on_ink": 7.38
+  },
+  "gf-ink": {
+   "value": "#050506",
+   "role": "Outlines, wordmark",
+   "origin": "source",
+   "contrast_on_white": 20.37,
+   "contrast_on_ink": 1.0
+  },
+  "gf-white": {
+   "value": "#FFFFFF",
+   "role": "Mascot body",
+   "origin": "source",
+   "contrast_on_white": 1.0,
+   "contrast_on_ink": 20.37
+  },
+  "gf-slate": {
+   "value": "#6B6B6C",
+   "role": "Tagline",
+   "origin": "source",
+   "contrast_on_white": 5.32,
+   "contrast_on_ink": 3.83
+  },
+  "gf-deep-sky": {
+   "value": "#0E2A33",
+   "role": "Dark grounds, night mode",
+   "origin": "proposed",
+   "contrast_on_white": 15.03,
+   "contrast_on_ink": 1.36
+  },
+  "gf-turquoise-deep": {
+   "value": "#167A8C",
+   "role": "Turquoise for text/links on white (AA)",
+   "origin": "proposed",
+   "contrast_on_white": 5.0,
+   "contrast_on_ink": 4.08
+  },
+  "gf-turquoise-tint": {
+   "value": "#DCF3F7",
+   "role": "Soft panels, pattern grounds",
+   "origin": "proposed",
+   "contrast_on_white": 1.15,
+   "contrast_on_ink": 17.66
+  },
+  "gf-yellow-tint": {
+   "value": "#FFF5CC",
+   "role": "Highlights, callouts",
+   "origin": "proposed",
+   "contrast_on_white": 1.09,
+   "contrast_on_ink": 18.61
+  },
+  "gf-cloud": {
+   "value": "#F4F7F8",
+   "role": "Neutral page ground",
+   "origin": "proposed",
+   "contrast_on_white": 1.08,
+   "contrast_on_ink": 18.92
+  }
+ },
+ "fonts": {
+  "display": "Bricolage Grotesque (proposed, OFL)",
+  "text": "Inter (proposed, OFL)",
+  "mono": "JetBrains Mono (proposed, OFL)",
+  "wordmark": "Original lettering preserved as traced vector; typeface not identified"
+ },
+ "stroke": {
+  "outline_px_at_2000w": 7.6,
+  "ratio_to_symbol_width": 0.0088
+ }
+}

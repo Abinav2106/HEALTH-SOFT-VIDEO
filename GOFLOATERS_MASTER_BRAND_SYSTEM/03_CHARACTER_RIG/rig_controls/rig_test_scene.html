@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GoFloaters rig test scene</title>
+<style>
+body{margin:0;font:14px Inter,system-ui,sans-serif;display:grid;grid-template-columns:1fr 340px;height:100vh;background:#F4F7F8;color:#050506}
+#stage{background:#fff}#stage svg{width:100%;height:100%}
+aside{overflow:auto;padding:14px;border-left:2px solid #E4EAEC;background:#fff}
+label{display:grid;grid-template-columns:120px 1fr 44px;gap:6px;align-items:center;margin:3px 0;font-size:12px}
+output{font:11px ui-monospace,monospace;text-align:right}
+h3{font:600 12px ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:#167A8C;margin:14px 0 4px}
+button{margin:4px 4px 0 0;border:2px solid #050506;border-radius:999px;background:#FCE162;padding:5px 10px;font-weight:700;cursor:pointer}
+select{border:2px solid #050506;border-radius:8px;padding:3px}
+@media(max-width:800px){body{grid-template-columns:1fr;grid-template-rows:50vh 1fr}}
+</style></head><body>
+<div id="stage"></div>
+<aside>
+  <b>Functional rig test scene</b>
+  <div><button data-vb="lockup">Full logo</button><button data-vb="symbol">Symbol</button><button data-vb="dog">Dog</button><button data-vb="stage">Stage</button></div>
+  <h3>Play a rig animation</h3>
+  <select id="anim"><option value="">— none —</option></select> <button id="stop">Stop</button>
+  <div id="ctl"></div>
+  <button id="reset">Reset</button> <button id="dump">Copy state JSON</button>
+  <pre id="out" style="font-size:10px;white-space:pre-wrap"></pre>
+</aside>
+<script src="../rig_source/gofloaters-rig-data.js"></script>
+<script src="../rig_source/gofloaters-freebody.js"></script>
+<script src="../rig_source/gofloaters-rig.js"></script>
+<script src="../rig_source/gofloaters-motion.js"></script>
+<script>
+// Every numeric control of GoFloatersRig.DEFAULTS gets a slider (ranges from controls.json)
+fetch('controls.json').then(r => r.json()).catch(() => null).then(spec => {
+  const rig = GoFloatersRig.create(document.getElementById('stage'), { viewBox: GFMotion.VIEWS.lockup });
+  const D = GoFloatersRig.DEFAULTS, ctl = document.getElementById('ctl'), inputs = {};
+  const groups = (spec && spec.groups) || [{ name: 'All controls', controls: Object.keys(D).filter(k => typeof D[k] === 'number').map(k => ({ key: k, min: -100, max: 100, step: 1 })) }];
+  groups.forEach(g => { const h = document.createElement('h3'); h.textContent = g.name; ctl.appendChild(h);
+    g.controls.forEach(c => { const l = document.createElement('label'); l.innerHTML = `<span>${c.key}</span><input type=range min=${c.min} max=${c.max} step=${c.step}><output></output>`;
+      const i = l.querySelector('input'), o = l.querySelector('output'); i.value = D[c.key]; o.textContent = D[c.key];
+      i.oninput = () => { o.textContent = i.value; rig.set({ [c.key]: +i.value }); }; inputs[c.key] = i; ctl.appendChild(l); }); });
+  document.querySelectorAll('[data-vb]').forEach(b => b.onclick = () => rig.svg.setAttribute('viewBox', GFMotion.VIEWS[b.dataset.vb]));
+  document.getElementById('reset').onclick = () => { rig.reset(); for (const k in inputs) { inputs[k].value = D[k]; inputs[k].nextSibling.textContent = D[k]; } };
+  document.getElementById('dump').onclick = () => { const s = JSON.stringify(rig.state, null, 1); document.getElementById('out').textContent = s; navigator.clipboard && navigator.clipboard.writeText(s); };
+  const sel = document.getElementById('anim'); Object.values(GFMotion.ANIMS).forEach(a => { const o = document.createElement('option'); o.value = a.name; o.textContent = a.label || a.name; sel.appendChild(o); });
+  let raf = 0, t0 = 0;
+  sel.onchange = () => { cancelAnimationFrame(raf); const a = GFMotion.ANIMS[sel.value]; if (!a) return; rig.svg.setAttribute('viewBox', GFMotion.VIEWS[a.view]); t0 = performance.now();
+    (function step(now) { const t = (now - t0) / 1000; rig.reset(); rig.set(GFMotion.frame(a.name, t)); rig.decorBack.innerHTML = ''; rig.decorFront.innerHTML = ''; if (a.decor) a.decor({ back: rig.decorBack, front: rig.decorFront, el: rig.el }, a.loop ? t % a.duration : Math.min(t, a.duration)); raf = requestAnimationFrame(step); })(t0); };
+  document.getElementById('stop').onclick = () => cancelAnimationFrame(raf);
+  window.rig = rig; window.READY = true;
+});
+</script></body></html>

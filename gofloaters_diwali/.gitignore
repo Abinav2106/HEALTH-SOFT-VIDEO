@@ -1,0 +1,6 @@
+# Client brand files and everything derived from them stay out of this public repo.
+assets/
+plates/
+game/
+out/
+node_modules/

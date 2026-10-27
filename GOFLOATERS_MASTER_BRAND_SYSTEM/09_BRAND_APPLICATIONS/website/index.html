@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GoFloaters — Spaces that work for you (hero concept)</title>
+<link rel="stylesheet" href="../../06_BRAND_IDENTITY/tokens/gofloaters-tokens.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--gf-font-text);color:var(--gf-ink);background:#fff}
+.nav{display:flex;align-items:center;gap:32px;padding:22px clamp(20px,5vw,72px);position:relative;z-index:2}
+.nav img{height:clamp(40px,4.4vw,58px);display:block}
+.nav ul{display:flex;gap:30px;list-style:none;margin-left:auto;font-weight:600;font-size:16px}
+.nav a{color:inherit;text-decoration:none}
+.nav .cta{background:var(--gf-ink);color:#fff;border-radius:999px;padding:10px 20px;font-weight:700;font-size:15px}
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,44fr) minmax(0,56fr);align-items:end;gap:clamp(12px,3vw,48px);
+  padding:clamp(10px,2vw,30px) clamp(20px,5vw,72px) 0;min-height:clamp(560px,calc(100vh - 100px),860px);background:linear-gradient(#fff 0,#fff 62%,var(--gf-cloud) 62%)}
+.stage{position:relative;align-self:end;aspect-ratio:1/1;width:100%;max-width:620px;justify-self:end}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.copy{align-self:center;padding-bottom:clamp(40px,8vh,110px);max-width:720px}
+.eyebrow{font:600 14px var(--gf-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gf-turquoise-deep)}
+h1{font:800 clamp(46px,6.6vw,104px)/0.98 var(--gf-font-display);letter-spacing:-.03em;margin:14px 0 20px}
+.lede{font-size:clamp(17px,1.5vw,21px);line-height:1.5;max-width:560px;color:#2A2D2F}
+.search{position:relative;margin-top:34px;max-width:640px}
+.field{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--gf-ink);border-radius:999px;padding:8px 8px 8px 26px;box-shadow:0 10px 0 var(--gf-turquoise)}
+.field svg{flex:none}
+.field input{flex:1;border:0;outline:0;font:500 18px var(--gf-font-text);min-width:0;background:transparent;padding:10px 0}
+.field button{border:0;background:var(--gf-yellow);border-radius:999px;padding:16px 28px;font:700 17px var(--gf-font-text);cursor:pointer;color:var(--gf-ink)}
+.field:focus-within{box-shadow:0 10px 0 var(--gf-turquoise),0 0 0 5px var(--gf-turquoise-tint)}
+.results{list-style:none;position:absolute;left:0;right:0;top:calc(100% + 22px);background:#fff;border:2px solid #E4EAEC;border-radius:22px;padding:8px;box-shadow:0 30px 60px rgba(5,5,6,.12);display:none}
+.results.on{display:block}
+.results li{display:flex;justify-content:space-between;gap:16px;padding:12px 16px;border-radius:14px;font-size:16px}
+.results li:first-child{background:var(--gf-turquoise-tint)}
+.results small{opacity:.6}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;font-size:14px;font-weight:600}
+.chips span{border:2px solid #E4EAEC;border-radius:999px;padding:7px 14px;background:#fff}
+.note{position:absolute;right:clamp(20px,5vw,72px);bottom:14px;font:500 12px var(--gf-font-mono);letter-spacing:.06em;color:var(--gf-slate)}
+@media (max-width:900px){
+  .nav ul li:not(:last-child){display:none}
+  .hero{grid-template-columns:minmax(0,1fr);align-items:start;min-height:0;background:linear-gradient(#fff 0,#fff 78%,var(--gf-cloud) 78%)}
+  .copy{order:1;padding-bottom:0}
+  .stage{order:2;justify-self:center;width:min(100%,360px);margin-top:4px}
+  .eyebrow{font-size:12px;letter-spacing:.1em}
+  .results li{flex-direction:column;gap:2px}
+  .results{position:static;margin-top:16px}
+  .field button{padding:14px 18px}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <img src="../../02_MASTER_IDENTITY/original_lockup/gofloaters_lockup_full_colour.svg" alt="GoFloaters">
+  <ul><li><a href="#">Coworking</a></li><li><a href="#">Meeting rooms</a></li><li><a href="#">For teams</a></li><li><a class="cta" href="#">Sign in</a></li></ul>
+</nav>
+<main class="hero">
+  <div class="stage" id="stage" aria-hidden="true"></div>
+  <div class="copy">
+    <div class="eyebrow">Day passes · Meeting rooms · Team offices</div>
+    <h1>Spaces that<br>work for you</h1>
+    <p class="lede">Find a coworking desk, cabin or meeting room near home — book by the day or the hour, no long contracts.</p>
+    <form class="search" id="search" onsubmit="return false" role="search">
+      <label class="field">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#050506" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/></svg>
+        <input id="q" type="search" placeholder="Search a city, area or workspace" aria-label="Search a city, area or workspace" autocomplete="off">
+        <button type="submit">Search</button>
+      </label>
+      <ul class="results" id="results" aria-live="polite"></ul>
+    </form>
+    <div class="chips"><span>Indiranagar</span><span>HSR Layout</span><span>Koramangala</span><span>Whitefield</span></div>
+  </div>
+  <div class="note">CONCEPT · illustrative content</div>
+</main>
+<script src="../../03_CHARACTER_RIG/rig_source/gofloaters-rig-data.js"></script>
+<script src="../../03_CHARACTER_RIG/rig_source/gofloaters-freebody.js"></script>
+<script src="../../03_CHARACTER_RIG/rig_source/gofloaters-rig.js"></script>
+<script src="../../03_CHARACTER_RIG/rig_source/gofloaters-motion.js"></script>
+<script>
+(function () {
+  const rig = GoFloatersRig.create(document.getElementById('stage'), { viewBox: '290 150 520 520' });
+  window.heroRig = rig;
+  // ground plane under the paws (stage ground line y = 600)
+  rig.el('ellipse', { cx: 520, cy: 606, rx: 250, ry: 26, fill: '#DCF3F7' }, rig.decorBack);
+  rig.el('line', { x1: 300, y1: 604, x2: 760, y2: 604, stroke: '#050506', 'stroke-width': 6, 'stroke-linecap': 'round' }, rig.decorBack);
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const q = document.getElementById('q'), res = document.getElementById('results');
+  const SPACES = [['Indiranagar · Focus Hub', 'Day pass · 4 min walk'], ['Indiranagar · The Loft', 'Meeting room · 6 seats'], ['HSR Layout · Desk Studio', 'Day pass · 12 min drive']];
+  let target = 0, point = 0, t0 = performance.now(), last = t0;
+  function showResults(on) {
+    res.innerHTML = on ? SPACES.map(([a, b]) => `<li><b>${a}</b><small>${b}</small></li>`).join('') : '';
+    res.classList.toggle('on', on);
+    target = on ? 1 : 0;
+    if (reduce.matches) render(performance.now());
+  }
+  q.addEventListener('input', () => showResults(q.value.trim().length > 0));
+  q.addEventListener('focus', () => { if (q.value.trim()) showResults(true); });
+  document.getElementById('search').addEventListener('submit', () => showResults(true));
+  q.addEventListener('blur', () => setTimeout(() => { if (!q.value.trim()) showResults(false); }, 150));
+  // test/render hook: window.heroSet(t, point) poses the rig deterministically
+  window.heroSet = (t, p) => { rig.reset(); rig.set(GFMotion.heroPose(t, p)); };
+  function render(now) {
+    if (reduce.matches) {                       // reduced motion: no idle loop, no tween — the pose simply switches
+      point = target; rig.reset(); rig.set(GFMotion.heroPose(0, point)); return;
+    }
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    // critically-damped-ish follow with a little overshoot on the way in (outBackSoft feel)
+    const k = target > point ? 6 : 5; point += (target - point) * (1 - Math.exp(-k * dt));
+    rig.reset(); rig.set(GFMotion.heroPose((now - t0) / 1000, GFMotion.E.outBackSoft(Math.min(1, point)) * (point > 0.001 ? 1 : 0)));
+  }
+  function loop(now) { if (!window.HERO_PAUSED) render(now); if (!reduce.matches) requestAnimationFrame(loop); }
+  reduce.addEventListener && reduce.addEventListener('change', () => { if (!reduce.matches) { last = performance.now(); requestAnimationFrame(loop); } else render(performance.now()); });
+  render(performance.now()); if (!reduce.matches) requestAnimationFrame(loop);
+  window.READY = true;
+})();
+</script>
+</body>
+</html>

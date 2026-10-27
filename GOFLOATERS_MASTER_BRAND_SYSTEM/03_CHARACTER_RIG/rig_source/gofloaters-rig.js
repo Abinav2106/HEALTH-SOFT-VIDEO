@@ -61,9 +61,9 @@
     // limbs (seated)
     legNear: 0, legNearBend: 0, pawNear: 0, legFar: 0, legFarBend: 0, pawFar: 0, tail: 0, tailCurl: 0,
     // free body (constructed view) - see freeBody section
-    fbHipX: 560, fbHipY: 470, fbSpine: 0, fbStretch: 1, fbNeck: 0,
-    fbFL: [0, 0], fbFR: [0, 0], fbHL: [0, 0], fbHR: [0, 0],  // [upper, lower] angles in degrees
-    fbTail: 0, fbShadow: 1, fbGround: 0,
+    fbX: 0, fbY: 0, fbPitch: 0, fbHeadX: 0, fbHeadY: 0, fbHeadFollow: 0.35,
+    fbFL: null, fbFR: null, fbHL: null, fbHR: null,   // [3 world angles] each; null = standing pose
+    fbTail: 0, fbShadow: 1, fbGround: 513, fbGroundLock: 1, fbAir: 0,
     letters: null, words: null,
   };
 
@@ -112,6 +112,23 @@
     }
     return p;
   }
+  // remove the "swallowtail" loops an offset curve forms on the inside of a tight bend
+  function unloop(poly) {
+    const out = poly.slice();
+    const X = (a, b, c, d) => {
+      const r = [b[0] - a[0], b[1] - a[1]], q = [d[0] - c[0], d[1] - c[1]];
+      const den = r[0] * q[1] - r[1] * q[0]; if (Math.abs(den) < 1e-9) return null;
+      const t = ((c[0] - a[0]) * q[1] - (c[1] - a[1]) * q[0]) / den, u = ((c[0] - a[0]) * r[1] - (c[1] - a[1]) * r[0]) / den;
+      return t > 0 && t < 1 && u > 0 && u < 1 ? [a[0] + r[0] * t, a[1] + r[1] * t] : null;
+    };
+    for (let i = 0; i < out.length - 3; i++) {
+      for (let j = Math.min(out.length - 2, i + 40); j > i + 1; j--) {
+        const x = X(out[i], out[i + 1], out[j], out[j + 1]);
+        if (x) { out.splice(i + 1, j - i, x); break; }
+      }
+    }
+    return out;
+  }
   function tubePaths(pts, stroke, opts) {
     const o = Object.assign({ capEnd: 'round', capStart: 'open', widthScale: 1, trimL: 0, trimR: 0 }, opts || {});
     const sm = catmull(pts, 6);
@@ -131,6 +148,11 @@
       for (let k = 1; k < steps; k++) { const a = a0 + da * k / steps; pts2.push([center[0] + Math.cos(a) * r, center[1] + Math.sin(a) * r]); }
       return pts2;
     };
+    const nL = L.length;
+    const L2 = unloop(L), R2 = unloop(R);
+    // keep trim counts meaningful after loop removal
+    const tl = Math.round((o.trimL || 0) * L2.length / nL), tr = Math.round((o.trimR || 0) * R2.length / nL);
+    L.length = 0; L.push(...L2); R.length = 0; R.push(...R2); o.trimL = tl; o.trimR = tr;
     const e = sm[sm.length - 1], st = sm[0];
     const endCap = o.capEnd === 'round' ? cap(e, L[L.length - 1], R[R.length - 1], 14) : [];
     const startCap = o.capStart === 'round' ? cap(st, R[0], L[0], 14) : [];

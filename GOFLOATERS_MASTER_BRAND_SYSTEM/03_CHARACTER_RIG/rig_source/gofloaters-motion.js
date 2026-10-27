@@ -52,6 +52,7 @@
     stageWide: '20 110 1160 652.5',
     prop: '720 300 330 185.6',
     stageTall: '60 -50 1100 618.75',
+    stageUp: '80 44 1040 585',
   };
 
   // ------------------------------------------------------------ expressions (seated pose)
@@ -103,15 +104,32 @@
 
   // ------------------------------------------------------------ base states
   const DOG_ONLY = { showAircraft: 0, showTrails: 0, showWordmark: 0, showTagline: 0, attached: 0 };
-  const FREE = Object.assign({}, DOG_ONLY, { body: 'free', fbHipX: 520, fbHipY: 470, fbGround: 600, fbGroundLock: 1, fbNeck: 18, headTilt: -6 });
   const AIRCRAFT_ONLY = { showDog: 0, showWordmark: 0, showTagline: 0, attached: 0 };
   const SYMBOL = { showWordmark: 0, showTagline: 0 };
 
-  // gait helper: returns [upper, lower] for a leg at phase p
-  function gait(p, A, bend, bias) {
-    const up = (bias || 0) + A * Math.sin(p);
-    const lift = Math.max(0, Math.cos(p));
-    return [up, up - bend * lift];
+  // ---- full-body (v2) helpers: legs are planted with foot-target IK, so paws stay on the ground
+  const G0 = 600, PAW = 10.5;
+  const FREE_VIEW = '290 150 520 520';                   // stage ground line; pad depth below the foot point
+  const FREE = Object.assign({}, DOG_ONLY, { body: 'free', fbGround: G0, fbGroundLock: 0, fbY: 101, headTilt: -4 });
+  const HOME = { FL: 618, FR: 594, HL: 432, HR: 462 };   // standing foot x per leg (logo frame)
+  const STAND_END = { FL: 8, FR: 10, HL: -2, HR: 4 };
+  const plant = (leg, dx, o) => Object.assign({ x: HOME[leg] + (dx || 0), y: G0 - PAW, end: STAND_END[leg], paw: 0 }, o || {});
+  const STANDING = { fbFL: plant('FL'), fbFR: plant('FR'), fbHL: plant('HL'), fbHR: plant('HR') };
+  const lerpN = (a, b, k) => a + (b - a) * k;
+  const lerpFoot = (a, b, k) => ({ x: lerpN(a.x, b.x, k), y: lerpN(a.y, b.y, k), end: lerpN(a.end, b.end, k), paw: lerpN(a.paw, b.paw, k) });
+  // one leg of a gait cycle. u = phase 0..1; stance (0..duty) slides the planted foot back at ground
+  // speed, the heel peels at push-off; swing arcs the foot forward with the pastern / hock folded.
+  function step(leg, u, o) {
+    u = ((u % 1) + 1) % 1;
+    const fore = leg[0] === 'F', S = o.stride, home = HOME[leg] + (o.reach || 0);
+    const endC = fore ? 12 : 6, endO = fore ? -28 : -34, endS = fore ? -78 : -52;
+    if (u < o.duty) {
+      const k = u / o.duty, peel = Math.max(0, (k - 0.72) / 0.28);
+      return { x: home + S * (0.5 - k), y: G0 - PAW - 13 * Math.sin(peel * Math.PI / 2) * 0.9, end: lerpN(endC, endO, k), paw: -28 * peel };
+    }
+    const k = (u - o.duty) / (1 - o.duty), sk = E.inOutSine(k);
+    return { x: home + S * (-0.5 + sk), y: G0 - PAW - 12 * (1 - k) * 0.9 - o.lift * Math.sin(Math.PI * k), end: k < 0.5 ? lerpN(endO, endS, k * 2) : lerpN(endS, endC, (k - 0.5) * 2),
+      paw: k < 0.8 ? -28 * (1 - k) - 18 * Math.sin(Math.PI * k) : 0 };
   }
 
   // ------------------------------------------------------------ decor helpers (ground, props)
@@ -199,51 +217,187 @@
         headTilt: -2 + 1.5 * Math.sin(p - 0.4), lean: -0.6 + 0.6 * Math.sin(p), lookX: 0.4, blink: blinkAt(t, [1.3]) });
     }
   });
-  def('walking', {
-    duration: 2, loop: true, view: 'stage', label: 'Walking', groundSpeed: 172,
+  def('standing', {
+    duration: 4, loop: true, view: 'stage', label: 'Standing (constructed full body)',
     fn(t) {
-      const T = 1.0, p = t / T * TAU;
+      const br = Math.sin(t / 4 * TAU * 2);
+      return Object.assign({}, FREE, STANDING, { fbY: 101 + 0.8 * br, breath: 0.5 + 0.5 * br, tailCurl: 1.2 * Math.sin(t / 4 * TAU), blink: blinkAt(t, [1.6]), mouthSmile: 0.45 });
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
+  // walk: lateral sequence (LH, LF, RH, RF), 1 s cycle, 62 % duty, ground speed = stride / (duty * T)
+  const WALK = { T: 1.0, duty: 0.62, stride: 72, lift: 16 };
+  def('walking', {
+    duration: 2, loop: true, view: 'stage', label: 'Walking', groundSpeed: WALK.stride / (WALK.duty * WALK.T),
+    fn(t) {
+      const u = t / WALK.T, p = u * TAU;
       return Object.assign({}, FREE, {
-        fbHL: gait(p, 19, 34, -4), fbFL: gait(p + Math.PI * 0.5, 19, 42, 2), fbHR: gait(p + Math.PI, 19, 34, -4), fbFR: gait(p + Math.PI * 1.5, 19, 42, 2),
-        fbSpine: 1.2 * Math.sin(2 * p), headTilt: -6 + 2.2 * Math.sin(2 * p + 0.6), fbNeck: 20 + 2 * Math.sin(2 * p + 0.3),
-        fbTail: 10 * Math.sin(p * 2), tailCurl: 1.2 * Math.sin(p * 2 - 0.8), earNear: 2 * Math.sin(2 * p - 0.4), earFar: 2.4 * Math.sin(2 * p - 0.2),
+        fbY: 108 + 2 * Math.sin(2 * p + 0.5), fbPitch: 0.8 * Math.sin(2 * p),
+        fbHL: step('HL', u, WALK), fbFL: step('FL', u - 0.25, WALK), fbHR: step('HR', u - 0.5, WALK), fbFR: step('FR', u - 0.75, WALK),
+        headTilt: -4 + 1.6 * Math.sin(2 * p + 0.9), fbHeadY: 1.5 * Math.sin(2 * p + 1.2),
+        fbTail: 8 * Math.sin(p), tailCurl: 1.2 * Math.sin(p - 0.8), earNear: 2 * Math.sin(2 * p - 0.4), earFar: 2.4 * Math.sin(2 * p - 0.2),
         mouthSmile: 0.5, lookX: 0.5, blink: blinkAt(t, [1.2]) });
     },
-    decor(ctx, t) { groundDecor(ctx, t, 172, 600, 100, 1100); }
+    decor(ctx, t) { groundDecor(ctx, t, WALK.stride / (WALK.duty * WALK.T), G0, 100, 1100); }
   });
+  // run: rotary gallop, 0.5 s cycle, short stance, suspension phase with the body rising and pitching
+  const RUN = { T: 0.5, duty: 0.36, stride: 104, lift: 34, reach: 8 };
+  const runPose = (t, slow) => {
+    const u = t / RUN.T, p = u * TAU, o = Object.assign({}, RUN, { stride: RUN.stride * slow, lift: RUN.lift * slow });
+    return {
+      fbY: 112 - 7 * Math.max(0, Math.sin(p * 1 - 2.2)) * slow, fbPitch: 5 * Math.sin(p + 0.6) * slow, fbX: -10 * slow,
+      fbHL: step('HL', u, o), fbHR: step('HR', u - 0.1, o), fbFL: step('FL', u - 0.48, o), fbFR: step('FR', u - 0.58, o),
+      fbHeadFollow: 0.6, headTilt: -2 + 2 * Math.sin(p + 0.8), fbTail: 30 + 6 * Math.sin(p * 2), tailCurl: -1.5,
+      earNear: -4 + 4 * Math.sin(p - 0.8), earFar: -4 + 4.5 * Math.sin(p - 0.6) };
+  };
   def('running', {
-    duration: 1.65, loop: true, view: 'stage', label: 'Running', groundSpeed: 560,
+    duration: 1.5, loop: true, view: 'stage', label: 'Running', groundSpeed: RUN.stride / (RUN.duty * RUN.T),
+    fn(t) { return Object.assign({}, FREE, runPose(t, 1), { lidUpper: 0.12, mouthSmile: 0.8, mouthOpen: 0.4, mouthTongue: 1, lookX: 0.7 }); },
+    decor(ctx, t) { groundDecor(ctx, t, RUN.stride / (RUN.duty * RUN.T), G0, 100, 1100); }
+  });
+  // jump & land: anticipation crouch (paws stay planted), push-off, tucked flight, landing absorb, settle
+  const jumpPose = (t, k) => {
+    const air = k.air(t), crouch = k.crouch(t), inAir = k.inAir(t);
+    const tuck = (leg, dx, dy, end) => ({ x: HOME[leg] + dx, y: G0 - PAW - air + dy, end, paw: -30 });
+    const legs = {};
+    [['FL', 34, -44, -70], ['FR', 22, -40, -64], ['HL', -16, -30, -40], ['HR', -6, -26, -36]].forEach(([leg, dx, dy, end]) => {
+      legs['fb' + leg] = lerpFoot(plant(leg), tuck(leg, dx, dy, end), inAir);
+    });
+    return Object.assign(legs, { fbY: 101 + 22 * crouch - air, fbPitch: k.pitch(t), fbHeadFollow: 0.5, fbShadow: 1 });
+  };
+  const JUMP = {
+    air: K([[0, 0], [0.62, 0], [0.8, 45, 'outQuad'], [1.1, 96, 'outQuad'], [1.4, 45, 'inQuad'], [1.55, 0, 'inQuad'], [2.4, 0]]),
+    crouch: K([[0, 0], [0.45, 1, 'inOutCubic'], [0.66, -0.15, 'outCubic'], [1.4, 0], [1.56, 0], [1.7, 0.9, 'outCubic'], [2.1, 0, 'inOutCubic']]),
+    inAir: K([[0, 0], [0.64, 0], [0.82, 1, 'outCubic'], [1.3, 1], [1.5, 0, 'inOutSine'], [2.4, 0]]),
+    pitch: K([[0, 0], [0.45, 4], [0.7, -14, 'outCubic'], [1.1, 0], [1.45, 8, 'inOutSine'], [1.75, 3], [2.1, 0]]),
+  };
+  def('jumping', {
+    duration: 2.4, view: 'stage', label: 'Jump and land',
     fn(t) {
-      const T = 0.55, p = t / T * TAU;
-      return Object.assign({}, FREE, {
-        fbHL: gait(p, 38, 55, -2), fbHR: gait(p + 0.5, 38, 55, -2), fbFL: gait(p + Math.PI, 40, 70, 6), fbFR: gait(p + Math.PI + 0.5, 40, 70, 6),
-        fbStretch: 1 + 0.08 * Math.sin(p + 1.6), fbSpine: 4 * Math.sin(p + 0.4), fbAir: 10 + 10 * Math.sin(p * 2 + 1),
-        fbNeck: 32 + 4 * Math.sin(p), headTilt: -4 + 3 * Math.sin(p + 0.8), fbTail: 25 + 8 * Math.sin(p * 2), tailCurl: -1.5,
-        earNear: 4 * Math.sin(p * 2 - 0.8) - 2, earFar: 4.5 * Math.sin(p * 2 - 0.6) - 2, lidUpper: 0.12, mouthSmile: 0.8, mouthOpen: 0.4, mouthTongue: 1, lookX: 0.7 });
+      const tk = JUMP.inAir(t);
+      return Object.assign({}, FREE, jumpPose(t, JUMP), {
+        headTilt: -4 + 5 * JUMP.crouch(t) - 4 * tk, fbTail: 15 * tk + 6 * Math.sin(t * 6),
+        earNear: -6 * tk + 4 * Math.max(0, JUMP.crouch(t)), earFar: -7 * tk + 4.5 * Math.max(0, JUMP.crouch(t)),
+        pupil: 1 + 0.15 * tk, mouthSmile: 0.6 + 0.4 * tk, mouthOpen: 0.5 * tk, mouthTongue: 1, lookX: 0.6 });
     },
-    decor(ctx, t) { groundDecor(ctx, t, 560, 600, 100, 1100); }
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
+  def('landing', {
+    duration: 1.4, view: 'stage', label: 'Landing (absorb and settle)',
+    fn(t) {
+      const tt = 1.12 + t;                      // the landing half of the jump curve
+      const tk = JUMP.inAir(tt);
+      return Object.assign({}, FREE, jumpPose(tt, JUMP), { headTilt: -4 + 5 * JUMP.crouch(tt), fbTail: 15 * tk,
+        earNear: 6 * Math.sin(Math.PI * win(t, 0.4, 1.0)) - 3 * tk, earFar: 7 * Math.sin(Math.PI * win(t, 0.42, 1.05)) - 3 * tk, mouthSmile: 0.7, blink: blinkAt(t, [0.45], 0.14) });
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
+  // upright on the hind legs (hind paws planted), forelegs free
+  const upright = (pitch, airY) => ({ fbPitch: pitch, fbY: 101 - (airY || 0), fbX: 40, fbHeadFollow: 0.25,
+    fbHL: plant('HL', 30, { y: G0 - PAW - (airY || 0), end: 10 }), fbHR: plant('HR', 18, { y: G0 - PAW - (airY || 0), end: 14 }) });
+  def('dancing', {
+    duration: 4, loop: true, view: 'stageUp', label: 'Dancing',
+    fn(t) {
+      const p = t / 0.5 * Math.PI;              // 120 bpm
+      const sway = Math.sin(p), bounce = Math.abs(Math.sin(p));
+      return Object.assign({}, FREE, expr('happy', 1), upright(-50 + 5 * sway, 8 * bounce), {
+        fbFL: [70 + 40 * Math.sin(p), 40 + 50 * Math.sin(p + 0.6), 20 + 40 * Math.sin(p + 1)], fbFR: [110 - 40 * Math.sin(p), 80 - 40 * Math.sin(p + 0.6), 60 - 30 * Math.sin(p + 1)],
+        headTilt: 8 * Math.sin(p + 0.5), fbTail: 20 + 25 * Math.sin(p * 2), earNear: 5 * Math.sin(p - 0.6), earFar: 6 * Math.sin(p - 0.4), mouthOpen: 0.4 + 0.2 * bounce });
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
   });
   (function () {
-    const air = K([[0, 0], [0.55, 0], [0.75, 40, 'outQuad'], [1.08, 150, 'outQuad'], [1.42, 40, 'inQuad'], [1.55, 0, 'inQuad'], [2.4, 0]]);
-    const crouch = K([[0, 0], [0.45, 1, 'inOutCubic'], [0.62, -0.6, 'outCubic'], [1.0, -0.3], [1.45, 0.2], [1.62, 0.9, 'outCubic'], [2.0, 0, 'inOutCubic']]);
-    const spine = K([[0, 0], [0.45, 4], [0.7, -16, 'outCubic'], [1.08, 0], [1.45, 10, 'inOutSine'], [1.7, 2], [2.1, 0]]);
-    def('jumping', {
-      duration: 2.4, view: 'stage', label: 'Jumping',
+    const air = K([[0, 0], [0.35, 0], [0.6, 50, 'outQuad'], [0.95, 70, 'outQuad'], [1.3, 0, 'inQuad'], [1.9, 0], [2.15, 34, 'outQuad'], [2.5, 0, 'inQuad'], [3, 0]]);
+    def('celebrating', {
+      duration: 3, loop: true, view: 'stageUp', label: 'Small celebration',
       fn(t) {
-        const c = crouch(t), tuck = win(t, 0.75, 0.95) * (1 - win(t, 1.25, 1.45));
-        return Object.assign({}, FREE, {
-          fbAir: air(t), fbSpine: spine(t),
-          fbHL: [-6 + 28 * Math.max(0, c) - 40 * Math.max(0, -c) + 40 * tuck, 10 - 40 * Math.max(0, c) + 30 * Math.max(0, -c) - 60 * tuck],
-          fbHR: [-2 + 28 * Math.max(0, c) - 40 * Math.max(0, -c) + 40 * tuck, 14 - 40 * Math.max(0, c) + 30 * Math.max(0, -c) - 60 * tuck],
-          fbFL: [6 - 18 * Math.max(0, c) + 60 * tuck + 30 * Math.max(0, -c), 0 - 26 * Math.max(0, c) + 20 * tuck],
-          fbFR: [2 - 18 * Math.max(0, c) + 60 * tuck + 30 * Math.max(0, -c), -4 - 26 * Math.max(0, c) + 20 * tuck],
-          fbNeck: 18 - 10 * Math.max(0, -c) + 12 * Math.max(0, c), headTilt: -6 + 6 * Math.max(0, c) - 6 * tuck,
-          fbTail: 15 * tuck + 6 * Math.sin(t * 6), earNear: -6 * tuck + 4 * Math.max(0, c), earFar: -7 * tuck + 4.5 * Math.max(0, c),
-          pupil: 1 + 0.15 * tuck, mouthSmile: 0.6 + 0.4 * tuck, mouthOpen: 0.5 * tuck, mouthTongue: 1, lookX: 0.6 });
+        const up = win(t, 0.3, 0.55) * (1 - win(t, 1.25, 1.5)) + win(t, 2.0, 2.15) * (1 - win(t, 2.4, 2.55));
+        const a = air(t), tuck = Math.min(1, a / 60);
+        const s = Object.assign({}, FREE, expr('celebrating', 1), upright(-46 - 8 * up, a), {
+          fbFL: [120 + 20 * up, 150 + 12 * Math.sin(t * 18) * up, 160], fbFR: [140 + 15 * up, 165, 170],
+          headTilt: -8 * up + 4, fbTail: 30 + 30 * Math.sin(t * 14), earNear: 6 * up - 2, earFar: 7 * up - 2 });
+        s.fbHL.end = 10 - 50 * tuck; s.fbHL.paw = -30 * tuck; s.fbHL.x -= 14 * tuck;
+        s.fbHR.end = 14 - 46 * tuck; s.fbHR.paw = -30 * tuck; s.fbHR.x -= 10 * tuck;
+        return s;
       },
-      decor(ctx, t) { groundDecor(ctx, 0, 0, 600, 100, 1100); }
+      decor(ctx, t) {
+        groundDecor(ctx, 0, 0, G0, 0, 1200);
+        const g = ctx.front; g.innerHTML = ''; const el = ctx.el;
+        [0.35, 2.0].forEach(t0 => {
+          const u = win(t, t0, t0 + 0.6); if (u <= 0 || u >= 1) return;
+          for (let i = 0; i < 8; i++) {
+            const a = i / 8 * TAU, r0 = 150 + 120 * E.outCubic(u), r1 = r0 + 40 * (1 - u);
+            el('line', { x1: 600 + Math.cos(a) * r0, y1: 300 + Math.sin(a) * r0 * 0.8, x2: 600 + Math.cos(a) * r1, y2: 300 + Math.sin(a) * r1 * 0.8, stroke: i % 2 ? '#6ED0E0' : '#FCE162', 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 1 - u }, g);
+          }
+        });
+      }
     });
   })();
+  // sleeping: lying down, forelegs folded forward on the ground, hind legs tucked, slow breathing
+  def('sleeping', {
+    duration: 4, loop: true, view: 'stage', label: 'Sleeping',
+    fn(t) {
+      const br = Math.sin(t / 4 * TAU * 2);
+      return Object.assign({}, FREE, {
+        fbY: 206 + 1.2 * br, fbPitch: 0, fbHeadX: 70, fbHeadY: 96 + 1.5 * br, headTilt: 20 + 1.2 * br, fbHeadFollow: 0,
+        fbFL: { x: 760, y: G0 - PAW, end: 92, paw: 0 }, fbFR: { x: 740, y: G0 - PAW - 4, end: 92, paw: 0 }, fbHL: { x: 528, y: G0 - PAW, end: 92, paw: 0 }, fbHR: { x: 548, y: G0 - PAW - 4, end: 92, paw: 0 }, fbTail: 96, tailCurl: 1.6,
+        blink: 1, mouthSmile: 0.3, mouthWidth: 0.7, earNear: -6, earFar: -7, fbShadow: 1.4, breath: 0.5 + 0.5 * br });
+    },
+    decor(ctx, t) {
+      groundDecor(ctx, 0, 0, G0, 100, 1100);
+      const g = ctx.front; g.innerHTML = ''; const el = ctx.el;
+      for (let i = 0; i < 3; i++) {
+        const u = ((t / 4) + i / 3) % 1;
+        const tx = el('text', { x: 860 + u * 60 + i * 6, y: 420 - u * 120, 'font-family': 'Inter, sans-serif', 'font-weight': 800, 'font-size': 26 + u * 22, fill: '#050506', opacity: Math.sin(Math.PI * u) }, g);
+        tx.textContent = 'z';
+      }
+    }
+  });
+  // stretching: play-bow - chest lowered, forelegs reaching forward along the ground, hips held high
+  def('stretching', {
+    duration: 3.6, loop: true, view: 'stage', label: 'Stretching (play bow)',
+    fn(t) {
+      const k = E.inOutCubic(win(t, 0.3, 1.2)) * (1 - E.inOutCubic(win(t, 2.6, 3.4)));
+      const s = Object.assign({}, FREE, STANDING, {
+        fbPitch: 22 * k, fbY: 101 - 4 * k, fbHeadFollow: 0.15, headTilt: -10 * k, fbHeadY: -6 * k,
+        fbTail: 30 * k + 6 * Math.sin(t * 5) * k, tailCurl: -1 * k, blink: Math.sin(Math.PI * win(t, 1.4, 2.4)),
+        mouthOpen: 0.7 * Math.sin(Math.PI * win(t, 1.5, 2.3)), mouthSmile: 0.4, earNear: -4 * k, earFar: -5 * k });
+      s.fbFL = lerpFoot(plant('FL'), plant('FL', 70, { end: 76, paw: 0 }), k);
+      s.fbFR = lerpFoot(plant('FR'), plant('FR', 64, { end: 74, paw: 0 }), k);
+      return s;
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
+  // looking around: eyes lead, head follows, ears trail; the body stays planted
+  def('looking_around', {
+    duration: 4.4, loop: true, view: 'stage', label: 'Looking around',
+    fn(t) {
+      const look = K([[0, 0.2], [0.3, 0.95, 'inOutCubic'], [1.2, 0.95], [1.5, -0.9, 'inOutCubic'], [2.5, -0.9], [2.8, 0.1, 'inOutCubic'], [3.4, 0.1, ''], [3.7, 0.2]]);
+      const ly = K([[0, 0], [0.3, -0.5], [1.5, 0.2], [2.8, -0.7], [3.4, -0.7], [3.8, 0]]);
+      const head = K([[0, 0], [0.45, -7, 'inOutCubic'], [1.3, -7], [1.7, 6, 'inOutCubic'], [2.6, 6], [3.0, -4, 'inOutCubic'], [3.6, -4], [4.1, 0, 'inOutCubic']]);
+      const hd = x => head(Math.max(0, x - 0.12));
+      return Object.assign({}, FREE, STANDING, expr('curious', 0.6), {
+        lookX: look(t), lookY: ly(t), headTilt: -4 + hd(t), fbHeadY: -0.4 * hd(t),
+        earNear: earFollow(hd, t) + 1, earFar: earFollow(hd, t) * 1.2 - 1, fbTail: 6 * Math.sin(t * 2), blink: blinkAt(t, [1.4, 3.1]) });
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
+  // pointing (standing): near foreleg lifts and extends toward the target, weight shifts back
+  def('pointing_standing', {
+    duration: 3.4, loop: true, view: 'stage', label: 'Pointing (standing)',
+    fn(t) {
+      const up = E.outBackSoft(win(t, 0.4, 0.95)) * (1 - E.inOutCubic(win(t, 2.7, 3.2)));
+      const head = x => -5 * E.inOutCubic(win(x, 0.3, 0.75)) * (1 - win(x, 2.75, 3.2));
+      const s = Object.assign({}, FREE, STANDING, expr('determined', 0.6 * up), {
+        fbPitch: -3 * up, fbX: -6 * up, lookX: 0.95 * up, headTilt: -4 + head(t), earNear: earFollow(head, t) - 1, earFar: earFollow(head, t) - 1.2,
+        mouthSmile: 0.5 + 0.3 * up, fbTail: 10 * up + 4 * Math.sin(t * 4) });
+      const lifted = { x: HOME.FL + 30, y: G0 - PAW - 44, end: -30, paw: -20 }, point = { x: HOME.FL + 128, y: G0 - PAW - 112, end: 92, paw: 30 };
+      s.fbFL = up < 0.4 ? lerpFoot(plant('FL'), lifted, Math.max(0, up) / 0.4) : lerpFoot(lifted, point, (up - 0.4) / 0.6);
+      s.fbFR = plant('FR', -4); s.fbHL = plant('HL', 4); s.fbHR = plant('HR', 4);
+      return s;
+    },
+    decor(ctx, t) { groundDecor(ctx, 0, 0, G0, 100, 1100); }
+  });
   def('waving', {
     duration: 3, loop: true, view: 'dog', label: 'Waving',
     fn(t) {
@@ -287,63 +441,6 @@
         earNear: earFollow(hd, t) + 3, earFar: earFollow(hd, t) * 1.2 - 2, legFar: -8 * Math.sin(Math.PI * win(t, 2.6, 3.4)), blink: blinkAt(t, [1.35, 3.0]) });
     }
   });
-  def('dancing', {
-    duration: 4, loop: true, view: 'stageTall', label: 'Dancing',
-    fn(t) {
-      const b = 0.5, p = t / b * Math.PI; // 120 bpm
-      const sway = Math.sin(p), bounce = Math.abs(Math.sin(p));
-      return Object.assign({}, FREE, expr('happy', 1), {
-        fbHipX: 560 + 12 * sway, fbSpine: -70 + 7 * sway, fbNeck: -6 - 6 * sway, headTilt: 8 * Math.sin(p + 0.5),
-        fbAir: 10 * bounce, fbFL: [110 + 40 * Math.sin(p), 50 + 50 * Math.sin(p + 0.6)], fbFR: [150 - 40 * Math.sin(p), 100 - 40 * Math.sin(p + 0.6)],
-        fbHL: [8 + 14 * Math.max(0, sway), -6 - 18 * Math.max(0, sway)], fbHR: [-6 + 14 * Math.max(0, -sway), 4 - 18 * Math.max(0, -sway)],
-        fbTail: 20 + 25 * Math.sin(p * 2), earNear: 5 * Math.sin(p - 0.6), earFar: 6 * Math.sin(p - 0.4), mouthOpen: 0.4 + 0.2 * bounce });
-    },
-    decor(ctx, t) { groundDecor(ctx, 0, 0, 600, 100, 1100); }
-  });
-  def('sleeping', {
-    duration: 4, loop: true, view: 'stage', label: 'Sleeping',
-    fn(t) {
-      const br = Math.sin(t / 4 * TAU * 2);
-      return Object.assign({}, FREE, {
-        fbGroundLock: 0, fbHipX: 480, fbHipY: 546 + 1.5 * br, fbStretch: 1 + 0.012 * br, fbSpine: 0, fbNeck: 82, headTilt: 30 + 1.2 * br,
-        fbFL: [86, 92], fbFR: [80, 88], fbHL: [74, -84], fbHR: [70, -88], fbTail: 100, tailCurl: 1.2,
-        blink: 1, mouthSmile: 0.3, mouthWidth: 0.7, earNear: -6, earFar: -7, fbShadow: 1.4 });
-    },
-    decor(ctx, t) {
-      groundDecor(ctx, 0, 0, 600, 100, 1100);
-      const g = ctx.front; g.innerHTML = ''; const el = ctx.el;
-      for (let i = 0; i < 3; i++) {
-        const u = ((t / 4) + i / 3) % 1;
-        const tx = el('text', { x: 820 + u * 60 + i * 6, y: 380 - u * 120, 'font-family': 'Inter, sans-serif', 'font-weight': 800, 'font-size': 26 + u * 22, fill: '#050506', opacity: Math.sin(Math.PI * u) }, g);
-        tx.textContent = 'z';
-      }
-    }
-  });
-  (function () {
-    const air = K([[0, 0], [0.35, 0], [0.6, 120, 'outQuad'], [0.95, 160, 'outQuad'], [1.3, 0, 'inQuad'], [1.45, 0], [1.9, 0], [2.15, 70, 'outQuad'], [2.5, 0, 'inQuad'], [3, 0]]);
-    def('celebrating', {
-      duration: 3, loop: true, view: 'stageTall', label: 'Celebrating',
-      fn(t) {
-        const up = win(t, 0.3, 0.55) * (1 - win(t, 1.25, 1.5)) + win(t, 2.0, 2.15) * (1 - win(t, 2.4, 2.55));
-        return Object.assign({}, FREE, expr('celebrating', 1), {
-          fbSpine: -60 + 8 * up, fbHipX: 560, fbNeck: -6, headTilt: -8 * up + 4,
-          fbAir: air(t), fbFL: [150 + 20 * up, 160 + 10 * Math.sin(t * 18) * up], fbFR: [160 + 15 * up, 175], fbHL: [10 - 20 * up, -10 + 30 * up], fbHR: [-8 - 18 * up, 10 + 26 * up],
-          fbTail: 30 + 30 * Math.sin(t * 14), earNear: 6 * up - 2, earFar: 7 * up - 2, legNear: 0, legFar: 0 });
-      },
-      decor(ctx, t) {
-        groundDecor(ctx, 0, 0, 600, 0, 1200);
-        // speed-line bursts from the brand motif
-        const g = ctx.front; g.innerHTML = ''; const el = ctx.el;
-        [0.35, 2.0].forEach(t0 => {
-          const u = win(t, t0, t0 + 0.6); if (u <= 0 || u >= 1) return;
-          for (let i = 0; i < 8; i++) {
-            const a = i / 8 * TAU, r0 = 150 + 120 * E.outCubic(u), r1 = r0 + 40 * (1 - u);
-            el('line', { x1: 600 + Math.cos(a) * r0, y1: 300 + Math.sin(a) * r0 * 0.8, x2: 600 + Math.cos(a) * r1, y2: 300 + Math.sin(a) * r1 * 0.8, stroke: i % 2 ? '#6ED0E0' : '#FCE162', 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 1 - u }, g);
-          }
-        });
-      }
-    });
-  })();
   def('surprise', {
     duration: 2.6, loop: true, view: 'dog', label: 'Reacting to surprise',
     fn(t) {
@@ -355,39 +452,43 @@
         blink: blinkAt(t, [0.22], 0.12), legNear: -20 * hit, legFar: -10 * hit, tailCurl: -2 * hit });
     }
   });
-  (function () {
-    // hurdle travels toward the dog; the dog leaps it mid-run
-    const air = K([[0, 0], [1.25, 0], [1.4, 30, 'outQuad'], [1.75, 150, 'outQuad'], [2.1, 30, 'inQuad'], [2.2, 0, 'inQuad'], [4, 0]]);
-    const spine = K([[0, 0], [1.25, 3], [1.45, -18, 'outCubic'], [1.8, 0], [2.15, 12], [2.4, 0]]);
-    def('obstacle', {
-      duration: 4, view: 'stageWide', label: 'Playfully overcoming an obstacle',
-      fn(t) {
-        const T = 0.55, p = t / T * TAU;
-        const inAir = win(t, 1.3, 1.45) * (1 - win(t, 2.05, 2.2));
-        const slow = 1 - win(t, 3.0, 3.6);
-        const run = Object.assign({}, FREE, {
-          fbHipX: 470, fbHL: gait(p, 36 * slow, 52 * slow, -2), fbHR: gait(p + 0.5, 36 * slow, 52 * slow, -2), fbFL: gait(p + Math.PI, 38 * slow, 66 * slow, 6), fbFR: gait(p + Math.PI + 0.5, 38 * slow, 66 * slow, 6),
-          fbStretch: 1 + 0.06 * Math.sin(p + 1.6) * slow, fbSpine: spine(t) + 3 * Math.sin(p) * slow, fbAir: air(t) + (6 + 6 * Math.sin(p * 2 + 1)) * slow * (1 - inAir),
-          fbNeck: 26, headTilt: -5 - 6 * inAir, fbTail: 22 + 10 * Math.sin(p * 2), mouthSmile: 0.9, mouthOpen: 0.35 + 0.3 * inAir, mouthTongue: 1, lookX: 0.8, pupil: 1 + 0.15 * inAir,
-          earNear: -6 * inAir + 3 * Math.sin(p * 2), earFar: -7 * inAir + 3 * Math.sin(p * 2 + 0.3) });
-        if (inAir > 0) { const tk = Math.sin(Math.PI * win(t, 1.35, 2.1)); run.fbFL = [70 * tk + 10, 120 * tk]; run.fbFR = [60 * tk + 6, 110 * tk]; run.fbHL = [-50 * tk, 20 * tk]; run.fbHR = [-44 * tk, 26 * tk]; }
-        if (t > 3.3) Object.assign(run, expr('happy', win(t, 3.3, 3.6)));
-        return run;
-      },
-      decor(ctx, t) {
-        const speed = 520 * (1 - win(t, 3.0, 3.6) * 0.999);
-        let dist = 0; { const s1 = Math.min(t, 3.0); dist = s1 * 520 + Math.max(0, Math.min(t, 3.6) - 3.0) * 520 * 0.5; }
-        groundDecor(ctx, dist / 520 * 520 / 520, 520, 600, 0, 1200);
-        // hurdle built from the aircraft's wing geometry (proposed motif)
-        const el = ctx.el, g = ctx.back;
-        const hx = 1350 - dist;
-        const hg = el('g', { transform: `translate(${hx} 0)` }, g);
-        el('path', { d: 'M-70,600 L-60,500 L60,500 L70,600', fill: 'none', stroke: '#050506', 'stroke-width': 8, 'stroke-linejoin': 'round' }, hg);
-        el('path', { d: 'M-84,500 C-60,470 60,470 84,500 Z', fill: '#6ED0E0', stroke: '#050506', 'stroke-width': 8, 'stroke-linejoin': 'round' }, hg);
-        el('path', { d: 'M-40,500 L-30,484 M0,500 L0,478 M40,500 L30,484', fill: 'none', stroke: '#050506', 'stroke-width': 5, 'stroke-linecap': 'round' }, hg);
-      }
+  // ===== WEBSITE HERO (standing dog beside the search field) =====
+  // heroPose(t, point): t drives the idle loop, point (0..1) blends the point-toward-search gesture.
+  // Idle order per brief: eyes move first, then a small head tilt, ears follow through, back to neutral.
+  const heroLook = K([[0, 0.15], [0.5, 0.15], [0.8, 0.95, 'inOutCubic'], [2.9, 0.95], [3.3, 0.15, 'inOutCubic'], [6, 0.15]]);
+  const heroLookY = K([[0, 0], [0.5, 0], [0.8, 0.35, 'inOutCubic'], [2.9, 0.35], [3.3, 0, 'inOutCubic'], [6, 0]]);
+  const heroHead = K([[0, 0], [1.0, 0], [1.5, 5, 'inOutCubic'], [2.8, 5], [3.5, 0, 'inOutCubic'], [6, 0]]);
+  function heroPose(t, point) {
+    t = ((t % 6) + 6) % 6; point = clamp(point || 0, 0, 1.15);
+    const hd = x => heroHead(((x % 6) + 6) % 6);
+    const br = Math.sin(t / 6 * TAU * 3);
+    const s = Object.assign({}, FREE, STANDING, {
+      fbY: 101 + 0.7 * br, breath: 0.5 + 0.5 * br, mouthSmile: 0.45,
+      lookX: lerp(heroLook(t), 0.95, Math.min(1, point)), lookY: lerp(heroLookY(t), 0.25, Math.min(1, point)),
+      headTilt: -4 + hd(t) * (1 - Math.min(1, point)) - 3 * point,
+      earNear: earFollow(hd, t, 0.7) * (1 - Math.min(1, point)), earFar: earFollow(hd, t, 0.8) * (1 - Math.min(1, point)),
+      fbTail: 4 * Math.sin(t / 6 * TAU) + 12 * point, tailCurl: 0.8 * Math.sin(t / 6 * TAU * 2), blink: blinkAt(t, [4.4]),
     });
-  })();
+    if (point > 0.001) {
+      Object.assign(s, { fbPitch: -3 * point, fbX: -6 * point, mouthSmile: 0.45 + 0.35 * point });
+      const lifted = { x: HOME.FL + 30, y: G0 - PAW - 44, end: -30, paw: -20 }, aim = { x: HOME.FL + 128, y: G0 - PAW - 112, end: 92, paw: 30 };
+      s.fbFL = point < 0.4 ? lerpFoot(plant('FL'), lifted, point / 0.4) : lerpFoot(lifted, aim, (point - 0.4) / 0.6);
+      s.fbFR = plant('FR', -4 * point); s.fbHL = plant('HL', 4 * point); s.fbHR = plant('HR', 4 * point);
+    }
+    return s;
+  }
+  def('hero_idle', {
+    duration: 6, loop: true, view: FREE_VIEW, label: 'Website hero idle (eyes, head tilt, ear follow-through)',
+    fn(t) { return heroPose(t, 0); },
+    decor(ctx, t) { }
+  });
+  def('hero_point', {
+    duration: 3.6, view: FREE_VIEW, label: 'Website hero: point toward the search result',
+    fn(t) {
+      const p = E.outBackSoft(win(t, 0.3, 0.9)) * (1 - E.inOutCubic(win(t, 2.8, 3.4)));
+      return heroPose(1.0 + t, p);
+    }
+  });
 
   // ===== RIG PROOF (first proof of completion) =====
   def('rig_demo', {
@@ -495,5 +596,5 @@
     const tt = a.loop ? ((t % a.duration) + a.duration) % a.duration : clamp(t, 0, a.duration);
     return a.fn(tt);
   }
-  global.GFMotion = { E, K, VIEWS, EXPRESSIONS, EXPR_ORDER, ANIMS: A, frame, expr, blendExpr, win };
+  global.GFMotion = { E, K, VIEWS, EXPRESSIONS, EXPR_ORDER, ANIMS: A, frame, expr, blendExpr, win, heroPose };
 })(typeof window !== 'undefined' ? window : globalThis);

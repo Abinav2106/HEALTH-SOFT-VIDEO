@@ -7,9 +7,11 @@ TMP=${1:-/tmp/gf_frames}; shift || true
 declare -A OUT=(
   [hero]=hero_motion/gofloaters_hero_signature [hero_reduced]=hero_motion/gofloaters_hero_reduced_motion
   [flying]=character_motion/action_01_flying [walking]=character_motion/action_02_walking [running]=character_motion/action_03_running
-  [jumping]=character_motion/action_04_jumping [waving]=character_motion/action_05_waving [pointing]=character_motion/action_06_pointing
-  [searching]=character_motion/action_07_searching [dancing]=character_motion/action_08_dancing [sleeping]=character_motion/action_09_sleeping
-  [celebrating]=character_motion/action_10_celebrating [surprise]=character_motion/action_11_surprise [obstacle]=character_motion/action_12_obstacle
+  [jumping]=character_motion/action_04_jump_and_land [landing]=character_motion/action_05_landing [waving]=character_motion/action_06_waving
+  [pointing]=character_motion/action_07_pointing_seated [pointing_standing]=character_motion/action_08_pointing_standing
+  [searching]=character_motion/action_09_searching [looking_around]=character_motion/action_10_looking_around
+  [dancing]=character_motion/action_11_dancing [sleeping]=character_motion/action_12_sleeping [stretching]=character_motion/action_13_stretching
+  [celebrating]=character_motion/action_14_celebrating [surprise]=character_motion/action_15_surprise [standing]=character_motion/action_00_standing_idle
   [expressions]=character_motion/expression_transitions
   [aircraft_only]=aircraft_motion/aircraft_only_flight [propeller]=aircraft_motion/propeller_transition [trails]=aircraft_motion/speed_line_motion
   [rig_demo]=../03_CHARACTER_RIG/rig_preview/rig_proof_playback

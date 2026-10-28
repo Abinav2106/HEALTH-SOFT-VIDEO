@@ -1,0 +1,7 @@
+# Client brand files and the footage slots stay out of this public repository.
+assets/brand/*
+assets/gameplay/*
+assets/workspaces/*
+assets/plates/*
+!assets/**/README.md
+out/

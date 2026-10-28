@@ -1,0 +1,21 @@
+{
+  "_about": "GoFloaters audio timing in 30 fps frames, mirrored from constants.ts. scripts/make_gf_score.py renders public/gofloaters/audio/score.wav from this file. 120 BPM = 15 frames per beat.",
+  "fps": 30,
+  "duration": 570,
+  "bpm": 120,
+  "grooveEnd": 352,
+  "tensionFrom": 180,
+  "riserFrom": 225,
+  "cafe": {"from": 90, "to": 302},
+  "hits": [136, 180, 222, 262, 302],
+  "freeze": {"at": 352, "resume": 372},
+  "reveal": 390,
+  "ticks": [402, 406, 410, 410, 414, 418],
+  "touch": 420,
+  "snap": 441,
+  "chime": 445,
+  "morph": 468,
+  "bookTap": 496,
+  "endWhoosh": 505,
+  "resolve": 515
+}

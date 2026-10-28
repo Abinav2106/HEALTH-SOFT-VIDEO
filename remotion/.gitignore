@@ -7,3 +7,7 @@ public/stock/*
 !public/stock/README.md
 public/audio/voice/*
 public/audio/music/*
+# GoFloaters: official artwork, generated clips and the rendered score stay out of git.
+public/gofloaters/brand/*
+public/gofloaters/clips/*
+public/gofloaters/audio/*

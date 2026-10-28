@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diwali Spark Hunt</title>
+<style>
+  @font-face { font-family: "GF Display Black"; src: url("fonts/InterDisplay-Black.otf"); }
+  @font-face { font-family: "GF Display ExtraBold"; src: url("fonts/InterDisplay-ExtraBold.otf"); }
+  @font-face { font-family: "GF Bold"; src: url("fonts/Inter-Bold.otf"); }
+  @font-face { font-family: "GF SemiBold"; src: url("fonts/Inter-SemiBold.otf"); }
+  :root { --bg: #0b1622; --fg: #e8eef2; --muted: #8fa3b1; --accent: #18B36A; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.4 system-ui, sans-serif; }
+  body.render { background: #000; }
+  body.render #ui { display: none; }
+  body.render #stage { display: block; padding: 0; }
+  body.render canvas { width: 1080px; height: 1920px; max-width: none; }
+  #stage { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px; }
+  canvas { display: block; background: #000; height: min(80vh, 1920px); aspect-ratio: 9 / 16; width: auto; max-width: 100%; }
+  #ui { display: flex; gap: 10px; align-items: center; width: min(100%, 520px); }
+  #ui button { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 8px 16px; font-weight: 700; cursor: pointer; }
+  #ui input { flex: 1; accent-color: var(--accent); }
+  #tc { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 92px; text-align: right; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ui">
+    <button id="play">Play</button>
+    <input id="scrub" type="range" min="0" max="1199" value="0">
+    <span id="tc">00.00 / 40.00</span>
+  </div>
+</div>
+<script src="lib/core.js"></script>
+<script src="lib/tilo.js"></script>
+<script src="lib/india.js"></script>
+<script src="lib/world.js"></script>
+<script src="config.js"></script>
+<script src="scenes.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

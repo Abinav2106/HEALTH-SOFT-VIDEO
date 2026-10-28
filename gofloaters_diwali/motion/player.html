@@ -1,0 +1,99 @@
+<title>Diwali Spark Hunt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/*__FILM_FONTS__*/
+/* Layout: an edit-suite bay; the 9:16 stage on the left, the project sheet on the right, stacked on phones. */
+:root {
+  --bg: #eef2f3; --panel: #ffffff; --ink: #0f2a3d; --muted: #5b7080; --line: #d5dee3;
+  --accent: #18b36a; --accent-ink: #0b7a46; --stage: #0b1622; --warn: #a3620a; --warn-bg: #fdf1dc;
+  --ui: "Familjen Grotesk", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1622; --panel: #112231; --ink: #e6eef2; --muted: #8fa5b4; --line: #1f3546;
+  --accent: #22c47a; --accent-ink: #5be0a0; --stage: #050c13; --warn: #f2b65a; --warn-bg: #2a2111; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0b1622; --panel: #112231; --ink: #e6eef2; --muted: #8fa5b4; --line: #1f3546;
+  --accent: #22c47a; --accent-ink: #5be0a0; --stage: #050c13; --warn: #f2b65a; --warn-bg: #2a2111; color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font-family: var(--ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 32px; }
+.bay { display: grid; grid-template-columns: auto minmax(0, 420px); gap: 28px; justify-content: center; align-items: start; max-width: 1100px; margin: 0 auto; }
+.stage { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+canvas#c { display: block; height: min(80vh, 820px); aspect-ratio: 9 / 16; width: auto; max-width: 100%; background: var(--stage); border-radius: 14px; }
+#ui { display: flex; gap: 10px; align-items: center; width: 100%; max-width: 461px; }
+button { font: 600 14px var(--ui); border-radius: 999px; padding: 8px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+button#play { background: var(--accent); border-color: var(--accent); color: #fff; min-width: 76px; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+#tc { font: 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sheet { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+h1 { font-size: 34px; line-height: 1.05; margin: 4px 0 6px; text-wrap: balance; letter-spacing: -0.01em; }
+.spec { font: 13px var(--mono); color: var(--muted); margin: 0; }
+h2 { font-size: 13px; font-family: var(--mono); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+ol.scenes { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+ol.scenes li { border-bottom: 1px solid var(--line); }
+ol.scenes button { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: baseline; padding: 8px 6px; cursor: pointer; border-radius: 6px; }
+ol.scenes button:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+ol.scenes button:focus-visible { outline: 2px solid var(--accent); }
+ol.scenes .n, ol.scenes .t { font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+ol.scenes li.on button { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+ol.scenes li.on .n { color: var(--accent-ink); font-weight: 600; }
+.slots { display: flex; flex-direction: column; gap: 8px; }
+.slot { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
+.pill { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.miss { background: var(--warn-bg); color: var(--warn); }
+.pill.ok { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); }
+.slot p { margin: 0; font-size: 14px; }
+.slot small { display: block; color: var(--muted); font-size: 13px; }
+@media (max-width: 860px) { .bay { grid-template-columns: minmax(0, 1fr); } canvas#c { height: auto; width: 100%; max-width: 461px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+<div class="bay">
+  <section class="stage" aria-label="Film">
+    <canvas id="c" width="1080" height="1920"></canvas>
+    <div id="ui">
+      <button id="play" type="button">Play</button>
+      <input id="scrub" type="range" min="0" max="1199" value="0" aria-label="Scrub timeline">
+      <span id="tc">00.00 / 40.00</span>
+      <button id="mute" type="button" aria-pressed="false">Sound on</button>
+    </div>
+  </section>
+  <section class="sheet">
+    <div>
+      <p class="eyebrow">GoFloaters · Claude Motion project</p>
+      <h1>Diwali Spark Hunt</h1>
+      <p class="spec">40.00 s · 1080×1920 · 30 fps · 1,200 frames</p>
+    </div>
+    <div>
+      <h2>Scenes</h2>
+      <ol class="scenes" id="scenes"></ol>
+    </div>
+    <div>
+      <h2>Footage slots</h2>
+      <div class="slots">
+        <div class="slot"><span class="pill miss">Missing</span><p>Real game screen recording<small>Tilo Tour, 14.0–35.3 s. Shown as a labelled slot until supplied; the game is never recreated.</small></p></div>
+        <div class="slot"><span class="pill miss">Missing</span><p>Genuine workspace photo<small>Opens from the real workspace card at 20.2 s.</small></p></div>
+        <div class="slot"><span class="pill miss">Temp</span><p>Score and sound effects<small>Original synthesis, timed to picture. Swap in licensed music when cleared.</small></p></div>
+        <div class="slot"><span class="pill ok">Locked</span><p>Tilo and logo<small>Cut from the official logo file; animated, never redrawn.</small></p></div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>window.GF_ASSETS = /*__ASSETS__*/null;</script>
+<script>/*__SCRIPTS__*/</script>
+<script>
+(function () {
+  const list = document.getElementById("scenes");
+  const rows = GF.Film.SCENES.map(([n, name, a, b]) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button type="button"><span class="n">${n}</span><span>${name}</span><span class="t">${a.toFixed(1).padStart(4, "0")}–${b.toFixed(1).padStart(4, "0")}</span></button>`;
+    li.querySelector("button").onclick = () => window.GF_seek && window.GF_seek(Math.round(a * 30 + (n === "01" ? 15 : 6)));
+    list.appendChild(li);
+    return [li, a, b];
+  });
+  window.GF_onFrame = (f) => { const t = f / 30; rows.forEach(([li, a, b]) => li.classList.toggle("on", t >= a && t < b)); };
+})();
+</script>

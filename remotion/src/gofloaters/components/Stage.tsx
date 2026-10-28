@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {BEATS, COLORS, FLOW, FONT_SANS, PHONE, SHOTS} from '../constants';
+import {BEATS, COLORS, FLOW, FONT_SANS, HEIGHT, PHONE, SHOTS, WIDTH} from '../constants';
 import {EASE_IN_OUT, EASE_OUT, progress} from '../lib/motion';
 import {Check} from './Icons';
 import {LiveShot} from './LiveShot';
@@ -48,6 +48,8 @@ export const Beats: React.FC = () => {
   );
 };
 
+const WINDOW = {x: 110, y: 186, w: 820, h: 462}; // 16:9
+
 // S06 left column: the workspace she found (S07 clip) in a window + Select → Discover → Book.
 export const Flow: React.FC = () => {
   const frame = useCurrentFrame();
@@ -58,10 +60,10 @@ export const Flow: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          left: 110,
-          top: 186,
-          width: 820,
-          height: 462,
+          left: WINDOW.x,
+          top: WINDOW.y,
+          width: WINDOW.w,
+          height: WINDOW.h,
           borderRadius: 34,
           overflow: 'hidden',
           boxShadow: '0 30px 70px rgba(10,40,50,0.20)',
@@ -69,7 +71,10 @@ export const Flow: React.FC = () => {
           transform: `translateX(${(1 - win) * -90}px) scale(${0.94 + win * 0.06})`,
         }}
       >
-        <LiveShot id="s07" from={SHOTS.s06.from} to={SHOTS.s07.from + 4} scale={(f) => 1.02 + (f - SHOTS.s06.from) * 0.0012} origin="45% 40%" />
+        {/* Full 1920x1080 shot scaled down into the window, not cropped by it. */}
+        <div style={{width: WIDTH, height: HEIGHT, transform: `scale(${WINDOW.w / WIDTH})`, transformOrigin: 'top left'}}>
+          <LiveShot id="s07" from={SHOTS.s06.from} to={SHOTS.s07.from + 4} scale={(f) => 1.02 + (f - SHOTS.s06.from) * 0.0012} origin="45% 40%" />
+        </div>
       </div>
       <div style={{position: 'absolute', left: 110, top: 700, display: 'flex', alignItems: 'center', gap: 14, fontFamily: FONT_SANS}}>
         {FLOW.steps.map((s, i) => {

@@ -44,3 +44,24 @@ Live action comes from `src/video06/stock/manifest.json` (written by `video06/to
 | `components/StockShot.tsx` | One live-action shot: licensed clip, 9:16 cover crop on a focus point, native speed |
 | `stock/stock.ts` | Manifest access, crop maths shared with the tracker, strict-mode assertions |
 | `lib/cornerPin.ts` | Homography → CSS `matrix3d` for screen compositing |
+
+# GoFloaters — "Find your space" (16:9, 19 s)
+
+Lives in `src/gofloaters/`. Timing, palette, copy and layout: `src/gofloaters/constants.ts`. Audio cues: `src/gofloaters/audio/cues.json`.
+
+Arc: CHAOS → ONE TAP → MATCH → WORK. S01–S03 live action (handheld, punch-ins, need chips, cyan wipes) → S04 freeze + audio stop → S05 locked-off phone hero with the fictional WORKSPACE MATCH interaction (FOCUS → QUIET DESK, magnetic snap, MATCH FOUND ✓) → S06 discovery screen (Select requirement → Discover a space → Book) → S07 white end frame with the official artwork, FIND YOUR SPACE. GET TO WORK. and the CTA.
+
+Assets (gitignored, public repo — see `public/gofloaters/README.md`):
+
+```bash
+public/gofloaters/brand/gofloaters_logo_original.webp   # supplied artwork, byte-identical
+public/gofloaters/clips/{s01,s02,s03a,s03b,s03c,s04,s07}.mp4
+python3 scripts/make_gf_score.py                         # → public/gofloaters/audio/score.wav (needs numpy)
+```
+
+```bash
+npx remotion render src/index.ts GF-Master out/gofloaters_find_your_space_1920x1080_30p.mp4
+COMP=GF-Review node scripts/stills.mjs out/gf_stills 200 436 452 500 545
+```
+
+`GF-Review` shows labelled stand-ins for missing clips/logo/score; `GF-Master` throws instead.

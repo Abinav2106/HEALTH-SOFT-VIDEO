@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 assets/stock/
+# GoFloaters: storyboard-derived client artwork and regenerable audio stay out of git.
+remotion/public/gofloaters/storyboard/*
+remotion/public/gofloaters/audio/*
+remotion/public/gofloaters/voice/*

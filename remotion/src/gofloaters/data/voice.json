@@ -1,0 +1,42 @@
+{
+  "voice": "af_heart",
+  "speed": 0.96,
+  "engine": "Kokoro-82M v1.0 (kokoro-onnx)",
+  "lines": {
+    "a": {
+      "text": "One hidden Spark. Where would you look?",
+      "phonemes": "wˈʌn hˈɪdən spˈɑːɹk. wˌɛɹ wʊd juː lˈʊk?",
+      "seconds": 2.171
+    },
+    "b": {
+      "text": "Every hunt starts with a clue. Read it closely.",
+      "phonemes": "ˈɛvɹi hˈʌnt stˈɑːɹts wɪð ɐ klˈuː. ɹˈiːd ɪt klˈoʊsli.",
+      "seconds": 2.789
+    },
+    "c": {
+      "text": "Follow the signal. Explore the workspaces. Get closer.",
+      "phonemes": "fˈɑːloʊ ðə sˈɪɡnəl. ɛksplˈɔːɹ ðə wˈɜːkspeɪsᵻz. ɡɛt klˈoʊsɚ.",
+      "seconds": 3.387
+    },
+    "d": {
+      "text": "Found it. What could your hunt unlock?",
+      "phonemes": "fˈaʊnd ɪt. wˌʌt kʊd jʊɹ hˈʌnt ʌnlˈɑːk?",
+      "seconds": 1.957
+    },
+    "ef": {
+      "text": "Your hunt could unlock an Amazon gift card. Eligibility and terms apply.",
+      "phonemes": "jʊɹ hˈʌnt kʊd ʌnlˈɑːk ɐn ˈæmɐzˌɑːn ɡˈɪft kˈɑːɹd. ˌɛlɪdʒəbˈɪlᵻɾi ænd tˈɜːmz ɐplˈaɪ.",
+      "seconds": 4.859
+    },
+    "g": {
+      "text": "Pick a city. Discover your next workspace.",
+      "phonemes": "pˈɪk ɐ sˈɪɾi. dɪskˈʌvɚ jʊɹ nˈɛkst wˈɜːkspeɪs.",
+      "seconds": 2.533
+    },
+    "h": {
+      "text": "Where’s your Spark hiding? Enter the hunt.",
+      "phonemes": "wˌɛɹz jʊɹ spˈɑːɹk hˈaɪdɪŋ? ˈɛntɚ ðə hˈʌnt.",
+      "seconds": 2.277
+    }
+  }
+}

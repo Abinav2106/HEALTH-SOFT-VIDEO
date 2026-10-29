@@ -2,6 +2,8 @@ import React from 'react';
 import {Composition, Sequence} from 'remotion';
 import {DURATION, FPS, HEIGHT, SHOTS, WIDTH} from './video06/constants';
 import {Video06, Video06Props} from './video06/Video06';
+import * as GF from './gofloaters/constants';
+import {FindTheSpark} from './gofloaters/FindTheSpark';
 
 const MG_FROM = SHOTS.s06.from; // motion-graphics section: shared choice → end card
 const OPENING_TO = SHOTS.s06.to; // 0–16 s: every live-action shot up to the product entrance
@@ -22,5 +24,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="V06-MotionSection" component={MotionSection} durationInFrames={DURATION - MG_FROM} {...common} defaultProps={{mode: 'review' as const}} />
     {/* Deliverable: no overlays; fails if any shot lacks a licensed clip, a licence record or a screen track. */}
     <Composition id="V06-Master" component={Video06} durationInFrames={DURATION} {...common} defaultProps={{mode: 'master' as const}} />
+    {/* GoFloaters "Find the Spark": the film, plus audio-only stems rendered from the same timeline. */}
+    <Composition id="GF-FindTheSpark" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: true, sfx: true}} />
+    <Composition id="GF-Stem-Narration" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: true, sfx: false}} />
+    <Composition id="GF-Stem-SFX" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: false, sfx: true}} />
   </>
 );

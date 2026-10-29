@@ -5,7 +5,7 @@ import {EASE_IN_OUT, lerp, prog} from '../lib/motion';
 import {Bone} from './Bone';
 import {Tilo} from './Tilo';
 
-// 0–3 s. "One hidden Spark. Where will you look?"
+// A · 0–3 s. "One hidden Spark. Where would you look?"
 // Navy, the white headline revealed through line masks, one golden Spark Bone, Tilo gliding low,
 // and one clean clue card rising from the bottom. The card then expands into scene two's page.
 
@@ -53,9 +53,10 @@ const TitleLine: React.FC<{text: string; i: number; f: number}> = ({text, i, f})
 };
 
 export const S1Invitation: React.FC<{f: number}> = ({f}) => {
-  const fly = prog(f, 4, 70, EASE_IN_OUT);
-  const tx = lerp(-300, 560, fly) + prog(f, 74, 30) * 24;
-  const ty = lerp(1268, 1218, fly) - Math.sin(fly * Math.PI) * 16;
+  // Tilo glides into position under the title, then holds there (propeller still spinning).
+  const fly = prog(f, 2, 50);
+  const tx = lerp(-300, 520, fly);
+  const ty = lerp(1290, 1196, fly) + Math.sin((f / 30) * Math.PI * 0.8) * 4 * fly;
   const card = cardRect(f);
   const bone = prog(f, 26, 16);
   const out = prog(f, CARD_GROW.from + 8, 10);
@@ -68,7 +69,7 @@ export const S1Invitation: React.FC<{f: number}> = ({f}) => {
         ))}
         {/* the Spark arrives on "Spark" */}
         <Bone cx={812} cy={612} width={lerp(150, 214, bone)} rotate={-8} opacity={bone} rays={prog(f, 34, 14)} />
-        <Tilo f={f} x={tx} y={ty} width={330} rotate={lerp(-4, -1.5, fly)} />
+        <Tilo f={f} x={tx} y={ty} width={330} rotate={lerp(-6, -1.5, fly)} />
       </AbsoluteFill>
 
       {/* the clue card — expands into the next composition */}

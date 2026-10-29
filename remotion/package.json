@@ -12,7 +12,7 @@
     "still": "remotion still src/index.ts",
     "typecheck": "tsc --noEmit",
     "render:gf:master": "remotion render src/index.ts GF-FindTheSpark out/gofloaters/GoFloaters_FindTheSpark_1080x1920_30fps_H264_AAC.mp4 --codec=h264 --crf=17 --audio-codec=aac --audio-bitrate=192k",
-    "stills:gf": "node scripts/gf-stills.mjs out/gofloaters/frames 1 GF-FindTheSpark 48 172 372 545 712 880",
+    "stills:gf": "node scripts/gf-stills.mjs out/gofloaters/frames 1 GF-FindTheSpark 60 180 340 470 574 660 792 890",
     "render:gf:stems": "node scripts/gf-stems.mjs out/gofloaters/audio"
   },
   "dependencies": {

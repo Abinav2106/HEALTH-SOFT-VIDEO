@@ -2,9 +2,9 @@ import React from 'react';
 import {Audio, interpolate, Sequence, staticFile} from 'remotion';
 import {VO} from '../constants';
 
-// Narration (Kokoro-82M, af_heart) and original synthesised effects (make_sfx.py). No music: none
-// was supplied, so this is the narration-and-effects version. The aircraft hum and the effects
-// duck under the voice; nothing ticks.
+// Narration (Kokoro-82M, af_heart) and original synthesised effects (make_sfx.py). No music was
+// supplied, so this is the narration-and-effects mix. The aircraft hum and every effect duck
+// under the voice; nothing ticks and the glitch is a single short accent.
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const LINES = Object.entries(VO) as [keyof typeof VO, {at: number; len: number}][];
 
@@ -19,23 +19,29 @@ const duck = (f: number) => {
   return g;
 };
 
-// Tilo's flights: hum only while the aircraft is moving.
+// Tilo in flight: hum only while the aircraft is moving.
 const HUM: [number, number][] = [
-  [4, 78],
-  [100, 160],
-  [256, 396],
-  [464, 534],
-  [646, 704],
-  [790, 832],
+  [2, 56],
+  [100, 152],
+  [252, 352],
+  [382, 430],
+  [552, 584],
+  [726, 750],
+  [796, 824],
 ];
 const CUES: {at: number; file: string; len: number; gain: number}[] = [
-  {at: 128, file: 'swipe', len: 13, gain: 0.5}, // highlight: "teams meet"
-  {at: 158, file: 'swipe', len: 13, gain: 0.5}, // highlight: "beside the window"
-  {at: 396, file: 'click', len: 7, gain: 0.75}, // map selection
-  {at: 520, file: 'chime', len: 72, gain: 0.6}, // the one discovery chime
-  {at: 626, file: 'click', len: 7, gain: 0.4}, // success check
-  {at: 668, file: 'lift', len: 33, gain: 0.55}, // gift card lift
-  {at: 776, file: 'accent', len: 78, gain: 0.45}, // quiet closing accent as the map settles — decays before "GoFloaters"
+  {at: 44, file: 'whoosh', len: 15, gain: 0.45}, // clue card rises
+  {at: 130, file: 'swipe', len: 13, gain: 0.5}, // "teams meet"
+  {at: 154, file: 'swipe', len: 13, gain: 0.5}, // "beside the window"
+  {at: 270, file: 'glitch', len: 7, gain: 0.4}, // the one signal-glitch accent
+  {at: 336, file: 'click', len: 7, gain: 0.6}, // target lock
+  {at: 450, file: 'chime', len: 72, gain: 0.55}, // the one discovery chime
+  {at: 556, file: 'thud', len: 11, gain: 0.6}, // closed box settles
+  {at: 576, file: 'lift', len: 33, gain: 0.45}, // lid lifts
+  {at: 606, file: 'lift', len: 33, gain: 0.4}, // gift card rises
+  {at: 690, file: 'whoosh', len: 15, gain: 0.4}, // interface panel rises
+  {at: 764, file: 'click', len: 7, gain: 0.45}, // Chennai
+  {at: 796, file: 'whoosh', len: 15, gain: 0.35}, // preview → mystery card
 ];
 
 export const Sound: React.FC<{narration: boolean; sfx: boolean}> = ({narration, sfx}) => (
@@ -51,7 +57,7 @@ export const Sound: React.FC<{narration: boolean; sfx: boolean}> = ({narration, 
         <Sequence key={`hum${a}`} from={a} durationInFrames={b - a} layout="none">
           <Audio
             src={staticFile('gofloaters/audio/hum.wav')}
-            volume={(fr) => 0.32 * duck(a + fr) * interpolate(fr, [0, 10, b - a - 12, b - a], [0, 1, 1, 0], clamp)}
+            volume={(fr) => 0.3 * duck(a + fr) * interpolate(fr, [0, 8, b - a - 10, b - a], [0, 1, 1, 0], clamp)}
           />
         </Sequence>
       ))}

@@ -4,11 +4,13 @@ No samples, no music (no approved music supplied), no ticking. Seeded, so every 
 Writes 48 kHz / 16-bit stereo WAVs to remotion/public/gofloaters/audio/:
 
   hum.wav        soft aircraft hum, faded and ducked under narration in the composition
-  swipe.wav      short brush swipe (highlight reveals, card expand)
-  click.wav      small rounded map-selection click (pin drop)
+  swipe.wav      short brush swipe (highlight reveals)
+  click.wav      small rounded click (target lock, Chennai selection)
   chime.wav      one warm discovery chime (the Spark glint)
-  lift.wav       airy rising lift (gift asset reveal)
-  accent.wav     quiet closing accent (ending settles)
+  lift.wav       airy rising lift (lid lift, gift card rise)
+  whoosh.wav     soft card movement (clue card, interface panel, mystery card)
+  glitch.wav     one short signal-glitch accent (first acceleration burst)
+  thud.wav       the closed gift box settling
 
   python3 -I gofloaters/tools/make_sfx.py
 """
@@ -110,18 +112,36 @@ def lift() -> np.ndarray:
     return stereo(norm(x, -5))
 
 
-def accent() -> np.ndarray:
-    d = 2.6
+def whoosh() -> np.ndarray:
+    """Soft card movement: a short airy swell, low-passed so it never reads as a 'whoosh' cliché."""
+    d = 0.5
     tt = t(d)
-    x = np.zeros_like(tt)
-    for f, a in ((392.0, 1.0), (493.9, 0.7), (587.3, 0.6), (784.0, 0.3)):
-        x += a * np.sin(2 * np.pi * f * tt) * np.exp(-tt * 1.6)
-    return stereo(norm(x * env(len(tt), 0.02, 0.6), -5))
+    x = band(rng.standard_normal(len(tt)), 250, 2400) * np.sin(np.pi * tt / d) ** 2
+    return stereo(norm(x, -8), np.linspace(-0.25, 0.25, len(tt)))
+
+
+def glitch() -> np.ndarray:
+    """One short signal-glitch accent: a few gated digital bursts, bit-crushed, ~0.22 s."""
+    d = 0.22
+    tt = t(d)
+    tone = np.sign(np.sin(2 * np.pi * 1180 * tt)) * 0.3 + band(rng.standard_normal(len(tt)), 1500, 9000)
+    gate = (np.floor(tt * 55) % 2 == 0).astype(float)
+    x = np.round(tone * gate * 6) / 6  # coarse quantisation = digital texture
+    return stereo(norm(x * env(len(tt), 0.002, 0.04), -10))
+
+
+def thud() -> np.ndarray:
+    """The closed box settling: a soft, short low thump with a felt-like top."""
+    d = 0.35
+    tt = t(d)
+    x = np.sin(2 * np.pi * (95 - 40 * tt / d) * tt) * np.exp(-tt * 14)
+    x += 0.3 * band(rng.standard_normal(len(tt)), 200, 1200) * np.exp(-tt * 40)
+    return stereo(norm(x * env(len(tt), 0.002, 0.08), -6))
 
 
 def main() -> None:
-    for name, fn in (("hum.wav", hum), ("swipe.wav", swipe), ("click.wav", click),
-                     ("chime.wav", chime), ("lift.wav", lift), ("accent.wav", accent)):
+    for name, fn in (("hum.wav", hum), ("swipe.wav", swipe), ("click.wav", click), ("chime.wav", chime),
+                     ("lift.wav", lift), ("whoosh.wav", whoosh), ("glitch.wav", glitch), ("thud.wav", thud)):
         write(name, fn())
 
 

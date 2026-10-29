@@ -5,7 +5,7 @@ redraws or regenerates artwork: every layer is a crop of the storyboard, matted,
 baked-in storyboard graphics (routes, captions, the baked mascot) and upscaled for 1080x1920.
 They are stand-ins until the original files arrive (see gofloaters/docs/01_asset_audit.md).
 
-  python3 -I gofloaters/tools/extract_storyboard.py <storyboard.webp|png> [--debug DIR]
+  python3 -I gofloaters/tools/extract_storyboard.py <final_storyboard.webp> <refined_storyboard.webp>
 
 Writes PNGs to remotion/public/gofloaters/storyboard/ (gitignored: client artwork).
 """
@@ -256,58 +256,63 @@ def room(sb: np.ndarray, k: int = 4) -> dict:
             "tiloBox": [120 * k, 296 * k, 222 * k, 362 * k], "boneBox": [227 * k, 300 * k, 297 * k, 362 * k]}
 
 
-def gift(sb: np.ndarray, k: int = 4) -> dict:
-    """Panel 5 gift box + Amazon gift-card artwork as one intact matted asset (no hidden surfaces
-    invented). The baked flight line and the storyboard's own (static, differently drawn) Tilo are
-    removed; the rigged Tilo flies as its own layer in the composition."""
-    X0, Y0, X1, Y1 = 361, 985, 663, 1318
-    c = sb[Y0:Y1, X0:X1].copy()
-    h, w = c.shape[:2]
-    f = c.astype(int)
-    r, g, b = f[..., 0], f[..., 1], f[..., 2]
-    line = np.zeros((h, w), np.uint8)
-    line[(b > 150) & (b - r > 60) & (g > 120)] = 255
-    line = cv2.dilate(line, np.ones((9, 9), np.uint8))
-    line[226:297, 0:117] = 0
-    clean = _fsr(c, line)
-    # Baked Tilo: the box front face above it continues straight down (vertical ribbon, uniform
-    # gold), so vertical copies rebuild it — two strips, the second copying already-cleaned rows.
-    # The slivers over the navy and along the box's bottom edge are reconstructed from neighbours.
-    clean = _clone_from(clean, _rect(c, 22, 226, 120, 262), 0, 40)
-    clean = _clone_from(clean, _rect(c, 22, 258, 120, 288), 0, 32)
-    clean = _fsr(clean, _rect(c, 0, 224, 24, 302) | _rect(c, 0, 284, 122, 302))
-    # Seed the matte from the cleaned pixels, not the originals (the baked Tilo is gone now).
-    f = clean.astype(int)
-    r, g, b = f[..., 0], f[..., 1], f[..., 2]
-    hsv = cv2.cvtColor(clean, cv2.COLOR_RGB2HSV)
-    H, Sa, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
-    gm = np.full((h, w), cv2.GC_PR_BGD, np.uint8)
-    navy = (f.max(axis=2) < 70) & (b > r + 20)
-    gm[navy] = cv2.GC_BGD
-    gm[f.min(axis=2) > 235] = cv2.GC_BGD
-    gold = (H >= 8) & (H <= 34) & (Sa > 80) & (V > 110)
-    gm[gold] = cv2.GC_PR_FGD
-    core = np.zeros((h, w), bool)
-    core[150:300, 40:260] = True
-    gm[core & gold] = cv2.GC_FGD
-    gm[105:205, 70:230] = cv2.GC_FGD
-    bgm, fgm = np.zeros((1, 65)), np.zeros((1, 65))
-    cv2.grabCut(cv2.cvtColor(clean, cv2.COLOR_RGB2BGR), gm, None, bgm, fgm, 6, cv2.GC_INIT_WITH_MASK)
-    a = np.where((gm == cv2.GC_FGD) | (gm == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
-    n, lab, st, _ = cv2.connectedComponentsWithStats(a)
-    a = np.where(lab == 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA])), 255, 0).astype(np.uint8)
-    a = cv2.morphologyEx(a, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
-    big_img = up(clean, k, 0.2)
-    big_a = cv2.GaussianBlur(cv2.resize(a, (big_img.shape[1], big_img.shape[0]), interpolation=cv2.INTER_LINEAR), (0, 0), 1.0)
-    save_rgba("gift.png", big_img, big_a)
-    return {"w": big_img.shape[1], "h": big_img.shape[0]}
+# --- refined storyboard (sheet 3): gift card and reversed logo ---------------------------------
+
+def gift_card(sb3: np.ndarray, k: int = 6) -> dict:
+    """The Amazon gift card from keyframe F, rectified to a flat card. Its foot is hidden by the box
+    front in the storyboard; those few rows are plain card black, filled as such (no artwork is
+    invented), and all four corners get the card's own radius."""
+    tl = np.float32([331, 1115])
+    u = np.float32([150, 21])
+    w = float(np.hypot(*u))
+    u /= w
+    v = np.float32([-u[1], u[0]])
+    h = w / 1.586  # ISO/IEC 7810 ID-1 card proportions
+    quad = np.float32([tl, tl + u * w, tl + u * w + v * h, tl + v * h])
+    W, H = round(w * k), round(h * k)
+    M = cv2.getPerspectiveTransform(quad, np.float32([(0, 0), (W, 0), (W, H), (0, H)]))
+    card = cv2.warpPerspective(sb3, M, (W, H), flags=cv2.INTER_CUBIC)
+    card = cv2.bilateralFilter(card, 5, 18, 3)
+    # The box rim crosses the card's lower part (a shallow V); below it the card is plain black.
+    rim = np.int32([(0, 0.80 * H), (0.46 * W, 0.83 * H), (0.66 * W, 0.81 * H), (0.80 * W, 0.67 * H), (W, 0.53 * H), (W, H), (0, H)])
+    hidden = np.zeros((H, W), np.uint8)
+    cv2.fillPoly(hidden, [rim], 255)
+    hidden[:, int(W * 0.955):] = 255  # lid sliver along the right edge
+    m = cv2.GaussianBlur(hidden.astype(np.float32) / 255, (0, 0), 6)[..., None]
+    black = np.median(card[int(H * 0.62) : int(H * 0.75), int(W * 0.08) : int(W * 0.3)].reshape(-1, 3), axis=0)
+    card = (card * (1 - m) + black * m).astype(np.uint8)
+    r = int(9 * k)
+    a = np.zeros((H, W), np.uint8)
+    cv2.rectangle(a, (r, 0), (W - r, H), 255, -1)
+    cv2.rectangle(a, (0, r), (W, H - r), 255, -1)
+    for cx, cy in ((r, r), (W - r, r), (r, H - r), (W - r, H - r)):
+        cv2.circle(a, (cx, cy), r, 255, -1, lineType=cv2.LINE_AA)
+    a = cv2.GaussianBlur(a, (0, 0), 1.0)
+    big = up(card, 1, 0.2)
+    save_rgba("gift_card.png", big, a)
+    return {"w": W, "h": H}
+
+
+def wordmark_white(sb3: np.ndarray, k: int = 5) -> dict:
+    """The reversed (white) GoFloaters wordmark + tagline as supplied on navy in keyframe H."""
+    x0, y0, x1, y1 = 870, 797, 986, 841
+    crop = sb3[y0:y1, x0:x1]
+    bg = np.median(np.concatenate([crop[:3].reshape(-1, 3), crop[-3:].reshape(-1, 3)]), axis=0).astype(np.float32)
+    big = up(crop, k, 0.2).astype(np.float32)
+    lum, lbg = big.mean(axis=2), bg.mean()
+    a = np.clip((lum - lbg) / (245 - lbg), 0, 1)
+    a[a < 0.08] = 0
+    save_rgba("logo_wordmark_white.png", np.full(big.shape, 255, np.uint8), (a * 255).astype(np.uint8))
+    return {"w": big.shape[1], "h": big.shape[0]}
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("storyboard")
+    ap.add_argument("storyboard", help="final storyboard (sheet 1)")
+    ap.add_argument("refined", help="refined production storyboard (sheet 3: seven scenes / eight keyframes)")
     args = ap.parse_args()
     sb = np.asarray(Image.open(args.storyboard).convert("RGB"))
+    sb3 = np.asarray(Image.open(args.refined).convert("RGB"))
     if sb.shape[:2] != (1536, 1024):
         raise SystemExit(f"expected the 1024x1536 final storyboard, got {sb.shape[1]}x{sb.shape[0]}")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -317,7 +322,8 @@ def main() -> None:
         "aerial": aerial(sb),
         "workspace": workspace(sb),
         "room": room(sb),
-        "gift": gift(sb),
+        "giftCard": gift_card(sb3),
+        "wordmarkWhite": wordmark_white(sb3),
     }
     (OUT / "layers.json").write_text(json.dumps(meta, indent=2) + "\n")
     print(json.dumps(meta))

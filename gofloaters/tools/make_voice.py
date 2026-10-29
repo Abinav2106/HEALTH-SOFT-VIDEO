@@ -28,12 +28,13 @@ LUFS = -16.0  # per line; the effects sit underneath
 
 # Exact script. A line given as phonemes pins brand pronunciation (GO-floaters, clear "t").
 LINES = {
-    "s1": "One hidden Spark. Where will you look?",
-    "s2": "Every hunt starts with a clue. Read it closely, and follow where it leads.",
-    "s3": "Search the map. Explore the workspaces. Follow the clue until the right place comes into view.",
-    "s4": "There it is. Spark found. Now see what your hunt could unlock.",
-    "s5": "Your next hunt could unlock an Amazon gift card. Eligibility and terms apply.",
-    "s6": "Where’s your Spark hiding? Enter the hunt with GoFloaters.",
+    "a": "One hidden Spark. Where would you look?",
+    "b": "Every hunt starts with a clue. Read it closely.",
+    "c": "Follow the signal. Explore the workspaces. Get closer.",
+    "d": "Found it. What could your hunt unlock?",
+    "ef": "Your hunt could unlock an Amazon gift card. Eligibility and terms apply.",
+    "g": "Pick a city. Discover your next workspace.",
+    "h": "Where’s your Spark hiding? Enter the hunt.",
 }
 OVERRIDES = {"GoFloaters": "ɡˈoʊflˌoʊtɚz"}
 

@@ -3,35 +3,40 @@
   "speed": 0.96,
   "engine": "Kokoro-82M v1.0 (kokoro-onnx)",
   "lines": {
-    "s1": {
-      "text": "One hidden Spark. Where will you look?",
-      "phonemes": "wˈʌn hˈɪdən spˈɑːɹk. wˌɛɹ wɪl juː lˈʊk?",
+    "a": {
+      "text": "One hidden Spark. Where would you look?",
+      "phonemes": "wˈʌn hˈɪdən spˈɑːɹk. wˌɛɹ wʊd juː lˈʊk?",
       "seconds": 2.171
     },
-    "s2": {
-      "text": "Every hunt starts with a clue. Read it closely, and follow where it leads.",
-      "phonemes": "ˈɛvɹi hˈʌnt stˈɑːɹts wɪð ɐ klˈuː. ɹˈiːd ɪt klˈoʊsli, ænd fˈɑːloʊ wˌɛɹ ɪt lˈiːdz.",
-      "seconds": 4.24
+    "b": {
+      "text": "Every hunt starts with a clue. Read it closely.",
+      "phonemes": "ˈɛvɹi hˈʌnt stˈɑːɹts wɪð ɐ klˈuː. ɹˈiːd ɪt klˈoʊsli.",
+      "seconds": 2.789
     },
-    "s3": {
-      "text": "Search the map. Explore the workspaces. Follow the clue until the right place comes into view.",
-      "phonemes": "sˈɜːtʃ ðə mˈæp. ɛksplˈɔːɹ ðə wˈɜːkspeɪsᵻz. fˈɑːloʊ ðə klˈuː ʌntˈɪl ðə ɹˈaɪt plˈeɪs kˈʌmz ˌɪntʊ vjˈuː.",
-      "seconds": 5.755
+    "c": {
+      "text": "Follow the signal. Explore the workspaces. Get closer.",
+      "phonemes": "fˈɑːloʊ ðə sˈɪɡnəl. ɛksplˈɔːɹ ðə wˈɜːkspeɪsᵻz. ɡɛt klˈoʊsɚ.",
+      "seconds": 3.387
     },
-    "s4": {
-      "text": "There it is. Spark found. Now see what your hunt could unlock.",
-      "phonemes": "ðɛɹ ɪɾ ˈɪz. spˈɑːɹk fˈaʊnd. nˈaʊ sˈiː wʌt jʊɹ hˈʌnt kʊd ʌnlˈɑːk.",
-      "seconds": 3.621
+    "d": {
+      "text": "Found it. What could your hunt unlock?",
+      "phonemes": "fˈaʊnd ɪt. wˌʌt kʊd jʊɹ hˈʌnt ʌnlˈɑːk?",
+      "seconds": 1.957
     },
-    "s5": {
-      "text": "Your next hunt could unlock an Amazon gift card. Eligibility and terms apply.",
-      "phonemes": "jʊɹ nˈɛkst hˈʌnt kʊd ʌnlˈɑːk ɐn ˈæmɐzˌɑːn ɡˈɪft kˈɑːɹd. ˌɛlɪdʒəbˈɪlᵻɾi ænd tˈɜːmz ɐplˈaɪ.",
-      "seconds": 5.115
+    "ef": {
+      "text": "Your hunt could unlock an Amazon gift card. Eligibility and terms apply.",
+      "phonemes": "jʊɹ hˈʌnt kʊd ʌnlˈɑːk ɐn ˈæmɐzˌɑːn ɡˈɪft kˈɑːɹd. ˌɛlɪdʒəbˈɪlᵻɾi ænd tˈɜːmz ɐplˈaɪ.",
+      "seconds": 4.859
     },
-    "s6": {
-      "text": "Where’s your Spark hiding? Enter the hunt with GoFloaters.",
-      "phonemes": "wˌɛɹz jʊɹ spˈɑːɹk hˈaɪdɪŋ? ˈɛntɚ ðə hˈʌnt wɪð ɡˈoʊflˌoʊtɚz.",
-      "seconds": 3.216
+    "g": {
+      "text": "Pick a city. Discover your next workspace.",
+      "phonemes": "pˈɪk ɐ sˈɪɾi. dɪskˈʌvɚ jʊɹ nˈɛkst wˈɜːkspeɪs.",
+      "seconds": 2.533
+    },
+    "h": {
+      "text": "Where’s your Spark hiding? Enter the hunt.",
+      "phonemes": "wˌɛɹz jʊɹ spˈɑːɹk hˈaɪdɪŋ? ˈɛntɚ ðə hˈʌnt.",
+      "seconds": 2.277
     }
   }
 }

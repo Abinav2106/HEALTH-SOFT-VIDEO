@@ -2,6 +2,8 @@
 
 Video 06 lives in `src/video06/`. All timing, colour, copy and layout values are in `src/video06/constants.ts`.
 
+GoFloaters "Find the Spark" lives in `src/gofloaters/` — see `../gofloaters/README.md`.
+
 ## Setup
 
 ```bash

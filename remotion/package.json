@@ -2,7 +2,7 @@
   "name": "healthsoft-video",
   "private": true,
   "version": "0.1.0",
-  "description": "Healthsoft video compositions (Remotion). Video 06 lives in src/video06.",
+  "description": "Healthsoft video compositions (Remotion). Video 06 lives in src/video06; GoFloaters 'Find the Spark' in src/gofloaters.",
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render:v06:preview": "remotion render src/index.ts V06-Preview out/v06_preview_1080x1920_24p.mp4",
@@ -10,11 +10,15 @@
     "render:v06:mg": "remotion render src/index.ts V06-MotionSection out/v06_motion_section_1080x1920_24p.mp4",
     "render:v06:master": "remotion render src/index.ts V06-Master out/v06_master_1080x1920_24p.mp4",
     "still": "remotion still src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "render:gf:master": "remotion render src/index.ts GF-FindTheSpark out/gofloaters/GoFloaters_FindTheSpark_1080x1920_30p_H264.mp4 --codec=h264 --crf=17",
+    "render:gf:preview": "remotion render src/index.ts GF-FindTheSpark-Preview out/gofloaters/GoFloaters_FindTheSpark_PREVIEW_540x960.mp4 --scale=0.5 --crf=20",
+    "stills:gf": "node scripts/gf-stills.mjs out/gofloaters/frames 1 GF-FindTheSpark 40 170 380 560 720 880"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",
     "@remotion/google-fonts": "4.0.534",
+    "@remotion/paths": "4.0.534",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.534"

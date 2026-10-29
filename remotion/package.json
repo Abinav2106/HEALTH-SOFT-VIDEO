@@ -2,25 +2,33 @@
   "name": "healthsoft-video",
   "private": true,
   "version": "0.1.0",
-  "description": "Healthsoft video compositions (Remotion). Video 06 lives in src/video06.",
+  "description": "Healthsoft video compositions (Remotion). Video 06 lives in src/video06; GoFloaters Tilo reel in src/tilo.",
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render:v06:preview": "remotion render src/index.ts V06-Preview out/v06_preview_1080x1920_24p.mp4",
     "render:v06:opening": "remotion render src/index.ts V06-Opening out/v06_opening_0-16s_1080x1920_24p.mp4",
     "render:v06:mg": "remotion render src/index.ts V06-MotionSection out/v06_motion_section_1080x1920_24p.mp4",
     "render:v06:master": "remotion render src/index.ts V06-Master out/v06_master_1080x1920_24p.mp4",
+    "render:tilo": "remotion render src/index.ts Tilo-RewardFlight out/tilo_reward_flight_1080x1920_30p.mp4",
+    "render:tilo:2x-review": "remotion render src/index.ts Tilo-RewardFlight-2xReview out/tilo_reward_flight_2x_review.mp4",
+    "stills:tilo": "node scripts/tilo-stills.mjs out/tilo-stills",
+    "assets:tilo": "python3 -I scripts/prepare-tilo-assets.py public/brand/gofloaters/tilo_aircraft_sheet_original.jpg && python3 -I scripts/generate-tilo-audio.py",
     "still": "remotion still src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",
     "@remotion/google-fonts": "4.0.534",
+    "@remotion/zod-types": "4.0.534",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "remotion": "4.0.534"
+    "remotion": "4.0.534",
+    "three": "0.170.0",
+    "zod": "4.5.4"
   },
   "devDependencies": {
     "@types/react": "18.3.12",
+    "@types/three": "0.170.0",
     "typescript": "5.6.3"
   }
 }

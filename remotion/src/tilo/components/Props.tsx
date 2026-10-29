@@ -1,27 +1,10 @@
 import React from 'react';
-import {CARD, COLORS, FONT_CARD, STROKE} from '../constants';
+import {CARD, COLORS, FONT_CARD} from '../constants';
+import {GoldenSpark, sparkPath} from './GoldenSpark';
 
 const O = COLORS.navy;
 
-export const BONE_PATH =
-  'M -22 -5 L 22 -5 C 24 -15 38 -16 39 -7 C 46 -7 46 7 39 7 C 38 16 24 15 22 5 L -22 5 C -24 15 -38 16 -39 7 C -46 7 -46 -7 -39 -7 C -38 -16 -24 -15 -22 -5 Z';
-
-/** The one collectible bone (also used, smaller, as the card icon). */
-export const Bone: React.FC<{x: number; y: number; rotate?: number; scale?: number; id?: string; sw?: number}> = ({
-  x,
-  y,
-  rotate = 0,
-  scale = 1,
-  id = 'bone',
-  sw = STROKE.prop,
-}) => (
-  <g id={id} transform={`translate(${x} ${y}) rotate(${rotate}) scale(${scale})`}>
-    <path d={BONE_PATH} fill={COLORS.gold} stroke={O} strokeWidth={sw / scale} strokeLinejoin="round" />
-    <path d="M -16 -1 L 14 -1" stroke={COLORS.white} strokeWidth={3 / scale} strokeLinecap="round" opacity={0.75} />
-  </g>
-);
-
-/** Four-point sparkle; `t` 0→1 pops it in, `fade` takes it back out. */
+/** Small decorative sparkle in the same four-point shape as the golden spark; `t` pops it in, `fade` out. */
 export const Sparkle: React.FC<{x: number; y: number; size: number; t: number; fade?: number; rotate?: number; id?: string}> = ({
   x,
   y,
@@ -32,35 +15,58 @@ export const Sparkle: React.FC<{x: number; y: number; size: number; t: number; f
   id,
 }) => {
   if (t <= 0 || fade >= 1) return null;
-  const s = size * t;
-  const d = `M 0 ${-s} C ${s * 0.12} ${-s * 0.24} ${s * 0.24} ${-s * 0.12} ${s} 0 C ${s * 0.24} ${s * 0.12} ${s * 0.12} ${s * 0.24} 0 ${s} C ${-s * 0.12} ${s * 0.24} ${-s * 0.24} ${s * 0.12} ${-s} 0 C ${-s * 0.24} ${-s * 0.12} ${-s * 0.12} ${-s * 0.24} 0 ${-s} Z`;
   return (
     <g id={id} transform={`translate(${x} ${y}) rotate(${rotate})`} opacity={1 - fade}>
-      <path d={d} fill={COLORS.gold} stroke={O} strokeWidth={2.4} strokeLinejoin="round" />
+      <path d={sparkPath(size * 2 * t)} fill={COLORS.gold} stroke={O} strokeWidth={2.2} strokeLinejoin="round" />
+    </g>
+  );
+};
+
+/** Three tiny gold particles thrown out from the spark at the moment of contact. */
+export const Particles: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => {
+  if (t <= 0 || t >= 1) return null;
+  const travel = 1 - Math.pow(1 - t, 3);
+  return (
+    <g id="contact-particles" transform={`translate(${x} ${y})`} opacity={1 - t * t}>
+      {[-62, 18, 152].map((a, i) => {
+        const r = (a * Math.PI) / 180;
+        const dist = 26 + 22 * travel + i * 3;
+        return (
+          <circle
+            key={a}
+            cx={Math.cos(r) * dist}
+            cy={Math.sin(r) * dist}
+            r={3.6 * (1 - 0.4 * t)}
+            fill={COLORS.gold}
+            stroke={O}
+            strokeWidth={1.4}
+          />
+        );
+      })}
     </g>
   );
 };
 
 /** Glint: three short rays plus a tiny sparkle, used for the first "something golden ahead". */
-export const Glint: React.FC<{x: number; y: number; t: number; fade: number}> = ({x, y, t, fade}) => {
+export const Glint: React.FC<{x: number; y: number; t: number; fade: number; r?: number; id?: string}> = ({x, y, t, fade, r = 16, id = 'glint'}) => {
   if (t <= 0 || fade >= 1) return null;
-  const len = 9 * t;
+  const len = (r > 20 ? 12 : 9) * t;
   return (
-    <g id="glint" transform={`translate(${x} ${y})`} opacity={1 - fade}>
+    <g id={id} transform={`translate(${x} ${y})`} opacity={1 - fade}>
       {[-50, 0, 50].map((a) => (
         <line
           key={a}
           x1={0}
-          y1={-16}
+          y1={-r}
           x2={0}
-          y2={-16 - len}
+          y2={-r - len}
           stroke={COLORS.goldDeep}
           strokeWidth={3.2}
           strokeLinecap="round"
           transform={`rotate(${a})`}
         />
       ))}
-      <Sparkle x={0} y={0} size={9} t={t} />
+      {r <= 20 ? <Sparkle x={0} y={0} size={8} t={t} /> : null}
     </g>
   );
 };
@@ -86,7 +92,7 @@ export const RewardCard: React.FC<{rise: number; scale: number; opacity: number;
       <rect x={-w / 2 + 2} y={-h / 2 + 10} width={w} height={h} rx={radius} fill={O} opacity={0.07} />
       <rect id="reward-card-panel" x={-w / 2} y={-h / 2} width={w} height={h} rx={radius} fill={COLORS.white} stroke={COLORS.cyan} strokeWidth={4} />
       <g id="reward-card-icon">
-        <Bone x={-w / 2 + 66} y={0} rotate={-24} scale={0.86} id="reward-card-bone" sw={3.2} />
+        <GoldenSpark x={-w / 2 + 66} y={0} size={56} halo={0.7} outline={2.4} id="reward-card-spark" />
       </g>
       <text
         id="reward-card-text"

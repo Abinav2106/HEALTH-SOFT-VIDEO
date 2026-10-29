@@ -1,9 +1,9 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
-import {COLORS, ROOM} from './constants';
-import {project} from './lib/motion';
+import {COLORS} from './constants';
 import {Plane, PLANE, PlaneState} from './components/Plane';
-import {Bone} from './components/Props';
+import {GoldenSpark} from './components/GoldenSpark';
+import {SPARK_HOME} from './choreography';
 import {restPose, Tilo, TiloPose} from './components/Tilo';
 import {Chair, Desk, DoorBack, DoorFront, Floor, Laptop, Plant, SHOWN} from './components/Workspace';
 
@@ -22,7 +22,7 @@ const seated = (x: number, y: number): TiloPose => ({
 });
 
 export const ModelSheet: React.FC = () => {
-  const b = project(ROOM.bone.x, ROOM.desk.height + 5, ROOM.bone.z);
+
   return (
     <AbsoluteFill style={{background: COLORS.bg}}>
       <svg width={1080} height={1350} viewBox="0 0 1080 1350">
@@ -34,7 +34,7 @@ export const ModelSheet: React.FC = () => {
             <Chair e={SHOWN} />
             <Desk e={SHOWN} />
             <Laptop e={SHOWN} />
-            <Bone x={b.x} y={b.y} rotate={-8} />
+            <GoldenSpark x={SPARK_HOME.x} y={SPARK_HOME.y} id="sheet-spark" />
             <DoorFront e={SHOWN} />
           </g>
         </g>
@@ -56,7 +56,7 @@ export const ModelSheet: React.FC = () => {
           <Tilo pose={{...restPose}} id="sheet-standing" />
         </g>
         <g transform="translate(760 960) scale(2.6)">
-          <Tilo pose={{...restPose, mouthOpen: 1, smile: 1, pupil: 1.1, gazeX: 0, armNear: {upper: -100, lower: -150}, grip: 1}} id="sheet-delight" />
+          <Tilo pose={{...restPose, mouthOpen: 1, smile: 1, pupil: 1.1, gazeX: 0, armNear: {upper: -100, lower: -150}}} id="sheet-delight" />
         </g>
       </svg>
     </AbsoluteFill>

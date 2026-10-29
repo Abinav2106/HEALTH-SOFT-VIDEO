@@ -16,7 +16,8 @@ import {
 } from './lib/motion';
 import {PLANE, PlaneState} from './components/Plane';
 import {Entrance} from './components/Workspace';
-import {armJoints, restPose, RIG, shoulder, TiloPose, toLocal, toScreen} from './components/Tilo';
+import {pawPoint, restPose, RIG, shoulder, TiloPose, toLocal, toScreen} from './components/Tilo';
+import {SPARK} from './components/GoldenSpark';
 
 const TS = TILO_SCALE; // seated, in plane units
 const PS = PLANE_SCALE;
@@ -75,12 +76,8 @@ const solveLeg = (pose: TiloPose, which: 'near' | 'far', ankleLocal: Vec) => {
   const r = ik2(hip, ankleLocal, RIG.thigh, RIG.shin, 1);
   return {upper: r.upper, lower: r.lower};
 };
-/** Paw centre (where the bone is held), in the pose's parent space. */
-export const pawCenter = (pose: TiloPose): Vec => {
-  const {wrist} = armJoints(pose, 'near');
-  const l = (pose.armNear.lower * Math.PI) / 180;
-  return toScreen(pose, {x: wrist.x - Math.sin(l) * 6, y: wrist.y + Math.cos(l) * 6});
-};
+/** Paw centre in the pose's parent space. */
+export const pawCenter = (pose: TiloPose, which: 'near' | 'far' = 'near'): Vec => toScreen(pose, pawPoint(pose, which));
 const vlerp = (a: Vec, b: Vec, t: number): Vec => ({x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t)});
 const add = (a: Vec, b: Vec): Vec => ({x: a.x + b.x, y: a.y + b.y});
 
@@ -90,16 +87,25 @@ const PARKED_ORIGIN = project(PARK_X, 0, PLANE_Z);
 const groundY = (z: number) => project(0, 0, z).y;
 const STAND_H = 69 * FS; // pelvis height when standing
 const LAND = project(296, STAND_H, TILO_Z); // pelvis right after the hop
-const STAND = project(336, STAND_H, TILO_Z); // pelvis after the short step
-export const BONE_REST = project(ROOM.bone.x, ROOM.desk.height + 5, ROOM.bone.z);
-const BONE_REST_ROT = -10;
+const STAND = project(338, STAND_H, TILO_Z); // pelvis after the short step
+// ── The golden spark ────────────────────────────────────────────────────────
+export const SPARK_HOME = project(ROOM.spark.x, ROOM.desk.height + ROOM.spark.lift, ROOM.spark.z);
+/** Floating above the desk: a slow, gentle bob (deterministic). */
+export const sparkFloat = (f: number): Vec => add(SPARK_HOME, {x: 0, y: -3.2 * Math.sin(((f - T.furniture.spark) / 42) * Math.PI * 2)});
+// Where the paw meets the spark: its lower-left concave side, so the paw never hides the silhouette.
+const CONTACT: Vec = {x: -20, y: 14};
+// Cupped at the chest: spark centre relative to the near shoulder (below the chin and tongue), and each
+// paw relative to the spark — under it, either side of its lower point, forearms clear of its outline.
+const HOLD: Vec = {x: 38, y: 0};
+const CUP_NEAR: Vec = {x: 10, y: 44};
+const CUP_FAR: Vec = {x: -15, y: 41};
 
 // ── Tilo's head, face and ears ──────────────────────────────────────────────
 const face = (f: number, pose: TiloPose): TiloPose => {
-  // gaze: ahead → the glint → down into the room → the bone → the viewer
+  // gaze: ahead → the glint → down into the room → the spark → the viewer
   const g = [0, 10, 16, 27, 33, 60, 66, T.spot, T.toChest + 1, T.toChest + 9];
-  const gazeX = keys(f, g, [0.5, 0.5, 0.95, 0.95, 0.85, 0.9, 1, 0.95, 0.95, -0.15]);
-  const gazeY = keys(f, g, [0, 0, 0.45, 0.45, 0.8, 0.5, 0.75, 0.9, 0.9, 0.1]);
+  const gazeX = keys(f, g, [0.5, 0.5, 0.95, 0.95, 0.85, 0.9, 1, 1, 0.95, -0.15]);
+  const gazeY = keys(f, g, [0, 0, 0.45, 0.45, 0.8, 0.5, 0.6, 0.45, 0.6, 0.1]);
   const pupil = keys(f, [12, 16, 24, T.spot - 1, T.spot + 1, T.pause, T.pickup, T.pickup + 5], [1, 1.12, 1.04, 1.04, 1.2, 1.2, 1.08, 1.05]);
   // curious little "o" during the anticipation pause, delight on contact
   const mouthOpen = keys(f, [T.pause - 2, T.pause, T.pickup - 1, T.pickup, T.pickup + 3], [0, 0.22, 0.22, 0.3, 0.95], EASE_OUT);
@@ -173,12 +179,13 @@ const freePose = (f: number): TiloPose => {
     y: pelvis.y,
     torso:
       keys(f, [T.hop, T.hop + 4, T.land, T.land + 3, T.land + 7], [6, 12, 4, 10, 2], EASE_IN_OUT) * (1 - reachLean) +
-      14 * reachLean * (1 - upright) -
-      3 * upright,
+      8 * reachLean * (1 - upright) -
+      2 * upright,
     breathe: 1 + 0.012 * Math.sin((hold / 30) * Math.PI * 2) * clamp01(hold / 6),
     head:
-      keys(f, [T.hop, T.land, T.land + 4, T.spot + 1, T.spot + 5], [4, 4, 6, 6, 8], EASE_IN_OUT) * (1 - upright) +
-      lerp(0, -9, upright),
+      // eyes lead, then the head follows — lifting slightly so the muzzle stays clear of the spark
+      keys(f, [T.hop, T.land, T.land + 4, T.spot + 1, T.spot + 5], [4, 4, 6, 6, -4], EASE_IN_OUT) * (1 - upright) +
+      lerp(0, -13, upright),
     ear:
       14 +
       28 * wobble(f - T.hop, 0.11, 0.15) -
@@ -219,25 +226,29 @@ const freePose = (f: number): TiloPose => {
   pose.legNear = solveLeg(pose, 'near', toLocal(pose, ankleNear));
   pose.legFar = solveLeg(pose, 'far', toLocal(pose, ankleFar));
 
-  // arms: balance in the hop, relaxed, then the reach → anticipation → pickup → bring to chest
+  // arms: balance in the hop, relaxed, then the reach → anticipation → contact → cup at the chest
   const relaxed = add({x: pose.x, y: pose.y}, {x: 30 * FS, y: -14 * FS});
   const hopArms = add({x: pose.x, y: pose.y}, {x: 46 * FS, y: -34 * FS});
   const air = 1 - prog(f, T.land + 1, 6, EASE_IN_OUT);
-  const hover = add(BONE_REST, {x: -3, y: -15});
-  const anticip = add(BONE_REST, {x: -8, y: -21});
-  const chest = add({x: pose.x, y: pose.y}, {x: 34 * FS, y: -44 * FS});
+  const spark = sparkFloat(f);
+  const hover = add(spark, {x: CONTACT.x - 8, y: CONTACT.y + 12});
+  const anticip = add(spark, {x: CONTACT.x - 12, y: CONTACT.y + 17});
+  const contact = add(sparkFloat(T.pickup), CONTACT);
+  const sh = toScreen(pose, shoulder(pose, 'near'));
+  const chest = add(sh, {x: HOLD.x * FS, y: HOLD.y * FS});
   let near = vlerp(relaxed, hopArms, air);
   near = vlerp(near, hover, prog(f, T.reach, 4, EASE_IN_OUT));
   near = vlerp(near, anticip, prog(f, T.pause, 2, EASE_SOFT));
-  near = vlerp(near, BONE_REST, prog(f, T.pause + 2, 1, EASE_IN_OUT));
-  const lifted = add(BONE_REST, {x: -2, y: -14});
-  near = vlerp(near, lifted, prog(f, T.pickup, 3, EASE_OUT));
-  near = vlerp(near, chest, prog(f, T.toChest, 13, EASE_IN_OUT));
+  near = vlerp(near, contact, prog(f, T.pause + 2, 1, EASE_IN_OUT));
+  near = vlerp(near, add(contact, {x: 5, y: -3}), prog(f, T.pickup, 3, EASE_OUT)); // lifted forward, away from the face
+  // carried to the chest on a low arc, so the spark passes well under the muzzle
+  const carry = prog(f, T.toChest, T.settle - T.toChest, EASE_IN_OUT);
+  near = vlerp(near, add(chest, {x: CUP_NEAR.x * FS, y: CUP_NEAR.y * FS}), carry);
+  near = add(near, {x: 0, y: 16 * Math.sin(Math.PI * carry)});
   pose.armNear = solveArm(pose, 'near', toLocal(pose, near));
-  pose.grip = prog(f, T.pickup - 0.5, 1.5);
   const farRelaxed = add({x: pose.x, y: pose.y}, {x: 18 * FS, y: -12 * FS});
-  const farHug = add({x: pose.x, y: pose.y}, {x: 30 * FS, y: -36 * FS});
-  pose.armFar = solveArm(pose, 'far', toLocal(pose, vlerp(vlerp(farRelaxed, add(hopArms, {x: -14, y: 0}), air), farHug, prog(f, T.toChest + 2, 10, EASE_IN_OUT))));
+  const farCup = add(chest, {x: CUP_FAR.x * FS, y: CUP_FAR.y * FS});
+  pose.armFar = solveArm(pose, 'far', toLocal(pose, vlerp(vlerp(farRelaxed, add(hopArms, {x: -14, y: 0}), air), farCup, prog(f, T.toChest + 1, T.settle - T.toChest - 1, EASE_IN_OUT))));
   return pose;
 };
 
@@ -256,21 +267,19 @@ export const scene = (f: number) => {
   const tiloLocal = cockpit ? cockpitPose(f) : null;
   const tiloFree = cockpit ? null : freePose(f);
 
-  // bone: on the desk until the paw closes on it, then exactly at the paw
-  let bone = {x: BONE_REST.x, y: BONE_REST.y, rot: BONE_REST_ROT};
+  // the spark: floating above the desk until the paw meets it, then carried by the paws (one instance)
+  let spark = sparkFloat(f);
   if (tiloFree && f >= T.pickup) {
-    const p = pawCenter(tiloFree);
-    // held across the paw, tilting up proudly as it comes to the chest
-    const rot = lerp(lerp(BONE_REST_ROT, -4, prog(f, T.pickup, 5, EASE_IN_OUT)), -22, prog(f, T.toChest, 13, EASE_IN_OUT));
-    // the paw slides to one end of the bone so the golden reward stays visible beside it
-    const slide = 13 * prog(f, T.pickup + 1, 6, EASE_IN_OUT);
-    const r = (rot * Math.PI) / 180;
-    bone = {x: p.x + Math.cos(r) * slide, y: p.y + Math.sin(r) * slide, rot};
+    const paw = pawCenter(tiloFree, 'near');
+    const cupped: Vec = {x: -CUP_NEAR.x * FS, y: -CUP_NEAR.y * FS};
+    const offset = vlerp({x: -CONTACT.x, y: -CONTACT.y}, cupped, prog(f, T.toChest, T.settle - T.toChest, EASE_IN_OUT));
+    const held = clamp01((f - T.pickup) / 4);
+    spark = add(add(paw, offset), {x: 0, y: -1.4 * Math.sin(((f - T.pickup) / 36) * Math.PI * 2) * held});
   }
-  const boneAppear = {
-    opacity: prog(f, T.furniture.bone, 3),
-    scale: keys(f, [T.furniture.bone, T.furniture.bone + 5, T.furniture.bone + 8], [0.4, 1.08, 1], EASE_OUT),
-  };
+  const appear = keys(f, [T.furniture.spark, T.furniture.spark + 5, T.furniture.spark + 8], [0.4, 1.08, 1], EASE_OUT);
+  const glow =
+    keys(f, [T.spot - 1, T.spot + 2, T.spot + 8], [0, 0.55, 0], EASE_SOFT) + // noticed: one soft pulse
+    keys(f, [T.pickup, T.pickup + 2, T.pickup + 9], [0, 1, 0.12], EASE_OUT); // contact: brief brightening
 
   const alt = clamp01(world.Y / 240);
   const speed = planeSpeed(f);
@@ -295,7 +304,7 @@ export const scene = (f: number) => {
     tiloShadow: tiloFree
       ? {x: tiloFree.x + 8, y: groundY(TILO_Z) + 2, w: 100 * (1 - 0.35 * tiloAir), opacity: 0.1 * (1 - 0.5 * tiloAir) * prog(f, T.hop + 2, 4)}
       : null,
-    bone: {...bone, ...boneAppear},
+    spark: {...spark, size: SPARK.height * appear, opacity: prog(f, T.furniture.spark, 3), glow, held: tiloFree !== null && f >= T.pickup},
     room: {
       floor: enter(f, T.floorIn, 20, 0.97, 10),
       door: enter(f, T.doorIn, 24, 0.97, 10),
@@ -305,17 +314,15 @@ export const scene = (f: number) => {
       laptop: enter(f, T.furniture.laptop, 14),
       doorOpen: prog(f, T.doorOpen, 11, EASE_IN_OUT),
     },
+    // first glimpse during the arrival, exactly where the spark will appear
     glint: {
-      ...add(BONE_REST, {x: 0, y: -4}),
+      ...SPARK_HOME,
+      r: 16,
       t: keys(f, [T.glintIn, T.glintIn + 4, T.glintIn + 8], [0, 1.1, 1], EASE_OUT),
       fade: prog(f, 28, 8),
     },
-    boneGlint: {...add(BONE_REST, {x: 6, y: -8}), t: keys(f, [T.boneGlint, T.boneGlint + 3, T.boneGlint + 7], [0, 1, 1], EASE_OUT), fade: prog(f, T.boneGlint + 5, 6)},
-    pickupSparkle: {
-      ...add(BONE_REST, {x: 34, y: -30}),
-      t: keys(f, [T.pickup, T.pickup + 3, T.pickup + 5], [0, 1.15, 1], EASE_OUT),
-      fade: prog(f, T.pickup + 6, 5),
-    },
+    sparkGlint: {...SPARK_HOME, r: 42, t: keys(f, [T.sparkGlint, T.sparkGlint + 3, T.sparkGlint + 7], [0, 1, 1], EASE_OUT), fade: prog(f, T.sparkGlint + 5, 6)},
+    particles: {...sparkFloat(T.pickup), t: clamp01((f - T.pickup) / 11)},
     sparkles: T.sparkles.map((at, i) => {
       const spots = [
         {x: -96, y: -238, size: 15},

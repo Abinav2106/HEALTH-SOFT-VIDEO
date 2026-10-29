@@ -82,8 +82,8 @@ export const project = (X: number, Y: number, Z: number): Vec => ({
 export const pts = (list: Vec[]) => list.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
 
 /**
- * Two-bone IK in SVG space (y down). Returns absolute bone angles (degrees, 0 = pointing down,
- * positive = clockwise, matching `rotate()`), for bones that hang along +y at rest.
+ * Two-segment IK in SVG space (y down). Returns absolute segment angles (degrees, 0 = pointing down,
+ * positive = clockwise, matching `rotate()`), for segments that hang along +y at rest.
  * `bend` = +1 bends the joint forward (toward +x), −1 backward.
  */
 export const ik2 = (root: Vec, target: Vec, l1: number, l2: number, bend: 1 | -1) => {

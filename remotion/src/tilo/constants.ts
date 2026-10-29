@@ -46,11 +46,11 @@ export const PROJ = {ox: 260, oy: 1010, kx: 0.6, ky: 0.32} as const;
 export const ROOM = {
   floor: {x0: 0, x1: 530, z0: 0, z1: 360, thickness: 16},
   door: {x: 0, z0: 62, z1: 286, height: 350, jamb: 16},
-  desk: {x0: 362, x1: 528, z0: 166, z1: 262, height: 104, top: 12},
+  desk: {x0: 362, x1: 528, z0: 166, z1: 262, height: 68, top: 12},
   laptop: {x: 476, z: 220, w: 70, d: 42, screenH: 54},
   chair: {x: 452, z: 312},
   plant: {x: 40, z: 326},
-  bone: {x: 398, z: 182}, // resting spot on the desk top
+  spark: {x: 420, z: 182, lift: 40}, // golden spark floats `lift` above the desk top
 } as const;
 
 export const PLANE_Z = 178; // flight lane: between the door jambs
@@ -67,8 +67,8 @@ export const T = {
   // 02 REVEAL 0.65–1.40
   floorIn: 20,
   doorIn: 24,
-  furniture: {plant: 28, desk: 30, chair: 32, laptop: 34, bone: 36},
-  boneGlint: 39,
+  furniture: {plant: 28, desk: 30, chair: 32, laptop: 34, spark: 36},
+  sparkGlint: 39,
   doorOpen: 31,
   headTurnRoom: 27,
   bankIn: 36,

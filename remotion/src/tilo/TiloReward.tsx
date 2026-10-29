@@ -4,7 +4,8 @@ import {COLORS, HEIGHT, PLANE_SCALE, T, WIDTH} from './constants';
 import {scene} from './choreography';
 import {loadCardFont} from './lib/fonts';
 import {Plane} from './components/Plane';
-import {Bone, Glint, MotionStrokes, RewardCard, Shadow, Sparkle} from './components/Props';
+import {GoldenSpark} from './components/GoldenSpark';
+import {Glint, MotionStrokes, Particles, RewardCard, Shadow, Sparkle} from './components/Props';
 import {Tilo} from './components/Tilo';
 import {Chair, Desk, DoorBack, DoorFront, Floor, Laptop, Plant} from './components/Workspace';
 
@@ -24,8 +25,10 @@ export const TiloReward: React.FC<TiloRewardProps> = ({sound}) => {
   const f = useCurrentFrame();
   const s = scene(f);
   const {plane, room} = s;
-  const held = s.tiloFree !== null && f >= T.pickup;
-  const bone = <Bone x={s.bone.x} y={s.bone.y} rotate={s.bone.rot} scale={s.bone.scale} />;
+  // Exactly one collectible spark. Until Tilo steps out it sits on the desk layer; from then on it is
+  // drawn in front of both arms, so his paws cup it without ever covering its silhouette.
+  const inFront = s.tiloFree !== null;
+  const spark = <GoldenSpark x={s.spark.x} y={s.spark.y} size={s.spark.size} glow={s.spark.glow} opacity={s.spark.opacity} id="golden-spark" />;
   const cam = s.camera;
 
   return (
@@ -41,9 +44,9 @@ export const TiloReward: React.FC<TiloRewardProps> = ({sound}) => {
             <Desk e={room.desk} />
             <Laptop e={room.laptop} />
           </g>
-          {!held ? <g opacity={s.bone.opacity}>{bone}</g> : null}
+          {!inFront ? spark : null}
           <Glint {...s.glint} />
-          <Glint {...s.boneGlint} />
+          <Glint {...s.sparkGlint} id="spark-glint" />
           <MotionStrokes {...s.strokes} />
           {s.tiloShadow ? <Shadow {...s.tiloShadow} /> : null}
 
@@ -65,13 +68,13 @@ export const TiloReward: React.FC<TiloRewardProps> = ({sound}) => {
           {s.tiloFree ? (
             <g id="tilo-free">
               <Tilo pose={s.tiloFree} parts="body" />
-              {held ? bone : null}
               <Tilo pose={s.tiloFree} parts="nearArm" />
+              {spark}
             </g>
           ) : null}
 
           <DoorFront e={room.door} />
-          <Sparkle id="pickup-sparkle" {...s.pickupSparkle} size={11} />
+          <Particles {...s.particles} />
           {s.sparkles.map((sp, i) => (
             <Sparkle key={i} id={`reward-sparkle-${i + 1}`} x={sp.x} y={sp.y} size={sp.size} t={sp.t} rotate={sp.rotate} />
           ))}

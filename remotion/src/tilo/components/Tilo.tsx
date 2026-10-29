@@ -10,17 +10,17 @@ export const RIG = {
   hipFar: {x: -6, y: -2},
   thigh: 30,
   shin: 31,
-  shoulderNear: {x: 16, y: -54}, // torso frame
-  shoulderFar: {x: 4, y: -56},
+  shoulderNear: {x: 20, y: -52}, // torso frame
+  shoulderFar: {x: 8, y: -54},
   neck: {x: 13, y: -72},
   headScale: 1.16,
   tailBase: {x: -25, y: -6},
-  upperArm: 24,
-  foreArm: 23,
+  upperArm: 30,
+  foreArm: 29,
   footDrop: 9, // ankle → sole
 } as const;
 
-export type Limb = {upper: number; lower: number}; // absolute rotate() degrees, bone hangs along +y at 0
+export type Limb = {upper: number; lower: number}; // absolute rotate() degrees, segment hangs along +y at 0
 
 export type TiloPose = {
   x: number;
@@ -39,7 +39,6 @@ export type TiloPose = {
   smile: number;
   armNear: Limb;
   armFar: Limb;
-  grip: number;
   legNear: Limb;
   legFar: Limb;
   tail: number;
@@ -63,7 +62,6 @@ export const restPose: TiloPose = {
   smile: 0.6,
   armNear: {upper: -10, lower: -30},
   armFar: {upper: -4, lower: -24},
-  grip: 0,
   legNear: {upper: -8, lower: 6},
   legFar: {upper: 2, lower: 8},
   tail: 0,
@@ -104,39 +102,69 @@ export const toLocal = (pose: TiloPose, p: Vec): Vec => ({x: (p.x - pose.x) / po
 const O = COLORS.navy;
 const SW = STROKE.character;
 
-/** Outlined tube through points: outline pass then fill pass, so joints merge into one silhouette. */
-const Tube: React.FC<{segs: {a: Vec; b: Vec; w: number}[]; fill: string}> = ({segs, fill}) => (
+/**
+ * One smooth, tapered limb outline through root → joint → end. The sides are cubic curves that pass
+ * the joint with a shared tangent, so there is no exposed joint circle; the root and end are
+ * rounded. Widths taper from root to end.
+ */
+const limbPath = (a: Vec, b: Vec, c: Vec, wa: number, wb: number, wc: number) => {
+  const unit = (v: Vec) => {
+    const l = Math.hypot(v.x, v.y) || 1;
+    return {x: v.x / l, y: v.y / l};
+  };
+  const d1 = unit({x: b.x - a.x, y: b.y - a.y});
+  const d2 = unit({x: c.x - b.x, y: c.y - b.y});
+  const db = unit({x: d1.x + d2.x, y: d1.y + d2.y});
+  const n = (d: Vec) => ({x: -d.y, y: d.x});
+  const off = (p: Vec, d: Vec, w: number, side: 1 | -1) => ({x: p.x + n(d).x * (w / 2) * side, y: p.y + n(d).y * (w / 2) * side});
+  const l1 = Math.hypot(b.x - a.x, b.y - a.y);
+  const l2 = Math.hypot(c.x - b.x, c.y - b.y);
+  const f = (v: number) => v.toFixed(2);
+  const side = (s: 1 | -1) => {
+    const pa = off(a, d1, wa, s);
+    const pb = off(b, db, wb, s);
+    const pc = off(c, d2, wc, s);
+    return {pa, pb, pc};
+  };
+  const L = side(1);
+  const R = side(-1);
+  const seg = (p: Vec, dp: Vec, q: Vec, dq: Vec, len: number) =>
+    `C ${f(p.x + dp.x * len * 0.4)} ${f(p.y + dp.y * len * 0.4)} ${f(q.x - dq.x * len * 0.4)} ${f(q.y - dq.y * len * 0.4)} ${f(q.x)} ${f(q.y)}`;
+  const back = (d: Vec) => ({x: -d.x, y: -d.y});
+  return [
+    `M ${f(L.pa.x)} ${f(L.pa.y)}`,
+    seg(L.pa, d1, L.pb, db, l1),
+    seg(L.pb, db, L.pc, d2, l2),
+    `A ${f(wc / 2)} ${f(wc / 2)} 0 0 0 ${f(R.pc.x)} ${f(R.pc.y)}`,
+    seg(R.pc, back(d2), R.pb, back(db), l2),
+    seg(R.pb, back(db), R.pa, back(d1), l1),
+    `A ${f(wa / 2)} ${f(wa / 2)} 0 0 0 ${f(L.pa.x)} ${f(L.pa.y)}`,
+    'Z',
+  ].join(' ');
+};
+
+/** Limb + paw/foot merged into one silhouette: outline pass, then fill pass. */
+const Merged: React.FC<{limb: string; end: React.ReactElement<React.SVGProps<SVGElement>>; fill: string}> = ({limb, end, fill}) => (
   <>
-    {segs.map((s, i) => (
-      <line key={`o${i}`} x1={s.a.x} y1={s.a.y} x2={s.b.x} y2={s.b.y} stroke={O} strokeWidth={s.w + SW * 2} strokeLinecap="round" />
-    ))}
-    {segs.map((s, i) => (
-      <line key={`f${i}`} x1={s.a.x} y1={s.a.y} x2={s.b.x} y2={s.b.y} stroke={fill} strokeWidth={s.w} strokeLinecap="round" />
-    ))}
+    <path d={limb} fill="none" stroke={O} strokeWidth={SW * 2} strokeLinejoin="round" />
+    {React.cloneElement(end, {fill: 'none', stroke: O, strokeWidth: SW * 2})}
+    <path d={limb} fill={fill} />
+    {React.cloneElement(end, {fill})}
   </>
 );
 
 const Leg: React.FC<{pose: TiloPose; which: 'near' | 'far'}> = ({pose, which}) => {
   const {hip, knee, ankle} = legJoints(pose, which);
   const fill = which === 'near' ? COLORS.fur : COLORS.furShade;
-  const foot = {cx: ankle.x + 9, cy: ankle.y + RIG.footDrop - 6};
-  const limb = which === 'near' ? pose.legNear : pose.legFar;
-  const haunch = along(hip, limb.upper, 9);
+  const foot = {cx: ankle.x + 8, cy: ankle.y + RIG.footDrop - 6};
   return (
     <g id={`tilo-leg-${which}`}>
-      {/* haunch, thigh, shin and foot share one outline pass */}
-      <ellipse cx={haunch.x} cy={haunch.y} rx={16 + SW} ry={21 + SW} fill={O} transform={`rotate(${limb.upper} ${haunch.x} ${haunch.y})`} />
-      <line x1={hip.x} y1={hip.y} x2={knee.x} y2={knee.y} stroke={O} strokeWidth={22 + SW * 2} strokeLinecap="round" />
-      <line x1={knee.x} y1={knee.y} x2={ankle.x} y2={ankle.y} stroke={O} strokeWidth={15 + SW * 2} strokeLinecap="round" />
-      <ellipse cx={foot.cx} cy={foot.cy} rx={17 + SW} ry={9 + SW} fill={O} />
-      <ellipse cx={haunch.x} cy={haunch.y} rx={16} ry={21} fill={fill} transform={`rotate(${limb.upper} ${haunch.x} ${haunch.y})`} />
-      <line x1={hip.x} y1={hip.y} x2={knee.x} y2={knee.y} stroke={fill} strokeWidth={22} strokeLinecap="round" />
-      <line x1={knee.x} y1={knee.y} x2={ankle.x} y2={ankle.y} stroke={fill} strokeWidth={15} strokeLinecap="round" />
-      <ellipse cx={foot.cx} cy={foot.cy} rx={17} ry={9} fill={fill} />
+      {/* thigh tapers into the shin and a rounded foot; the root hides under the torso */}
+      <Merged fill={fill} limb={limbPath(hip, knee, ankle, 30, 17, 13)} end={<ellipse cx={foot.cx} cy={foot.cy} rx={15.5} ry={8.5} />} />
       <path
-        d={`M ${foot.cx + 9} ${foot.cy - 4} q 2 4 0 8 M ${foot.cx + 2} ${foot.cy - 5} q 2 5 0 10`}
+        d={`M ${foot.cx + 8} ${foot.cy - 3} q 1.6 3 0 6`}
         stroke={O}
-        strokeWidth={2.4}
+        strokeWidth={2.2}
         strokeLinecap="round"
         fill="none"
       />
@@ -144,38 +172,21 @@ const Leg: React.FC<{pose: TiloPose; which: 'near' | 'far'}> = ({pose, which}) =
   );
 };
 
+/** Paw centre for a given arm (local frame) — the point the IK aims at. */
+export const pawPoint = (pose: TiloPose, which: 'near' | 'far'): Vec => {
+  const {wrist} = armJoints(pose, which);
+  const limb = which === 'near' ? pose.armNear : pose.armFar;
+  return along(wrist, limb.lower, 6);
+};
+
 const Arm: React.FC<{pose: TiloPose; which: 'near' | 'far'}> = ({pose, which}) => {
   const {sh, elbow, wrist} = armJoints(pose, which);
   const fill = which === 'near' ? COLORS.fur : COLORS.furShade;
-  const limb = which === 'near' ? pose.armNear : pose.armFar;
-  const paw = along(wrist, limb.lower, 4);
-  const grip = which === 'near' ? pose.grip : 0;
-  const rx = 10.5 - grip * 1;
-  const ry = 9 + grip * 1.5;
+  const paw = pawPoint(pose, which);
   return (
     <g id={`tilo-arm-${which}`}>
-      <Tube
-        fill={fill}
-        segs={[
-          {a: sh, b: elbow, w: 15},
-          {a: elbow, b: wrist, w: 13},
-        ]}
-      />
-      <g id={`tilo-paw-${which}`} transform={`translate(${paw.x} ${paw.y}) rotate(${limb.lower})`}>
-        <ellipse cx={0} cy={2} rx={rx} ry={ry} fill={fill} stroke={O} strokeWidth={SW} />
-        {/* toe creases: open = short ticks at the tip, grip = curled toes */}
-        <path
-          d={
-            grip > 0.5
-              ? `M -6 ${4 + ry - 6} q 3 -6 6 -9 M 0 ${6 + ry - 6} q 3 -6 7 -8`
-              : `M -4 ${ry - 1} l 0.5 -4 M 3 ${ry - 1} l -0.5 -4`
-          }
-          stroke={O}
-          strokeWidth={2.4}
-          strokeLinecap="round"
-          fill="none"
-        />
-      </g>
+      {/* upper arm → forearm → rounded paw, one outline; the shoulder overlaps the chest softly */}
+      <Merged fill={fill} limb={limbPath(sh, elbow, wrist, 16, 13.5, 11.5)} end={<circle cx={paw.x} cy={paw.y} r={9.5} />} />
     </g>
   );
 };
@@ -281,8 +292,8 @@ export const Tilo: React.FC<{pose: TiloPose; parts?: TiloParts; id?: string}> = 
           <Arm pose={pose} which="far" />
           <Leg pose={pose} which="far" />
           <Tail pose={pose} />
-          <Torso pose={pose} />
           <Leg pose={pose} which="near" />
+          <Torso pose={pose} />
           <Head pose={pose} clipId={`${id}-skull-clip`} />
         </>
       ) : null}

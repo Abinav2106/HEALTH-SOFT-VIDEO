@@ -7,7 +7,8 @@ import path from 'node:path';
 import {scene} from '../src/tilo/choreography';
 import {CARD, COLORS, HEIGHT, PLANE_SCALE, WIDTH} from '../src/tilo/constants';
 import {Plane} from '../src/tilo/components/Plane';
-import {Bone, RewardCard, Sparkle} from '../src/tilo/components/Props';
+import {GoldenSpark} from '../src/tilo/components/GoldenSpark';
+import {RewardCard, Sparkle} from '../src/tilo/components/Props';
 import {restPose, Tilo} from '../src/tilo/components/Tilo';
 import {Chair, Desk, DoorBack, DoorFront, Floor, Laptop, Plant, SHOWN} from '../src/tilo/components/Workspace';
 
@@ -30,7 +31,7 @@ write('tilo-standing.svg', [-80, -200, 200, 290], <Tilo pose={{...restPose, x: 0
 write(
   'tilo-delighted.svg',
   [-80, -200, 200, 290],
-  <Tilo pose={{...restPose, x: 0, y: 0, s: 1, mouthOpen: 0.95, smile: 1, gazeX: 0.2, armNear: {upper: -60, lower: -150}, grip: 1}} id="tilo" />,
+  <Tilo pose={{...restPose, x: 0, y: 0, s: 1, mouthOpen: 0.95, smile: 1, gazeX: 0.2, armNear: {upper: -60, lower: -150}}} id="tilo" />,
 );
 write(
   'plane.svg',
@@ -40,7 +41,8 @@ write(
     <Plane state={parked} layer="front" />
   </g>,
 );
-write('bone.svg', [-50, -20, 100, 40], <Bone x={0} y={0} />);
+write('golden-spark.svg', [-60, -60, 120, 120], <GoldenSpark x={0} y={0} />);
+write('golden-spark-card-icon.svg', [-34, -34, 68, 68], <GoldenSpark x={0} y={0} size={56} halo={0.7} outline={2.4} id="reward-card-spark" />);
 write('sparkle.svg', [-20, -20, 40, 40], <Sparkle x={0} y={0} size={16} t={1} />);
 write(
   'reward-card.svg',
@@ -80,8 +82,8 @@ write(
       <Plane state={p.state} layer="front" />
     </g>
     <Tilo pose={s.tiloFree!} parts="body" />
-    <Bone x={s.bone.x} y={s.bone.y} rotate={s.bone.rot} />
     <Tilo pose={s.tiloFree!} parts="nearArm" />
+    <GoldenSpark x={s.spark.x} y={s.spark.y} size={s.spark.size} glow={s.spark.glow} id="golden-spark" />
     <DoorFront e={SHOWN} />
     {s.sparkles.map((sp, i) => (
       <Sparkle key={i} id={`reward-sparkle-${i + 1}`} x={sp.x} y={sp.y} size={sp.size} t={1} rotate={sp.rotate} />

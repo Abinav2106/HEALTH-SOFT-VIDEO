@@ -2,61 +2,55 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {BOLD, C, COPY, FONT, MEDIUM} from '../constants';
 import {EASE_IN_OUT, lerp, prog} from '../lib/motion';
-import {Tag} from './Tag';
 import {Tilo} from './Tilo';
-import {Canvas, Trim} from './Trim';
 
-// 3–8 s. White page, the sample clue, two yellow painted highlights revealed left→right. The last
-// highlight thins into a cyan route that leads the aerial map in (the matte lives in S3Signal).
+// 3–8 s. "Every hunt starts with a clue. Read it closely, and follow where it leads."
+// White page (the expanded clue card), the clue large and central, two yellow highlights revealed
+// left→right behind their words. The second highlight's rectangle then becomes the one matte the
+// aerial map opens through (S3Signal draws the map inside it).
 
-const BLOCK = {left: 72, top: 760, rotate: -3};
-const SIZE = 90;
-const LINE_H = 130;
+const BLOCK = {left: 70, top: 690, rotate: -2};
+const SIZE = 92;
+const LINE_H = 134;
 export const HL = [
-  {from: 116, dur: 16},
-  {from: 138, dur: 18},
+  {from: 128, dur: 14}, // on "…with a clue"
+  {from: 158, dur: 18}, // on "Read it closely"
 ];
-// Where the second highlight ends on screen (measured from the rendered layout).
-export const HL2_END = {x: 994, y: 938};
-// The route the last highlight resolves into: from its end, down and across into the map.
-export const S2_ROUTE = `M ${HL2_END.x} ${HL2_END.y} C 1100 1000 1010 1170 780 1240 C 520 1320 330 1400 400 1580 C 450 1700 640 1770 1140 1800`;
-export const THIN = {from: 196, dur: 12}; // highlight → thin cyan line
-export const ROUTE = {from: 204, dur: 30};
+// Screen rectangle of the second highlight (measured from the rendered layout): the matte starts here.
+// Second highlight on screen at MATTE.from (measured from the rendered layout, clue drift included):
+// centre, unrotated size and the clue's tilt. The matte starts as exactly this quad.
+export const HL2 = {cx: 617.5, cy: 852, w: 753, h: 116, rot: BLOCK.rotate};
+export const MATTE = {from: 224, dur: 26};
 
-const enter = (f: number) => prog(f, 84, 26); // continues the card's upward travel
+const enter = (f: number) => prog(f, 86, 24); // continues the card's upward travel
 
 const Highlight: React.FC<{f: number; i: number}> = ({f, i}) => {
   const reveal = prog(f, HL[i].from, HL[i].dur, EASE_IN_OUT);
-  const thin = i === 1 ? prog(f, THIN.from, THIN.dur, EASE_IN_OUT) : 0;
-  const fade = i === 0 ? prog(f, THIN.from, 14) : 0;
   return (
     <div
       style={{
         position: 'absolute',
-        left: '-0.14em',
-        right: '-0.14em',
-        top: '0.16em',
+        left: '-0.12em',
+        right: '-0.12em',
+        top: '0.14em',
         bottom: '0.02em',
-        borderRadius: '0.14em 0.22em 0.16em 0.26em',
-        backgroundColor: thin > 0.5 ? C.blue : C.yellow,
+        borderRadius: '0.12em 0.2em 0.14em 0.22em',
+        backgroundColor: C.yellow,
         clipPath: `inset(0 ${(1 - reveal) * 100}% 0 0)`,
-        transform: `scaleY(${lerp(1, 0.08, thin)}) skewX(-4deg)`,
-        transformOrigin: '50% 100%',
-        opacity: 1 - fade,
         zIndex: -1,
       }}
     />
   );
 };
 
-export const S2Clue: React.FC<{f: number; preview: boolean}> = ({f, preview}) => {
+export const S2Clue: React.FC<{f: number}> = ({f}) => {
   const e = enter(f);
-  const textOut = prog(f, 200, 16);
-  const thin = prog(f, THIN.from, THIN.dur);
+  const out = prog(f, MATTE.from + 6, 14);
+  const drift = prog(f, 110, 120, EASE_IN_OUT) * -26; // slow continuous rise while the clue is read
   return (
-    <AbsoluteFill style={{backgroundColor: f >= 92 ? C.white : 'transparent'}}>
-      <div style={{position: 'absolute', inset: 0, transform: `translateY(${lerp(110, 0, e)}px)`, opacity: e}}>
-        <div style={{position: 'absolute', left: BLOCK.left + 4, top: BLOCK.top - 96, fontFamily: FONT, fontWeight: MEDIUM, fontSize: 44, color: C.navy, opacity: 1 - textOut}}>
+    <AbsoluteFill style={{backgroundColor: f >= 96 ? C.white : 'transparent'}}>
+      <div style={{position: 'absolute', inset: 0, transform: `translateY(${lerp(120, 0, e) + drift}px)`, opacity: e * (1 - out)}}>
+        <div style={{position: 'absolute', left: BLOCK.left + 4, top: BLOCK.top - 104, fontFamily: FONT, fontWeight: MEDIUM, fontSize: 46, color: C.navy}}>
           {COPY.clueLabel}
         </div>
         <div
@@ -70,47 +64,31 @@ export const S2Clue: React.FC<{f: number; preview: boolean}> = ({f, preview}) =>
             fontWeight: BOLD,
             fontSize: SIZE,
             lineHeight: `${LINE_H}px`,
-            letterSpacing: '-0.025em',
+            letterSpacing: '-0.03em',
             color: C.navy,
             whiteSpace: 'nowrap',
           }}
         >
           {COPY.clue.map((l, i) => (
-            <div key={i} style={{position: 'relative'}}>
-              <span style={{opacity: 1 - textOut}}>{l.plain}</span>
-              <span style={{position: 'relative', display: 'inline-block', zIndex: 0, isolation: 'isolate'}}>
+            <div key={i}>
+              <span>{l.plain}</span>
+              <span style={{position: 'relative', display: 'inline-block', zIndex: 0, isolation: 'isolate', color: C.black}}>
                 <Highlight f={f} i={i} />
-                <span style={{color: C.black, opacity: 1 - (i === 1 ? thin : textOut)}}>{l.marked}</span>
+                {l.marked}
               </span>
             </div>
           ))}
         </div>
-        {preview && <Tag text="Illustrative clue" x={BLOCK.left + 4} y={BLOCK.top + 320} opacity={1 - textOut} />}
       </div>
     </AbsoluteFill>
   );
 };
 
-// Tilo's small flight across the clue, then away along the new route.
-const tiloS2 = (f: number) => {
-  const inT = prog(f, 98, 52, EASE_IN_OUT);
-  const x = lerp(-280, 330, inT) + prog(f, 150, 50) * 70;
-  const y = lerp(1330, 1290, inT) - Math.sin(inT * Math.PI) * 20;
-  const out = prog(f, 206, 34, EASE_IN_OUT);
-  return {x: lerp(x, 1360, out), y: lerp(y, 1080, out), rot: lerp(-3, -6, out)};
-};
-
-/** Rendered above the incoming map matte so the route and Tilo stay on top across the handover. */
-export const S2Route: React.FC<{f: number}> = ({f}) => {
-  const t = tiloS2(f);
-  const route = prog(f, ROUTE.from, ROUTE.dur, EASE_IN_OUT);
-  const routeOut = prog(f, 236, 10);
-  return (
-    <AbsoluteFill>
-      <Canvas>
-        <Trim d={S2_ROUTE} end={route} width={8} opacity={1 - routeOut} />
-      </Canvas>
-      <Tilo x={t.x} y={t.y} width={250} rotate={t.rot} />
-    </AbsoluteFill>
-  );
+/** Tilo stays above the incoming map so it carries straight across the hand-over. */
+export const S2Tilo: React.FC<{f: number}> = ({f}) => {
+  const inT = prog(f, 100, 56, EASE_IN_OUT);
+  const x = lerp(-260, 420, inT) + prog(f, 156, 66) * 60;
+  const y = lerp(1330, 1290, inT) - Math.sin(inT * Math.PI) * 18;
+  const away = prog(f, MATTE.from, 30, EASE_IN_OUT);
+  return <Tilo f={f} x={lerp(x, 1340, away)} y={lerp(y, 1150, away)} width={250} rotate={lerp(-2, -7, away)} />;
 };

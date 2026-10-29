@@ -1,76 +1,63 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile} from 'remotion';
-import {ASSETS, BOLD, C, COPY, FONT, MEDIUM} from '../constants';
+import {ASSETS, BOLD, C, COPY, FONT, MEDIUM, REGULAR} from '../constants';
 import {EASE_IN_OUT, lerp, prog} from '../lib/motion';
+import {IDLE_RPS} from '../lib/propeller';
 import {Bone} from './Bone';
-import {boneScreen} from './S4Discovery';
+import {BRIDGE_AT, boneScreen} from './S4Discovery';
 import {MAP, MARKER_R} from './S6Ending';
-import {Canvas, Trim} from './Trim';
+import {Tilo} from './Tilo';
+import {Trim} from './Trim';
 
-// 21–26 s. Match cut: the Spark Bone keeps its screen position and size as the room cuts to navy,
-// then rises while the white success seal grows out of it. One check reveal, the copy, and the
-// supplied gift artwork revealed by a clean bottom-up matte (one intact asset: no separate lid or
-// card layer exists, so nothing is opened or deformed). Then the seal expands to white and the
-// check badge shrinks into the first city marker.
+// 21–26 s. "Your next hunt could unlock an Amazon gift card. Eligibility and terms apply."
+// Navy, balanced white type, a small success check, and the supplied gift artwork revealed by a
+// clean bottom-up matte (one intact asset — no separate lid/card layers exist, so nothing is
+// opened or deformed). The Spark Bone travels from the room into the success check; the check
+// later becomes the Mumbai marker on the ending map.
 
-const CUT = 606;
-const SEAL = {cx: 540, cy: 640, r: 500};
-const BONE_END = {x: 540, y: 302, w: 230};
-const BADGE = {x: 196, y: 292, r: 64};
-const GIFT = {x: 110, y: 828, w: 860};
+export const ICON = {x: 330, y: 352, r: 44};
+const BONE_TO_ICON = {from: BRIDGE_AT + 2, dur: 22};
+const ICON_IN = BRIDGE_AT + 18;
+const CHECK = {from: BRIDGE_AT + 26, dur: 14};
+export const TO_MARKER = {from: 768, dur: 22};
+const GIFT = {x: 130, y: 760, w: 820};
 const GIFT_H = (GIFT.w * 1332) / 1208;
-export const T5 = {from: 756, dur: 24};
+const GIFT_REVEAL = {from: 668, dur: 30}; // on "…an Amazon gift card"
+const NOTE_AT = 720; // on "Eligibility and terms apply"
 
 export const S5Payoff: React.FC<{f: number}> = ({f}) => {
-  if (f < CUT) return null;
-  const b0 = boneScreen(CUT);
-  const rise = prog(f, CUT + 2, 26, EASE_IN_OUT);
-  const seal = prog(f, CUT + 4, 26, EASE_IN_OUT);
-  const out = prog(f, T5.from, T5.dur, EASE_IN_OUT);
-  const fade = 1 - prog(f, T5.from - 6, 12);
-  const mumbai = MAP.city('Mumbai');
-
-  const sealC = {x: lerp(lerp(b0.x, SEAL.cx, seal), 540, out), y: lerp(lerp(b0.y, SEAL.cy, seal), 960, out)};
-  const sealR = lerp(SEAL.r * seal, 1250, out);
-  const badgeIn = prog(f, 640, 12);
-  const check = prog(f, 648, 14, EASE_IN_OUT);
-  const bx = lerp(BADGE.x, mumbai[0], out);
-  const by = lerp(BADGE.y, mumbai[1], out);
-  const br = lerp(BADGE.r * badgeIn, MARKER_R, out);
-  const gift = prog(f, 662, 30, EASE_IN_OUT);
-  const lift = prog(f, 694, 34, EASE_IN_OUT);
-
-  const textLine = (i: number) => prog(f, 648 + i * 5, 18);
+  if (f < BRIDGE_AT) return null;
+  const b0 = boneScreen(BRIDGE_AT);
+  const t = prog(f, BONE_TO_ICON.from, BONE_TO_ICON.dur, EASE_IN_OUT);
+  const boneFade = 1 - prog(f, ICON_IN, 8);
+  const out = 1 - prog(f, TO_MARKER.from - 8, 12);
+  const gift = prog(f, GIFT_REVEAL.from, GIFT_REVEAL.dur, EASE_IN_OUT);
+  const lift = prog(f, GIFT_REVEAL.from + GIFT_REVEAL.dur, 36, EASE_IN_OUT);
+  const line = (i: number) => prog(f, 626 + i * 6, 18);
+  const tiloIn = prog(f, 646, 34, EASE_IN_OUT);
 
   return (
-    <AbsoluteFill style={{backgroundColor: C.navy, opacity: prog(f, CUT, 4)}}>
-      <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0}}>
-        <circle cx={sealC.x} cy={sealC.y} r={sealR} fill={C.white} />
-      </svg>
-      <div style={{position: 'absolute', inset: 0, opacity: fade}}>
-        <Canvas>
-          <Trim d="M -30 600 C 30 500 90 380 150 330" end={prog(f, 632, 16)} width={6} opacity={badgeIn} />
-        </Canvas>
-        <Bone cx={lerp(b0.x, BONE_END.x, rise)} cy={lerp(b0.y, BONE_END.y, rise)} width={lerp(b0.w, BONE_END.w, rise)} />
-        <div style={{position: 'absolute', left: 0, right: 0, top: 380, height: 74, overflow: 'hidden', textAlign: 'center'}}>
-          <div style={{fontFamily: FONT, fontWeight: MEDIUM, fontSize: 54, lineHeight: '74px', color: C.navy, transform: `translateY(${lerp(100, 0, textLine(0))}%)`}}>
+    <AbsoluteFill style={{backgroundColor: C.navy, opacity: prog(f, BRIDGE_AT, 6)}}>
+      <div style={{position: 'absolute', inset: 0, opacity: out}}>
+        <div style={{position: 'absolute', left: ICON.x + ICON.r + 28, top: ICON.y - 40, height: 80, overflow: 'hidden'}}>
+          <div style={{fontFamily: FONT, fontWeight: MEDIUM, fontSize: 58, lineHeight: '80px', color: C.white, transform: `translateY(${lerp(100, 0, line(0))}%)`}}>
             {COPY.huntComplete}
           </div>
         </div>
-        {COPY.payoff.map((t, i) => (
-          <div key={t} style={{position: 'absolute', left: 0, right: 0, top: 462 + i * 110, height: 118, overflow: 'hidden', textAlign: 'center'}}>
+        {COPY.payoff.map((tx, i) => (
+          <div key={tx} style={{position: 'absolute', left: 0, right: 0, top: 432 + i * 124, height: 132, overflow: 'hidden', textAlign: 'center'}}>
             <div
               style={{
                 fontFamily: FONT,
                 fontWeight: BOLD,
-                fontSize: 100,
-                lineHeight: '118px',
+                fontSize: 112,
+                lineHeight: '132px',
                 letterSpacing: '-0.035em',
-                color: C.navy,
-                transform: `translateY(${lerp(100, 0, textLine(i + 1))}%)`,
+                color: C.white,
+                transform: `translateY(${lerp(100, 0, line(i + 1))}%)`,
               }}
             >
-              {t}
+              {tx}
             </div>
           </div>
         ))}
@@ -78,41 +65,66 @@ export const S5Payoff: React.FC<{f: number}> = ({f}) => {
           style={{
             position: 'absolute',
             left: GIFT.x,
-            top: GIFT.y + lerp(70, 0, gift) - lift * 14,
+            top: GIFT.y + lerp(80, 0, gift) - lift * 16,
             width: GIFT.w,
             height: GIFT_H,
-            clipPath: `inset(${(1 - gift) * 100}% -20% -20% -20%)`,
+            clipPath: `inset(${(1 - gift) * 100}% -10% -10% -10%)`,
           }}
         >
           {/* soft right edge: the storyboard crop cuts through a ribbon tail there */}
           <Img src={staticFile(ASSETS.gift)} style={{width: GIFT.w, height: GIFT_H, WebkitMaskImage: 'linear-gradient(90deg, #000 92%, transparent 100%)'}} />
         </div>
+        {tiloIn > 0 && (
+          <Tilo
+            f={f}
+            x={lerp(-200, 300, tiloIn)}
+            y={1508 - lift * 16 + Math.sin(((f - 646) / 30) * Math.PI * 0.5) * 3 * tiloIn}
+            width={300}
+            rotate={lerp(-6, -2, tiloIn)}
+            rest={prog(f, 682, 14)}
+            spin={[{f: 0, rps: 6.3}, {f: 676, rps: 6.3}, {f: 712, rps: IDLE_RPS * 1.6}]}
+          />
+        )}
         <div
           style={{
             position: 'absolute',
             left: 0,
             right: 0,
-            top: 1808,
+            top: 1800,
             textAlign: 'center',
             fontFamily: FONT,
-            fontWeight: MEDIUM,
-            fontSize: 31,
+            fontWeight: REGULAR,
+            fontSize: 34,
             color: C.white,
-            opacity: prog(f, 690, 14) * 0.9,
+            opacity: prog(f, NOTE_AT, 14) * 0.92,
           }}
         >
           {COPY.rewardNote}
         </div>
       </div>
-      {/* success check: revealed once, later becomes the Mumbai marker */}
-      {badgeIn > 0 && (
-        <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
-          <circle cx={bx} cy={by} r={br} fill={C.blue} stroke={out > 0.5 ? C.navy : C.white} strokeWidth={lerp(12, 3.5, out)} />
-          <g opacity={1 - prog(f, T5.from, 8)}>
-            <Trim d={`M ${bx - br * 0.42} ${by + br * 0.02} L ${bx - br * 0.1} ${by + br * 0.32} L ${bx + br * 0.44} ${by - br * 0.3}`} end={check} width={12} color={C.white} />
-          </g>
-        </svg>
+      {boneFade > 0 && (
+        <Bone cx={lerp(b0.x, ICON.x, t)} cy={lerp(b0.y, ICON.y, t)} width={lerp(b0.w, ICON.r * 2.2, t)} opacity={boneFade} />
       )}
     </AbsoluteFill>
+  );
+};
+
+/** The success check, above every scene: revealed once, then shrinks into the Mumbai marker. */
+export const S5Icon: React.FC<{f: number}> = ({f}) => {
+  if (f < ICON_IN || f > TO_MARKER.from + TO_MARKER.dur + 2) return null;
+  const inP = prog(f, ICON_IN, 10);
+  const m = prog(f, TO_MARKER.from, TO_MARKER.dur, EASE_IN_OUT);
+  const [mx, my] = MAP.city('Mumbai');
+  const x = lerp(ICON.x, mx, m);
+  const y = lerp(ICON.y, my, m);
+  const r = lerp(ICON.r * lerp(0.7, 1, inP), MARKER_R, m);
+  const check = prog(f, CHECK.from, CHECK.dur, EASE_IN_OUT);
+  return (
+    <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
+      <circle cx={x} cy={y} r={r} fill={C.blue} stroke={C.navy} strokeWidth={lerp(0, 3.5, m)} opacity={inP} />
+      {check > 0 && (
+        <Trim d={`M ${x - r * 0.42} ${y + r * 0.02} L ${x - r * 0.1} ${y + r * 0.32} L ${x + r * 0.44} ${y - r * 0.3}`} end={check} width={r * 0.2} color={C.white} opacity={1 - prog(f, TO_MARKER.from, 8)} />
+      )}
+    </svg>
   );
 };

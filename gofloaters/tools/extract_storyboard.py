@@ -86,6 +86,7 @@ def tilo(sb: np.ndarray, k: int = 6) -> dict:
     band = rim & (alpha > 0.02)
     rgb[band] = np.clip((f[band] - (1 - alpha[band, None]) * PAGE_BG) / np.maximum(alpha[band, None], 0.25), 0, 255).astype(np.uint8)
     a8 = (alpha * 255).astype(np.uint8)
+    a8[a8 < 20] = 0  # drop the unmix noise floor so no faint halo survives anywhere
     save_rgba("tilo.png", rgb, a8)
 
     # Same artwork without its three speed lines (separate components left of the tail).
@@ -95,9 +96,36 @@ def tilo(sb: np.ndarray, k: int = 6) -> dict:
     a_nl = np.where(keep, a8, 0).astype(np.uint8)
     save_rgba("tilo_nolines.png", rgb, a_nl)
 
-    ys, xs = np.nonzero(a_nl > 40)
-    # Propeller hub (yellow, right edge) and nose direction, in normalised image coordinates.
-    return {"w": rgb.shape[1], "h": rgb.shape[0], "bodyBox": [int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())]}
+    prop = propeller(rgb, a8, a_nl)
+    return {"w": rgb.shape[1], "h": rgb.shape[0], "propeller": prop}
+
+
+def propeller(rgb: np.ndarray, a8: np.ndarray, a_nl: np.ndarray) -> dict:
+    """Lift the baked propeller (yellow ellipse + its outline) onto its own layer and clear it from
+    the aircraft layers, so the composition can spin it with no stationary copy underneath."""
+    f = rgb.astype(int)
+    yel = (f[..., 0] > 200) & (f[..., 1] > 170) & (f[..., 2] < 140) & (a8 > 128)
+    yel[:, : int(rgb.shape[1] * 0.8)] = False  # only the nose end of the artwork
+    n, lab, st, _ = cv2.connectedComponentsWithStats(yel.astype(np.uint8))
+    comp = (lab == 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))).astype(np.uint8)
+    cnts, _ = cv2.findContours(comp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    (cx, cy), (d1, d2), ang = cv2.fitEllipse(max(cnts, key=cv2.contourArea))
+    inner = np.zeros_like(comp)
+    cv2.ellipse(inner, ((cx, cy), (d1, d2), ang), 1, -1)
+    outline = 26  # px of black outline plus the matte's soft halo around the yellow disc
+    outer = np.zeros_like(comp)
+    cv2.ellipse(outer, ((cx, cy), (d1 + 2 * outline, d2 + 2 * outline), ang), 1, -1)
+    # The body loses the whole propeller (no stationary copy left under the spinning one). The
+    # propeller layer reaches a few px further, over identical body pixels, so when the browser
+    # resamples the two layers separately the join at the nose still shows no hairline seam.
+    overlap = np.zeros_like(comp)
+    cv2.ellipse(overlap, ((cx, cy), (d1 + 2 * outline + 8, d2 + 2 * outline + 8), ang), 1, -1)
+    for name, alpha in (("tilo_body.png", a8), ("tilo_body_nolines.png", a_nl)):
+        save_rgba(name, rgb, (alpha * (1 - outer)).astype(np.uint8))
+    save_rgba("tilo_prop.png", rgb, (a8 * overlap).astype(np.uint8))
+    # Blade-sweep area: the yellow disc, measured as an upright ellipse (width, height).
+    w, h = sorted((d1, d2))
+    return {"cx": round(cx, 1), "cy": round(cy, 1), "w": round(w, 1), "h": round(h, 1), "angle": round(ang, 1)}
 
 
 def wordmark(sb: np.ndarray, k: int = 4) -> dict:
@@ -230,8 +258,8 @@ def room(sb: np.ndarray, k: int = 4) -> dict:
 
 def gift(sb: np.ndarray, k: int = 4) -> dict:
     """Panel 5 gift box + Amazon gift-card artwork as one intact matted asset (no hidden surfaces
-    invented). The baked flight line is removed; the baked Tilo stays and is covered exactly by
-    the Tilo layer in the composition."""
+    invented). The baked flight line and the storyboard's own (static, differently drawn) Tilo are
+    removed; the rigged Tilo flies as its own layer in the composition."""
     X0, Y0, X1, Y1 = 361, 985, 663, 1318
     c = sb[Y0:Y1, X0:X1].copy()
     h, w = c.shape[:2]
@@ -242,7 +270,16 @@ def gift(sb: np.ndarray, k: int = 4) -> dict:
     line = cv2.dilate(line, np.ones((9, 9), np.uint8))
     line[226:297, 0:117] = 0
     clean = _fsr(c, line)
-    hsv = cv2.cvtColor(c, cv2.COLOR_RGB2HSV)
+    # Baked Tilo: the box front face above it continues straight down (vertical ribbon, uniform
+    # gold), so vertical copies rebuild it — two strips, the second copying already-cleaned rows.
+    # The slivers over the navy and along the box's bottom edge are reconstructed from neighbours.
+    clean = _clone_from(clean, _rect(c, 22, 226, 120, 262), 0, 40)
+    clean = _clone_from(clean, _rect(c, 22, 258, 120, 288), 0, 32)
+    clean = _fsr(clean, _rect(c, 0, 224, 24, 302) | _rect(c, 0, 284, 122, 302))
+    # Seed the matte from the cleaned pixels, not the originals (the baked Tilo is gone now).
+    f = clean.astype(int)
+    r, g, b = f[..., 0], f[..., 1], f[..., 2]
+    hsv = cv2.cvtColor(clean, cv2.COLOR_RGB2HSV)
     H, Sa, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
     gm = np.full((h, w), cv2.GC_PR_BGD, np.uint8)
     navy = (f.max(axis=2) < 70) & (b > r + 20)
@@ -254,9 +291,6 @@ def gift(sb: np.ndarray, k: int = 4) -> dict:
     core[150:300, 40:260] = True
     gm[core & gold] = cv2.GC_FGD
     gm[105:205, 70:230] = cv2.GC_FGD
-    t = np.zeros((h, w), bool)
-    t[228:294, 2:117] = True
-    gm[t & ~navy] = cv2.GC_FGD
     bgm, fgm = np.zeros((1, 65)), np.zeros((1, 65))
     cv2.grabCut(cv2.cvtColor(clean, cv2.COLOR_RGB2BGR), gm, None, bgm, fgm, 6, cv2.GC_INIT_WITH_MASK)
     a = np.where((gm == cv2.GC_FGD) | (gm == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
@@ -266,8 +300,7 @@ def gift(sb: np.ndarray, k: int = 4) -> dict:
     big_img = up(clean, k, 0.2)
     big_a = cv2.GaussianBlur(cv2.resize(a, (big_img.shape[1], big_img.shape[0]), interpolation=cv2.INTER_LINEAR), (0, 0), 1.0)
     save_rgba("gift.png", big_img, big_a)
-    # Where the baked Tilo sits inside the gift asset (px in gift.png) so the layer can cover it.
-    return {"w": big_img.shape[1], "h": big_img.shape[0], "tiloBox": [0, 226 * k, 117 * k, 297 * k]}
+    return {"w": big_img.shape[1], "h": big_img.shape[0]}
 
 
 def main() -> None:

@@ -24,8 +24,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="V06-MotionSection" component={MotionSection} durationInFrames={DURATION - MG_FROM} {...common} defaultProps={{mode: 'review' as const}} />
     {/* Deliverable: no overlays; fails if any shot lacks a licensed clip, a licence record or a screen track. */}
     <Composition id="V06-Master" component={Video06} durationInFrames={DURATION} {...common} defaultProps={{mode: 'master' as const}} />
-    {/* GoFloaters "Find the Spark": master (clean) and working preview (illustrative material marked). */}
-    <Composition id="GF-FindTheSpark" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{preview: false, sound: true}} />
-    <Composition id="GF-FindTheSpark-Preview" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{preview: true, sound: true}} />
+    {/* GoFloaters "Find the Spark": the film, plus audio-only stems rendered from the same timeline. */}
+    <Composition id="GF-FindTheSpark" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: true, sfx: true}} />
+    <Composition id="GF-Stem-Narration" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: true, sfx: false}} />
+    <Composition id="GF-Stem-SFX" component={FindTheSpark} durationInFrames={GF.DURATION} fps={GF.FPS} width={GF.WIDTH} height={GF.HEIGHT} defaultProps={{narration: false, sfx: true}} />
   </>
 );

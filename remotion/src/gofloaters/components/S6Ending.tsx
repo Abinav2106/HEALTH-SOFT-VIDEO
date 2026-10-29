@@ -4,8 +4,10 @@ import {ASSETS, BOLD, C, City, CITIES, COPY, FONT, MEDIUM} from '../constants';
 import {EASE_IN_OUT, lerp, prog} from '../lib/motion';
 import {makeInset, makeProjection} from '../lib/geo';
 import {Tilo} from './Tilo';
+import {FLIGHT_RPS} from '../lib/propeller';
 
-// 26–30 s. Full-frame India map (Natural Earth, India point of view), one marker per city plotted
+// 26–30 s. "Where's your Spark hiding? Enter the hunt with GoFloaters."
+// Full-frame India map (Natural Earth, India point of view), one marker per city plotted
 // from coordinates through the boundary's own projection, an NCR inset for New Delhi, Gurugram and
 // Noida, the game title, the question and the CTA. Everything is settled by ~27 s and holds.
 
@@ -40,7 +42,8 @@ const INSET_LABELS: Label[] = [
 ];
 
 export const MARKER_R = 11;
-export const MARKERS_AT = 782;
+export const MARKERS_AT = 786;
+const MUMBAI_AT = 790; // the success check lands here and becomes the Mumbai marker
 
 const Spark: React.FC<{x: number; y: number; s: number}> = ({x, y, s}) => (
   <path
@@ -83,18 +86,19 @@ const CityLabel: React.FC<{x: number; y: number; l: Label; p: number; leader?: b
 };
 
 export const S6Ending: React.FC<{f: number}> = ({f}) => {
-  const bg = f >= 778;
-  const map = prog(f, 770, 22, EASE_IN_OUT);
-  const logo = prog(f, 772, 18);
-  const title = prog(f, 776, 18);
-  const inset = prog(f, 784, 14);
-  const question = prog(f, 790, 16);
-  const cta = prog(f, 796, 14);
-  const tiloT = prog(f, 778, 30, EASE_IN_OUT);
+  const bg = prog(f, 768, 16, EASE_IN_OUT);
+  const map = prog(f, 772, 20, EASE_IN_OUT);
+  const logo = prog(f, 774, 16);
+  const title = prog(f, 778, 16);
+  const inset = prog(f, 786, 14);
+  const question = prog(f, 789, 16); // on "Where's your Spark hiding?"
+  const cta = prog(f, 798, 14); // settled at ~27 s, ahead of "Enter the hunt"
+  const tiloT = prog(f, 790, 30, EASE_IN_OUT);
   const delhi = MAP.city('New Delhi');
 
   return (
-    <AbsoluteFill style={{backgroundColor: bg ? C.white : 'transparent'}}>
+    <AbsoluteFill>
+      <AbsoluteFill style={{backgroundColor: C.white, opacity: bg}} />
       {/* logo lockup: supplied artwork, static, fade only */}
       <div style={{position: 'absolute', left: 0, right: 0, top: 92, height: 118, opacity: logo}}>
         <Img src={staticFile(ASSETS.tilo)} style={{position: 'absolute', left: 292, top: 0, width: 222, height: 118}} />
@@ -118,8 +122,9 @@ export const S6Ending: React.FC<{f: number}> = ({f}) => {
 
         {/* NCR: area marker on the main map, leader to the inset */}
         <g opacity={inset}>
-          <rect x={delhi[0] - 20} y={delhi[1] - 20} width={40} height={40} rx={8} fill="none" stroke={C.navy} strokeWidth={3} />
-          <line x1={delhi[0] + 20} y1={delhi[1] - 10} x2={INSET.x} y2={INSET.y + INSET.h * 0.62} stroke={C.navy} strokeWidth={2.5} opacity={0.7} />
+          {/* circular NCR locator over the three cities' area */}
+          <circle cx={delhi[0]} cy={delhi[1]} r={20} fill={C.blue} fillOpacity={0.18} stroke={C.blue} strokeWidth={4} />
+          <line x1={delhi[0] + 18} y1={delhi[1] - 9} x2={INSET.x} y2={INSET.y + INSET.h * 0.62} stroke={C.blue} strokeWidth={3} />
           <rect x={INSET.x} y={INSET.y} width={INSET.w} height={INSET.h} rx={22} fill={C.white} stroke={C.blue} strokeWidth={3} />
           <text x={INSET.x + 24} y={INSET.y + 46} fontFamily={FONT} fontWeight={BOLD} fontSize={30} fill={C.navy}>
             NCR
@@ -141,7 +146,7 @@ export const S6Ending: React.FC<{f: number}> = ({f}) => {
           return (
             <g key={l.city}>
               <CityLabel x={x} y={y} l={l} p={prog(f, MARKERS_AT + 4 + i * 2, 12)} />
-              <Marker x={x} y={y} p={l.city === 'Mumbai' ? (f >= MARKERS_AT ? 1 : 0) : prog(f, MARKERS_AT + i * 2, 10)} />
+              <Marker x={x} y={y} p={l.city === 'Mumbai' ? (f >= MUMBAI_AT ? 1 : 0) : prog(f, MARKERS_AT + i * 2, 10)} />
             </g>
           );
         })}
@@ -187,9 +192,20 @@ export const S6Ending: React.FC<{f: number}> = ({f}) => {
         }}
       >
         {COPY.cta}
+        <span style={{color: C.blue, marginLeft: 14}}>{COPY.ctaArrow}</span>
       </div>
 
-      {tiloT > 0 && <Tilo x={lerp(-220, 176, tiloT)} y={1348 - Math.sin(tiloT * Math.PI) * 20} width={236} rotate={lerp(-5, -2, tiloT)} />}
+      {/* Tilo low, below the CTA and clear of every label */}
+      {tiloT > 0 && (
+        <Tilo
+          f={f}
+          x={lerp(-200, 900, tiloT)}
+          y={1826 - Math.sin(tiloT * Math.PI) * 14}
+          width={210}
+          rotate={lerp(-4, -1.5, tiloT)}
+          spin={[{f: 0, rps: FLIGHT_RPS}, {f: 816, rps: FLIGHT_RPS}, {f: 850, rps: 2.2}]}
+        />
+      )}
     </AbsoluteFill>
   );
 };

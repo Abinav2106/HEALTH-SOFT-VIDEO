@@ -13,17 +13,29 @@ export const C = {
 } as const;
 
 export const FONT = 'GF DM Sans';
+export const REGULAR = 400;
 export const MEDIUM = 500;
 export const BOLD = 700;
 
+// Narration (Kokoro-82M, voice af_heart — see data/voice.json for measured line lengths).
+// Picture beats below are placed on these spoken phrases, measured from the generated audio.
+export const VO = {
+  s1: {at: 8, len: 66}, // "One hidden Spark. | Where will you look?"
+  s2: {at: 100, len: 128}, // "Every hunt starts with a clue. | Read it closely, and follow where it leads."
+  s3: {at: 252, len: 173}, // "Search the map. | Explore the workspaces. | Follow the clue until the right place comes into view."
+  s4: {at: 492, len: 109}, // "There it is. Spark found. | Now see what your hunt could unlock."
+  s5: {at: 627, len: 154}, // "Your next hunt could unlock an Amazon gift card. | Eligibility and terms apply."
+  s6: {at: 786, len: 97}, // "Where's your Spark hiding? | Enter the hunt with GoFloaters."
+} as const;
+
 // Scene windows in frames [from, to). Neighbouring windows overlap where a transition hands over.
 export const SCENES = {
-  invitation: {from: 0, to: 96}, // 0–3 s
-  clue: {from: 72, to: 246}, // 3–8 s
-  signal: {from: 196, to: 492}, // 8–16 s
-  discovery: {from: 430, to: 646}, // 16–21 s
-  payoff: {from: 600, to: 790}, // 21–26 s
-  ending: {from: 752, to: DURATION}, // 26–30 s
+  invitation: {from: 0, to: 100}, // 0–3 s
+  clue: {from: 76, to: 252}, // 3–8 s
+  explore: {from: 220, to: 462}, // 8–16 s (window fully open at 458)
+  found: {from: 426, to: 632}, // 16–21 s (visible through the workspace window from 432)
+  reward: {from: 598, to: 800}, // 21–26 s
+  ending: {from: 766, to: DURATION}, // 26–30 s
 } as const;
 
 // Exact on-screen copy (the clue is the storyboard's illustrative sample — no approved clue supplied).
@@ -41,7 +53,8 @@ export const COPY = {
   rewardNote: 'Reward example / Eligibility and terms apply',
   gameTitle: 'Tilo’s Diwali Spark Hunt',
   question: 'Where’s your Spark hiding?',
-  cta: 'Enter the hunt →',
+  cta: 'Enter the hunt',
+  ctaArrow: '→',
 } as const;
 
 // City-centre reference coordinates [lat, lon] — approximate centres, not workspace addresses.
@@ -59,12 +72,13 @@ export type City = keyof typeof CITIES;
 
 // Storyboard-derived stand-in layers (see gofloaters/docs/01_asset_audit.md).
 export const ASSETS = {
-  tilo: 'gofloaters/storyboard/tilo.png',
-  tiloNoLines: 'gofloaters/storyboard/tilo_nolines.png',
+  tilo: 'gofloaters/storyboard/tilo.png', // whole artwork, only inside the static logo lockup
+  tiloBody: 'gofloaters/storyboard/tilo_body.png',
+  tiloBodyNoLines: 'gofloaters/storyboard/tilo_body_nolines.png',
+  tiloProp: 'gofloaters/storyboard/tilo_prop.png',
   wordmark: 'gofloaters/storyboard/logo_wordmark.png',
   aerial: 'gofloaters/storyboard/aerial.png',
   workspace: 'gofloaters/storyboard/workspace.png',
-  room: 'gofloaters/storyboard/room.png',
   roomBg: 'gofloaters/storyboard/room_bg.png',
   roomDoor: 'gofloaters/storyboard/room_door.png',
   gift: 'gofloaters/storyboard/gift.png',

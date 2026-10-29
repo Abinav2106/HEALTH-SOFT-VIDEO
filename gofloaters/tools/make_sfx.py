@@ -1,15 +1,14 @@
-"""Synthesise the restrained original sound treatment for "Find the Spark".
+"""Synthesise the restrained original sound effects for "Find the Spark".
 
-No samples, no narration, no ticking. Seeded, so every run writes identical files.
+No samples, no music (no approved music supplied), no ticking. Seeded, so every run writes identical files.
 Writes 48 kHz / 16-bit stereo WAVs to remotion/public/gofloaters/audio/:
 
-  aircraft.wav   soft filtered-air pass with a faint propeller hum (Tilo's flights)
+  hum.wav        soft aircraft hum, faded and ducked under narration in the composition
   swipe.wav      short brush swipe (highlight reveals, card expand)
   click.wav      small rounded map-selection click (pin drop)
   chime.wav      one warm discovery chime (the Spark glint)
   lift.wav       airy rising lift (gift asset reveal)
   accent.wav     quiet closing accent (ending settles)
-  bed.wav        30 s warm pad bed, very low, fades at both ends
 
   python3 -I gofloaters/tools/make_sfx.py
 """
@@ -65,14 +64,16 @@ def write(name: str, st: np.ndarray) -> None:
     print(f"  {name}: {len(st) / SR:.2f}s")
 
 
-def aircraft() -> np.ndarray:
-    d = 1.6
+def hum() -> np.ndarray:
+    """Soft aircraft hum: low filtered air and a faint engine tone, steady (envelope set in the
+    composition), with slow drift so a long pass never sounds looped."""
+    d = 6.0
     tt = t(d)
-    air = band(rng.standard_normal(len(tt)), 300, 2600)
-    sweep = np.sin(np.pi * tt / d) ** 2
-    hum = 0.18 * np.sin(2 * np.pi * (92 + 10 * tt) * tt) * (1 + 0.3 * np.sin(2 * np.pi * 23 * tt))
-    x = (air * 0.9 + hum) * sweep
-    return stereo(norm(x, -4), np.linspace(-0.6, 0.6, len(tt)))
+    air = band(rng.standard_normal(len(tt)), 120, 900)
+    tone = 0.35 * np.sin(2 * np.pi * (118 + 4 * np.sin(2 * np.pi * 0.3 * tt)) * tt)
+    tone += 0.12 * np.sin(2 * np.pi * 236 * tt)
+    x = (air + tone) * (0.85 + 0.15 * np.sin(2 * np.pi * 0.4 * tt))
+    return stereo(norm(x * env(len(tt), 0.05, 0.05), -6))
 
 
 def swipe() -> np.ndarray:
@@ -118,22 +119,9 @@ def accent() -> np.ndarray:
     return stereo(norm(x * env(len(tt), 0.02, 0.6), -5))
 
 
-def bed() -> np.ndarray:
-    d = 30.0
-    tt = t(d)
-    x = np.zeros_like(tt)
-    # A–E–A–C# pad with slow independent drift; no pulse, no ticking.
-    for f, a in ((110.0, 1.0), (164.8, 0.6), (220.0, 0.45), (277.2, 0.3)):
-        x += a * np.sin(2 * np.pi * f * tt + 0.4 * np.sin(2 * np.pi * 0.07 * tt + f))
-    x *= 0.75 + 0.25 * np.sin(2 * np.pi * 0.05 * tt)
-    shimmer = band(rng.standard_normal(len(tt)), 2500, 6000) * 0.04
-    x = x + shimmer
-    return stereo(norm(x * env(len(tt), 1.5, 2.5), -9), 0.0)
-
-
 def main() -> None:
-    for name, fn in (("aircraft.wav", aircraft), ("swipe.wav", swipe), ("click.wav", click),
-                     ("chime.wav", chime), ("lift.wav", lift), ("accent.wav", accent), ("bed.wav", bed)):
+    for name, fn in (("hum.wav", hum), ("swipe.wav", swipe), ("click.wav", click),
+                     ("chime.wav", chime), ("lift.wav", lift), ("accent.wav", accent)):
         write(name, fn())
 
 

@@ -2,7 +2,8 @@ import {cancelRender, continueRender, delayRender, staticFile} from 'remotion';
 import {FONT} from '../constants';
 
 // DM Sans (Google Fonts variable file, opsz 9–40 × wght 100–1000, SIL OFL), bundled locally and
-// loaded before any frame is captured. Weights used: 500 Medium and 700 Bold.
+// loaded before any frame is captured. Weights used: 700 Bold (headlines), 500 Medium (labels),
+// 400 Regular (supporting copy).
 let loaded = false;
 
 export const loadFonts = () => {
@@ -17,8 +18,8 @@ export const loadFonts = () => {
     .load()
     .then((f) => {
       document.fonts.add(f);
-      // Resolve both weights so no frame renders with a fallback face.
-      return Promise.all([document.fonts.load(`500 40px "${FONT}"`), document.fonts.load(`700 40px "${FONT}"`)]);
+      // Resolve every weight in use so no frame renders with a fallback face.
+      return Promise.all([400, 500, 700].map((w) => document.fonts.load(`${w} 40px "${FONT}"`)));
     })
     .then(() => continueRender(handle))
     .catch((err) => {

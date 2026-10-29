@@ -11,6 +11,8 @@ import {
   WIDTH as TILO_WIDTH,
 } from './tilo/config';
 import {TiloRewardFlight} from './tilo/TiloRewardFlight';
+import {HOLD_DURATION, holdDefaults, holdSchema} from './tilo/holdToFly/config';
+import {HoldToFly} from './tilo/holdToFly/HoldToFly';
 
 const MG_FROM = SHOTS.s06.from; // motion-graphics section: shared choice → end card
 const OPENING_TO = SHOTS.s06.to; // 0–16 s: every live-action shot up to the product entrance
@@ -54,6 +56,31 @@ export const RemotionRoot: React.FC = () => (
         width={TILO_WIDTH}
         height={TILO_HEIGHT}
         defaultProps={{...tiloDefaults, review: {playbackSpeed: 2, burnIn: true}}}
+      />
+    </Folder>
+
+    <Folder name="Tilo-HoldToFly">
+      {/* 16 s final cut. Flight authored at 2× the original speed; UI on normal output time. */}
+      <Composition
+        id="Tilo-HoldToFly"
+        component={HoldToFly}
+        schema={holdSchema}
+        durationInFrames={HOLD_DURATION}
+        fps={TILO_FPS}
+        width={TILO_WIDTH}
+        height={TILO_HEIGHT}
+        defaultProps={holdDefaults}
+      />
+      {/* Review only: what a viewer holding Instagram's double-speed playback sees. */}
+      <Composition
+        id="Tilo-HoldToFly-DoubleSpeedReview"
+        component={HoldToFly}
+        schema={holdSchema}
+        durationInFrames={HOLD_DURATION / 2}
+        fps={TILO_FPS}
+        width={TILO_WIDTH}
+        height={TILO_HEIGHT}
+        defaultProps={{...holdDefaults, review: {playbackSpeed: 2, burnIn: true}}}
       />
     </Folder>
   </>

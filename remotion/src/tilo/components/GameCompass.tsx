@@ -12,7 +12,7 @@ export const GameCompass: React.FC = () => {
   const cam = useFlightCamera();
   const {right, top, size} = config.ui.compass;
   const s06 = config.shots.s06[0];
-  const opacity = 1 - smoothstep(s06 - 4, s06 + 8, t);
+  const opacity = config.ui.compassHideAtReveal ? 1 - smoothstep(s06 - 4, s06 + 8, t) : 1;
   if (opacity <= 0) return null;
   const s = cam.sample;
   const bearing = Math.atan2(flight.destination.x - s.x, -(flight.destination.z - s.z));

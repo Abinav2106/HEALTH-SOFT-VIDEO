@@ -84,6 +84,7 @@ export const tiloSchema = z.object({
     turnRate: z.array(key), // degrees / second, + = right
     altitude: z.array(key), // metres
     destinationAhead: z.number(), // building centre this far beyond the hover point (m)
+    worldRate: z.number(), // authored flight-speed multiplier on the speed keys (UI timing unaffected)
   }),
   camera: z.object({
     fovDeg: z.number(),
@@ -120,6 +121,7 @@ export const tiloSchema = z.object({
     cueRight: z.number(),
     cueTop: z.number(),
     compass: z.object({right: z.number(), top: z.number(), size: z.number()}),
+    compassHideAtReveal: z.boolean(),
     sheetPartialTop: z.number(),
     sheetFinalTop: z.number(),
     contentLeft: z.number(),
@@ -230,6 +232,7 @@ export const defaultConfig: TiloConfig = {
       {frame: 520, value: 53},
     ],
     destinationAhead: 12,
+    worldRate: 1,
   },
   camera: {
     fovDeg: 62,
@@ -266,6 +269,7 @@ export const defaultConfig: TiloConfig = {
     cueRight: 60,
     cueTop: 372,
     compass: {right: 56, top: 236, size: 108},
+    compassHideAtReveal: true,
     sheetPartialTop: 1464,
     sheetFinalTop: 612,
     contentLeft: 100,

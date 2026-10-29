@@ -47,6 +47,41 @@ Live action comes from `src/video06/stock/manifest.json` (written by `video06/to
 
 ---
 
+# Tilo — Hold to Fly (GoFloaters Reel, final 16 s cut)
+
+`src/tilo/holdToFly/` · 1080×1920 · 30 fps · 16 s (480 frames). Same engine as The Reward Flight
+(below): one continuous rear-view flight, then the golden rooftop marker opens along its seam into
+ONE hero ticket that settles into the GoFloaters reward sheet.
+
+Two clocks:
+- **World / flight** — `path.speed` keys are the original normal flight speed (46 m/s);
+  `path.worldRate: 2` authors the whole city journey at double that, constant until the arrival.
+- **Overlay / UI** — every value in `hold` and `timing` is in normal output frames, so the reveal
+  and the reading hold (11.4 s → 16 s) are not shortened.
+
+No numeric speed label appears anywhere in the picture; Instagram's own double-speed playback is
+the viewer's. `Tilo-HoldToFly-DoubleSpeedReview` samples the master at double rate for checking
+readability (red burn-in, review only).
+
+```bash
+npm run render:tilo-hold
+npm run render:tilo-hold:review
+npm run stills:tilo-hold
+```
+
+| File | Role |
+|---|---|
+| `holdToFly/config.ts` | Schema (shared Tilo schema + `hold`) and defaults: copy, timings, path, reveal |
+| `holdToFly/HoldToFly.tsx` | Layer order |
+| `holdToFly/OpeningInstruction.tsx` | "HOLD RIGHT. / FLY FASTER." + one hold ring |
+| `holdToFly/EdgeStreaks.tsx` | Restrained edge-only speed cue, follows the flight speed |
+| `holdToFly/MarkerUnfold.tsx` | Marker squeeze, two faces hinging open, rooftop ring |
+| `holdToFly/HeroTicket.tsx` | The one ticket: emerge → lift → settle; mask-revealed amount; one sheen |
+| `holdToFly/TicketRewardSheet.tsx` | Sheet, label, headline, CTA, closing, terms |
+| `holdToFly/HoldAudio.tsx` | Flight bed, wind, paper/air unfold, sheet slide, one landing accent |
+
+---
+
 # Tilo — The Reward Flight (GoFloaters Reel)
 
 `src/tilo/` · 1080×1920 · 30 fps · 24 s (720 frames). One continuous rear-follow flight on a single
@@ -73,7 +108,8 @@ npm run assets:tilo   # traces rear-view Tilo -> public/brand/gofloaters/tilo_re
 `tilo_rear.svg` is traced from the sheet's row 2 / column 5 cell (behind-and-above view) — upscaled,
 snapped to the sheet's own flat colours and vectorised; nothing is redrawn. Audio in
 `public/tilo/audio/` is synthesised by `scripts/generate-tilo-audio.py` (original, no samples).
-Fonts: Bricolage Grotesque + Inter (OFL substitutes; brand fonts not supplied).
+Fonts: Bricolage Grotesque + Inter / DM Sans (OFL substitutes; brand fonts not supplied; DM Sans has
+no ₹, so amounts stay in Bricolage).
 
 ## Render
 

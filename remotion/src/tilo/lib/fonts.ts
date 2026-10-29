@@ -1,10 +1,12 @@
 import {continueRender, delayRender, staticFile} from 'remotion';
 
-// Brand fonts were not supplied. Substitutes per the brief (SIL OFL, bundled locally so preview
-// and render never depend on the network): Bricolage Grotesque for headlines, Inter for UI.
+// Brand fonts were not supplied. Substitutes per the briefs (SIL OFL, bundled locally so preview
+// and render never depend on the network): Bricolage Grotesque for headlines, Inter (Reward
+// Flight) and DM Sans (Hold to Fly) for UI. DM Sans has no ₹, so amounts stay in Bricolage.
 // Bricolage's latin-ext subset carries the ₹ glyph, so both subsets are registered.
 export const FONT_HEAD = 'Tilo Bricolage Grotesque';
 export const FONT_UI = 'Tilo Inter';
+export const FONT_BODY = 'Tilo DM Sans'; // Hold to Fly UI / body text
 
 let loaded = false;
 
@@ -22,6 +24,7 @@ export const loadTiloFonts = () => {
       unicodeRange: 'U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF',
     }),
     new FontFace(FONT_UI, `url(${staticFile('fonts/Inter-latin-var.woff2')}) format('woff2')`, {weight: '100 900'}),
+    new FontFace(FONT_BODY, `url(${staticFile('fonts/DMSans-latin-var.woff2')}) format('woff2')`, {weight: '100 1000'}),
   ];
   Promise.all(faces.map((f) => f.load()))
     .then((ready) => {

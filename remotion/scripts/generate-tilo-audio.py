@@ -96,9 +96,20 @@ def click(seconds: float = 0.12) -> np.ndarray:
     return norm(tone + 0.3 * norm(tick, 1), 0.5)
 
 
+def unfold(seconds: float = 0.7) -> np.ndarray:
+    """Short paper / air movement for the marker opening: a soft flutter plus a breathy lift."""
+    rng = np.random.default_rng(17)
+    t = np.arange(int(seconds * SR)) / SR
+    flutter = band(rng.standard_normal(len(t)), 1200, 6000, 1.5) * (0.55 + 0.45 * np.sin(2 * np.pi * 31 * t) ** 2)
+    air = band(rng.standard_normal(len(t)), 250, 1400, 1.5)
+    env = np.minimum(1, t / 0.02) * np.exp(-t * 5.5)
+    return norm((0.6 * norm(flutter, 1) + 0.5 * norm(air, 1)) * env, 0.45)
+
+
 if __name__ == '__main__':
     write('propeller_bed.wav', propeller_bed())
     write('wind.wav', wind())
     write('marker_chime.wav', chime())
     write('sheet_slide.wav', slide())
     write('ui_click.wav', click())
+    write('marker_unfold.wav', unfold())

@@ -1,5 +1,5 @@
 import {Easing, interpolate} from 'remotion';
-import {DURATION, FPS, type TiloConfig} from '../config';
+import {FPS, type TiloConfig} from '../config';
 
 // The flight is integrated once, frame by frame, from the speed / turn-rate / altitude keys:
 // a single world-space path for all six beats. Everything is a pure function of the config,
@@ -46,8 +46,9 @@ export const computeFlight = (config: TiloConfig): Flight => {
   let heading = 0;
   let camHeading = 0;
   let camYaw = 0;
-  for (let f = 0; f <= DURATION; f++) {
-    const speed = keyed(path.speed, f, true);
+  const lastFrame = config.shots.s06[1];
+  for (let f = 0; f <= lastFrame; f++) {
+    const speed = keyed(path.speed, f, true) * path.worldRate;
     const turn = keyed(path.turnRate, f, false); // linear ramps: bank eases in over the ramp length
     const y = keyed(path.altitude, f, true);
     if (f > 0) {

@@ -44,3 +44,103 @@ Live action comes from `src/video06/stock/manifest.json` (written by `video06/to
 | `components/StockShot.tsx` | One live-action shot: licensed clip, 9:16 cover crop on a focus point, native speed |
 | `stock/stock.ts` | Manifest access, crop maths shared with the tracker, strict-mode assertions |
 | `lib/cornerPin.ts` | Homography → CSS `matrix3d` for screen compositing |
+
+---
+
+# Tilo — Hold to Fly (GoFloaters Reel, final 16 s cut)
+
+`src/tilo/holdToFly/` · 1080×1920 · 30 fps · 16 s (480 frames). Same engine as The Reward Flight
+(below): one continuous rear-view flight, then the golden rooftop marker opens along its seam into
+ONE hero ticket that settles into the GoFloaters reward sheet.
+
+Two clocks:
+- **World / flight** — `path.speed` keys are the original normal flight speed (46 m/s);
+  `path.worldRate: 2` authors the whole city journey at double that, constant until the arrival.
+- **Overlay / UI** — every value in `hold` and `timing` is in normal output frames, so the reveal
+  and the reading hold (11.4 s → 16 s) are not shortened.
+
+No numeric speed label appears anywhere in the picture; Instagram's own double-speed playback is
+the viewer's. `Tilo-HoldToFly-DoubleSpeedReview` samples the master at double rate for checking
+readability (red burn-in, review only).
+
+```bash
+npm run render:tilo-hold
+npm run render:tilo-hold:review
+npm run stills:tilo-hold
+```
+
+| File | Role |
+|---|---|
+| `holdToFly/config.ts` | Schema (shared Tilo schema + `hold`) and defaults: copy, timings, path, reveal |
+| `holdToFly/HoldToFly.tsx` | Layer order |
+| `holdToFly/OpeningInstruction.tsx` | "HOLD RIGHT. / FLY FASTER." + one hold ring |
+| `holdToFly/EdgeStreaks.tsx` | Restrained edge-only speed cue, follows the flight speed |
+| `holdToFly/MarkerUnfold.tsx` | Marker squeeze, two faces hinging open, rooftop ring |
+| `holdToFly/HeroTicket.tsx` | The one ticket: emerge → lift → settle; mask-revealed amount; one sheen |
+| `holdToFly/TicketRewardSheet.tsx` | Sheet, label, headline, CTA, closing, terms |
+| `holdToFly/HoldAudio.tsx` | Flight bed, wind, paper/air unfold, sheet slide, one landing accent |
+
+---
+
+# Tilo — The Reward Flight (GoFloaters Reel)
+
+`src/tilo/` · 1080×1920 · 30 fps · 24 s (720 frames). One continuous rear-follow flight on a single
+global timeline; the six storyboard beats are timings in `src/tilo/config.ts`, not separate scenes.
+
+Compositions (Studio folder `Tilo-RewardFlight`):
+- `Tilo-RewardFlight` — the master, normal playback speed. Deliverable.
+- `Tilo-RewardFlight-2xReview` — the same master sampled at 2× (what a viewer holding Instagram's 2× sees), with a red burn-in. Review only. Studio's own playback-rate menu also works.
+
+All copy, colours, shot timings, aircraft size/position, flight-path keys (speed, turn rate, altitude),
+camera, city generation and UI positions are props (zod schema) — edit live in Studio's props panel,
+or permanently in `src/tilo/config.ts`.
+
+## Assets
+
+Client artwork stays out of git (public repo). Place the originals, then derive:
+
+```bash
+# public/brand/gofloaters/tilo_aircraft_sheet_original.jpg   (1600x900 Tilo aircraft sheet)
+pip install pillow numpy vtracer
+npm run assets:tilo   # traces rear-view Tilo -> public/brand/gofloaters/tilo_rear.svg; regenerates audio
+```
+
+`tilo_rear.svg` is traced from the sheet's row 2 / column 5 cell (behind-and-above view) — upscaled,
+snapped to the sheet's own flat colours and vectorised; nothing is redrawn. Audio in
+`public/tilo/audio/` is synthesised by `scripts/generate-tilo-audio.py` (original, no samples).
+Fonts: Bricolage Grotesque + Inter / DM Sans (OFL substitutes; brand fonts not supplied; DM Sans has
+no ₹, so amounts stay in Bricolage).
+
+## Render
+
+```bash
+npm run render:tilo
+npm run render:tilo:2x-review
+npm run stills:tilo          # the six storyboard moments
+```
+
+In the cloud container there is no GPU and only SwiftShader WebGL works. The headless shell also
+ghosts HTML layers across frames there, so render with full Chromium:
+
+```bash
+npx remotion render src/index.ts Tilo-RewardFlight out/tilo_reward_flight_1080x1920_30p.mp4 \
+  --gl=swangle --chrome-mode=chrome-for-testing \
+  --browser-executable=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome
+```
+
+## Structure
+
+| File | Role |
+|---|---|
+| `TiloRewardFlight.tsx` | Layer order, config + flight contexts |
+| `config.ts` | Schema and defaults for every editable value |
+| `lib/flight.ts` | Integrates the world-space flight path once (heading, bank, camera lag) |
+| `lib/sheet.ts` | Reward-sheet curve; also drives the camera reframe |
+| `lib/city.ts` | Seeded city layout (parcels, buildings, destination) |
+| `components/FlightCamera.ts` | Rear-follow camera + projection shared by WebGL and overlays |
+| `components/GameplayEnvironment.tsx` | three.js city (visual approximation of the game map) |
+| `components/RearViewTiloAircraft.tsx` | Traced rear-view Tilo: bob, bank, propeller blur |
+| `components/DestinationMarker.tsx` / `DestinationToast.tsx` / `GameCompass.tsx` | World-anchored marker, toast, compass |
+| `components/OpeningOverlays.tsx` | Shot 01 headline and 2× hold cue |
+| `components/RewardBottomSheet.tsx` | Sheet, PrizePoolCard, MysteryTicket, RevealCTA |
+| `components/AudioBed.tsx` | Sound cues (speed-aware for the 2× review) |

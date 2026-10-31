@@ -2,6 +2,8 @@
 
 Video 06 lives in `src/video06/`. All timing, colour, copy and layout values are in `src/video06/constants.ts`.
 
+The GoFloaters **Tilo** reward animation (`Tilo-Reward`, 1080×1350, 5 s) lives in `src/tilo/`; see [`../tilo/README.md`](../tilo/README.md).
+
 ## Setup
 
 ```bash

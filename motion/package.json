@@ -1,0 +1,46 @@
+{
+  "name": "motion",
+  "version": "1.0.0",
+  "description": "Programmatic motion graphics with Remotion — set up for AI coding agents",
+  "repository": {},
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "private": true,
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "@remotion/fonts": "4.0.539",
+    "@remotion/media": "4.0.539",
+    "@remotion/shapes": "4.0.539",
+    "@remotion/transitions": "4.0.539",
+    "@remotion/zod-types": "4.0.539",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.539",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.539",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "10.12.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "render": "remotion render Showcase out/showcase.mp4",
+    "still": "remotion still Showcase out/showcase.png --frame=60",
+    "new": "node scripts/new-composition.mjs",
+    "build": "remotion bundle",
+    "lint": "eslint src && tsc",
+    "typecheck": "tsc",
+    "audio": "python3 -I tools/make_audio.py",
+    "upgrade": "remotion upgrade"
+  },
+  "allowScripts": {
+    "esbuild": false
+  }
+}
